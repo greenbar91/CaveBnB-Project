@@ -2,7 +2,7 @@
 
 ## Database Schema Design
 
-![text]https://dbdiagram.io/d/CaveBnB-schema-65c30a48ac844320ae9d275f []
+![schema](./images/CaveBnBschema.png)
 
 ## API Documentation
 
