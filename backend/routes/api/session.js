@@ -90,19 +90,3 @@ router.delete("/", (_req, res) => {
 
 
 module.exports = router;
-
-
-// fetch('/api/users', {
-//   method: 'POST',
-//   headers: {
-//     "Content-Type": "application/json",
-//     "XSRF-TOKEN": `7jbJ6DH0-hKU-z-QEwNVqD0tJ4XF1tOWEk7g`
-//   },
-//   body: JSON.stringify({
-//     email: 'firestar@spider.man',
-//     firstName: 'Jacob',
-//     lastName: 'Dietz',
-//     username: 'Firestar',
-//     password: 'aaaaaaaa'
-//   })
-// }).then(res => res.json()).then(data => console.log(data));
