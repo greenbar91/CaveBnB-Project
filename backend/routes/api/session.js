@@ -21,8 +21,7 @@ const validateLogin = [
 ];
 
 
- // If there is no current user, return an error
-router.use(requireAuth)
+
 
 // Log in
 router.post(

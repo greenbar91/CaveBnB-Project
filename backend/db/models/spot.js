@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       //Not sure about excluding ownerId, ask for clarification
       defaultScope: {
         attributes: {
-          exclude: ["ownerId", "createdAt", "updatedAt"],
+          exclude: ["createdAt", "updatedAt"],
         },
       },
     }
