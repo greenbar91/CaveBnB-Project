@@ -115,16 +115,21 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
     return res.status(404);
   }
 
-  if(findSpotById && findSpotById.ownerId === req.user.id){
+  if (findSpotById && findSpotById.ownerId === req.user.id) {
     const newSpotImage = await SpotImage.create({
       url,
       preview,
-      spotId
-    })
+      spotId,
+    });
 
+    const { id, url: imageUrl, preview: imagePreview } = newSpotImage;
 
-    console.log(newSpotImage)
-    return res.status(200).json(newSpotImage)
+    const responseBody = {
+      id,
+      url: imageUrl,
+      preview: imagePreview,
+    };
+    return res.status(200).json(responseBody);
   }
 });
 
