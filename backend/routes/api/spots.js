@@ -123,7 +123,7 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
     })
 
 
-
+    console.log(newSpotImage)
     return res.status(200).json(newSpotImage)
   }
 });
