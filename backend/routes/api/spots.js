@@ -118,8 +118,11 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
   if(findSpotById && findSpotById.ownerId === req.user.id){
     const newSpotImage = await SpotImage.create({
       url,
-      preview
+      preview,
+      spotId
     })
+
+
 
     return res.status(200).json(newSpotImage)
   }
