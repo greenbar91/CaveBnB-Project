@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Spot",
-      //Not sure about excluding ownerId, ask for clarification
+
       defaultScope: {
         attributes: {
           exclude: ["createdAt", "updatedAt"],
