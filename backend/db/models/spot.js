@@ -25,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
       country: { type: DataTypes.STRING, allowNull: false },
       lat: { type: DataTypes.DECIMAL, allowNull: false },
       lng: { type: DataTypes.DECIMAL },
-      allowNull: false,
       name: { type: DataTypes.STRING, allowNull: false },
       description: { type: DataTypes.STRING, allowNull: false },
       price: { type: DataTypes.INTEGER, allowNull: false },
@@ -33,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Spot",
-      //Not sure about excluding ownerId, ask for clarification
+
       defaultScope: {
         attributes: {
           exclude: ["createdAt", "updatedAt"],
