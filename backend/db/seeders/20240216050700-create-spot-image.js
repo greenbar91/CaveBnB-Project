@@ -1,6 +1,6 @@
 "use strict";
 
-const { SpotImage } = require("../models");
+const {Spot, SpotImage } = require("../models");
 
 let options = {};
 if (process.env.NODE_ENV === "production") {
@@ -15,10 +15,10 @@ module.exports = {
           id: 1,
           url: "image url",
           preview: true,
-          spotId: 1,
+          SpotImages: 1,
         },
-        { id: 2, url: "image url", preview: false, spotId: 1 },
-        { id: 3, url: "image url", preview: true, spotId: 2 },
+        { id: 2, url: "image url", preview: false, SpotImages: 1 },
+        { id: 3, url: "image url", preview: true, SpotImages: 2 },
       ],
       {}
     );
