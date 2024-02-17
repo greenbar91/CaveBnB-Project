@@ -331,6 +331,7 @@ router.delete("/:spotId", requireAuth, async (req, res) => {
   // }).then(res => res.json()).then(data => console.log(data));
 });
 
+//Get all Reviews by a Spot's id
 router.get("/:spotId/reviews", async (req, res) => {
   const { spotId } = req.params;
 
@@ -353,6 +354,54 @@ router.get("/:spotId/reviews", async (req, res) => {
   });
 
   return res.status(200).json({ Reviews: findReviewBySpotId });
+});
+
+//Create a Review for a Spot based on the Spot's id
+router.post("/:spotId/reviews", requireAuth, async (req, res) => {
+  const { spotId } = req.params;
+  const {review, stars} = req.body
+
+  const findSpotById = await Spot.findByPk(spotId);
+
+  if (!findSpotById) {
+    return res.status(404).json({
+      message: "Spot couldn't be found",
+    });
+  }
+
+  const existingReview = await Review.findOne({
+    where: {
+      spotId: spotId,
+      userId: req.user.id,
+    },
+  });
+
+  if (existingReview) {
+    return res.status(500).json({
+      message: "User already has a review for this spot",
+    });
+  }
+
+  try {
+    const newReview = await Review.create({
+      userId: req.user.id,
+      spotId:spotId,
+      review,
+      stars
+    })
+
+    return res.status(201).json(newReview)
+  } catch (error) {
+    if (error.name === "SequelizeValidationError") {
+      return res.status(400).json({
+        message: "Bad Request",
+        errors: {
+          review: "Review text is required",
+          stars: "Stars must be an integer from 1 to 5",
+        },
+      });
+    }
+  }
 });
 
 module.exports = router;
