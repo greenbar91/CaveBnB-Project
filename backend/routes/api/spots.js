@@ -1,6 +1,12 @@
 // backend/routes/api/spot.js
 const express = require("express");
-const { Spot, SpotImage, User } = require("../../db/models");
+const {
+  Spot,
+  SpotImage,
+  User,
+  Review,
+  ReviewImage,
+} = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 
 const router = express.Router();
@@ -323,6 +329,30 @@ router.delete("/:spotId", requireAuth, async (req, res) => {
   //     "XSRF-TOKEN": `<Insert token here>`
   //   },
   // }).then(res => res.json()).then(data => console.log(data));
+});
+
+router.get("/:spotId/reviews", async (req, res) => {
+  const { spotId } = req.params;
+
+  const findSpotById = await Spot.findByPk(spotId);
+
+  if (!findSpotById) {
+    return res.status(404).json({
+      message: "Spot couldn't be found",
+    });
+  }
+
+  const findReviewBySpotId = await findSpotById.getReviews({
+    include: [
+      { model: User, attributes: ["id", "firstName", "lastName"] },
+      {
+        model: ReviewImage,
+        attributes: ["id", "url"],
+      },
+    ],
+  });
+
+  return res.status(200).json({ Reviews: findReviewBySpotId });
 });
 
 module.exports = router;
