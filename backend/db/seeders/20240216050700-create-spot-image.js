@@ -18,7 +18,8 @@ module.exports = {
           spotId: 1,
         },
         { id: 2, url: "image url", preview: false, spotId: 1 },
-        // { id: 3, url: "image url", preview: true, spotId: 2 },
+        { id: 3, url: "image url", preview: true, spotId: 2 },
+        { id: 4, url: "image url", preview: true, spotId: 3 },
       ],
       {}
     );
