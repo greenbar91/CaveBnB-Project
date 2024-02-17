@@ -1,22 +1,38 @@
 const express = require("express");
-const { Spot, SpotImage, User, Review, ReviewImage } = require("../../db/models");
+const {
+  Spot,
+  SpotImage,
+  User,
+  Review,
+  ReviewImage,
+} = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 
 const router = express.Router();
 
-router.get('/current', requireAuth, async (req,res) => {
+router.get("/current", requireAuth, async (req, res) => {
+  const allCurrentReviews = await Review.findAll({
+    where: {
+      userId: req.user.id,
+    },
+    include: [
+        
+      {
+        model: User,
+        attributes:['id','firstName','lastName']
+      },
+      {
+        model: Spot,
 
-    const allCurrentReviews = await Review.findAll({
-        where:{
-            ownerId:req.user.id
-        },
-        include:{
-            
-        }
-    })
+      },
+      {
+        model:ReviewImage,
+        attributes:['id', 'url']
+      }
+    ],
+  });
 
-    return res.status(200).json()
-})
+  return res.status(200).json({"Reviews":allCurrentReviews});
+});
 
-
-module.exports = router
+module.exports = router;
