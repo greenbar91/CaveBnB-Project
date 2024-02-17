@@ -2,7 +2,7 @@
 
 ## Database Schema Design
 
-![schema](./images/CaveBnBschema.png)
+![schema](./images/cave-bnb-schema.png)
 
 ## API Documentation
 
