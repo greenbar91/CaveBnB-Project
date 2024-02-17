@@ -21,7 +21,7 @@ module.exports = {
         { id: 3, url: "image url", preview: true, spotId: 2 },
         { id: 4, url: "image url", preview: true, spotId: 3 },
       ],
-      {}
+      {validate: true}
     );
   },
 
