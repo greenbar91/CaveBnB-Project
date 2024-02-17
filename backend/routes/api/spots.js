@@ -114,7 +114,13 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
     });
   }
 
-  if (findSpotById && findSpotById.ownerId === req.user.id) {
+  if (findSpotById.ownerId !== req.user.id) {
+    return res.status(403).json({
+      message: "You are not authorized to add an image to this spot",
+    });
+  }
+
+  if (findSpotById) {
     const newSpotImage = await SpotImage.create({
       url,
       preview,
@@ -132,9 +138,61 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
     return res.status(200).json(responseBody);
   }
 
-  return res.json(400).json({
-    message: "Spot must belong to you in order to add an image",
-  });
+
+});
+
+//Edit a Spot
+router.put("/:spotId", requireAuth, async (req, res) => {
+  const { spotId } = req.params;
+  const { address, city, state, country, lat, lng, name, description, price } =
+    req.body;
+
+  const findSpotById = await Spot.findByPk(spotId);
+
+  if (!findSpotById) {
+    return res.status(404).json({
+      message: "Spot couldn't be found",
+    });
+  }
+
+  if (findSpotById.ownerId !== req.user.id) {
+    return res.status(403).json({
+      message: "You are not authorized to edit this spot",
+    });
+  }
+
+  try {
+    const spotToUpdate = await findSpotById.update({
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    });
+
+    return res.status(200).json(spotToUpdate);
+  } catch (error) {
+    if (error.name === "SequelizeValidationError") {
+      return res.status(400).json({
+        message: "Bad Request",
+        errors: {
+          city: "City is required",
+          address: "Street address is required",
+          state: "State is required",
+          country: "Country is required",
+          lat: "Latitude must be within -90 and 90",
+          lng: "Longitude must be within -180 and 180",
+          name: "Name must be less than 50 characters",
+          description: "Description is required",
+          price: "Price per day must be a positive number",
+        },
+      });
+    }
+  }
 });
 
 module.exports = router;
