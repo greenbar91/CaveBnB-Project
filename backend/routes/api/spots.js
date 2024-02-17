@@ -289,4 +289,40 @@ router.put("/:spotId", requireAuth, async (req, res) => {
   // }).then(res => res.json()).then(data => console.log(data));
 });
 
+//Delete a Spot
+router.delete("/:spotId", requireAuth, async (req, res) => {
+  const { spotId } = req.params;
+
+  const findSpotById = await Spot.findByPk(spotId);
+
+  if (!findSpotById) {
+    return res.status(404).json({
+      message: "Spot couldn't be found",
+    });
+  }
+
+  if (findSpotById.ownerId !== req.user.id) {
+    return res.status(400).json({
+      message: "Unauthorized to delete this spot",
+    });
+  }
+
+  if (findSpotById) {
+    await findSpotById.destroy();
+
+    return res.status(200).json({
+      message: "Successfully deleted",
+    });
+  }
+
+  //*Testing params*
+  // fetch('/api/spots/1', {
+  //   method: 'DELETE',
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     "XSRF-TOKEN": `<Insert token here>`
+  //   },
+  // }).then(res => res.json()).then(data => console.log(data));
+});
+
 module.exports = router;
