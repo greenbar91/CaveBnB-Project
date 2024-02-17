@@ -106,13 +106,14 @@ router.post("/", async (req, res) => {
 //Add an Image to a Spot based on the Spot's id
 router.post("/:spotId/images", requireAuth, async (req, res) => {
   const { spotId } = req.params;
-
   const { url, preview } = req.body;
 
   const findSpotById = await Spot.findByPk(spotId);
 
   if (!findSpotById) {
-    return res.status(404);
+    return res.status(404).json({
+      message: "Spot couldn't be found",
+    });
   }
 
   if (findSpotById && findSpotById.ownerId === req.user.id) {
@@ -129,8 +130,13 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
       url: imageUrl,
       preview: imagePreview,
     };
+
     return res.status(200).json(responseBody);
   }
+
+  return res.json(400).json({
+    message: "Spot must belong to you in order to add an image",
+  });
 });
 
 module.exports = router;
