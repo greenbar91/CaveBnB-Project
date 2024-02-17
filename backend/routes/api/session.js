@@ -61,6 +61,16 @@ router.post(
       user: safeUser
     });
   }
+
+  //*Testing params
+  // fetch('/api/session', {
+  //   method: 'POST',
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     "XSRF-TOKEN": `Insert token here`
+  //   },
+  //   body: JSON.stringify({ credential: 'FakeUser1', password: 'password2' })
+  // }).then(res => res.json()).then(data => console.log(data));
 );
 
 // Restore session user
