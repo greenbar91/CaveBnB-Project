@@ -6,6 +6,7 @@ const {
   User,
   Review,
   ReviewImage,
+  Booking
 } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 
@@ -284,5 +285,21 @@ router.post(
     return res.status(201).json(newReview);
   }
 );
+
+//Get all Bookings for a Spot based on the Spot's id
+router.get('/:spotId/bookings', requireAuth, (async (req,res) => {
+  const {spotId} = req.params
+
+  const findSpotById = await Spot.findByPk(spotId)
+
+  if(findSpotById.ownerId !== req.user.id){
+
+    const notOwnerBookings = await findSpotById.getBookings({
+      attributes:['spotId', 'startDate','endDate']
+    })
+
+    return res.status(200).json({Bookings:notOwnerBookings})
+  }
+}))
 
 module.exports = router;
