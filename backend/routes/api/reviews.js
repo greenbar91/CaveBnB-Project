@@ -76,9 +76,34 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
 });
 
 //Edit a Review
-router.put('/:reviewId', /*put validation middleware here*/ requireAuth, async (req,res) => {
-  const {reviewId} = req.params
-  const {review, stars} = req.body
+router.put(
+  "/:reviewId",
+  /*put validation middleware here*/ requireAuth,
+  async (req, res) => {
+    const { reviewId } = req.params;
+    const { review, stars } = req.body;
+
+    const findReviewById = await Review.findByPk(reviewId);
+
+    if (!findReviewById) {
+      return res.status(404).json({
+        message: "Review couldn't be found",
+      });
+    }
+
+    const updatedReview = await findReviewById.update({
+      userId: req.user.id,
+      review,
+      stars,
+    });
+
+    return res.status(200).json(updatedReview);
+  }
+);
+
+//Delete a Review
+router.delete("/:reviewId", requireAuth, async (req, res) => {
+  const { reviewId } = req.params;
 
   const findReviewById = await Review.findByPk(reviewId);
 
@@ -88,13 +113,17 @@ router.put('/:reviewId', /*put validation middleware here*/ requireAuth, async (
     });
   }
 
-  const updatedReview = await findReviewById.update({
-    userId:req.user.id,
-    review,
-    stars,
-  })
+  if (findReviewById.userId !== req.user.id) {
+    return res.status(400).json({
+      message: "Unauthorized to delete this review",
+    });
+  }
 
-  return res.status(200).json(updatedReview)
-})
+  await findReviewById.destroy();
+
+  return res.status(200).json({
+    message: "Successfully deleted",
+  });
+});
 
 module.exports = router;
