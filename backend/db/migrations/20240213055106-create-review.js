@@ -29,7 +29,7 @@ module.exports = {
           references: {
             model: "Spots",
             key: "id",
-          },
+          }
         },
         review: {
           type: Sequelize.STRING(255),
