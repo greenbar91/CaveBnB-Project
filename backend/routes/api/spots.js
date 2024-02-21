@@ -76,8 +76,9 @@ router.get("/:spotId", async (req, res) => {
 });
 
 //Create a Spot
-router.post("/", async (req, res) => {
-  try {
+router.post(
+  "/",
+  /*put validation middleware here*/ async (req, res) => {
     const {
       address,
       city,
@@ -103,25 +104,8 @@ router.post("/", async (req, res) => {
       price,
     });
     return res.status(201).json(newSpot);
-  } catch (error) {
-    if (error.name === "SequelizeValidationError") {
-      return res.status(400).json({
-        message: "Bad Request",
-        errors: {
-          city: "City is required",
-          address: "Street address is required",
-          state: "State is required",
-          country: "Country is required",
-          lat: "Latitude must be within -90 and 90",
-          lng: "Longitude must be within -180 and 180",
-          name: "Name must be less than 50 characters",
-          description: "Description is required",
-          price: "Price per day must be a positive number",
-        },
-      });
-    }
   }
-});
+);
 
 //Add an Image to a Spot based on the Spot's id
 router.post("/:spotId/images", requireAuth, async (req, res) => {
@@ -162,26 +146,37 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
 });
 
 //Edit a Spot
-router.put("/:spotId", requireAuth, async (req, res) => {
-  const { spotId } = req.params;
-  const { address, city, state, country, lat, lng, name, description, price } =
-    req.body;
+router.put(
+  "/:spotId",
+  /*put validation middleware here*/ requireAuth,
+  async (req, res) => {
+    const { spotId } = req.params;
+    const {
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    } = req.body;
 
-  const findSpotById = await Spot.findByPk(spotId);
+    const findSpotById = await Spot.findByPk(spotId);
 
-  if (!findSpotById) {
-    return res.status(404).json({
-      message: "Spot couldn't be found",
-    });
-  }
+    if (!findSpotById) {
+      return res.status(404).json({
+        message: "Spot couldn't be found",
+      });
+    }
 
-  if (findSpotById.ownerId !== req.user.id) {
-    return res.status(403).json({
-      message: "Unauthorized to edit this spot",
-    });
-  }
+    if (findSpotById.ownerId !== req.user.id) {
+      return res.status(403).json({
+        message: "Unauthorized to edit this spot",
+      });
+    }
 
-  try {
     const spotToUpdate = await findSpotById.update({
       address,
       city,
@@ -195,25 +190,8 @@ router.put("/:spotId", requireAuth, async (req, res) => {
     });
 
     return res.status(200).json(spotToUpdate);
-  } catch (error) {
-    if (error.name === "SequelizeValidationError") {
-      return res.status(400).json({
-        message: "Bad Request",
-        errors: {
-          city: "City is required",
-          address: "Street address is required",
-          state: "State is required",
-          country: "Country is required",
-          lat: "Latitude must be within -90 and 90",
-          lng: "Longitude must be within -180 and 180",
-          name: "Name must be less than 50 characters",
-          description: "Description is required",
-          price: "Price per day must be a positive number",
-        },
-      });
-    }
   }
-});
+);
 
 //Delete a Spot
 router.delete("/:spotId", requireAuth, async (req, res) => {
@@ -268,32 +246,34 @@ router.get("/:spotId/reviews", async (req, res) => {
 });
 
 //Create a Review for a Spot based on the Spot's id
-router.post("/:spotId/reviews", requireAuth, async (req, res) => {
-  const { spotId } = req.params;
-  const { review, stars } = req.body;
+router.post(
+  "/:spotId/reviews",
+  /*put validation middleware here*/ requireAuth,
+  async (req, res) => {
+    const { spotId } = req.params;
+    const { review, stars } = req.body;
 
-  const findSpotById = await Spot.findByPk(spotId);
+    const findSpotById = await Spot.findByPk(spotId);
 
-  if (!findSpotById) {
-    return res.status(404).json({
-      message: "Spot couldn't be found",
+    if (!findSpotById) {
+      return res.status(404).json({
+        message: "Spot couldn't be found",
+      });
+    }
+
+    const existingReview = await Review.findOne({
+      where: {
+        spotId: spotId,
+        userId: req.user.id,
+      },
     });
-  }
 
-  const existingReview = await Review.findOne({
-    where: {
-      spotId: spotId,
-      userId: req.user.id,
-    },
-  });
+    if (existingReview) {
+      return res.status(500).json({
+        message: "User already has a review for this spot",
+      });
+    }
 
-  if (existingReview) {
-    return res.status(500).json({
-      message: "User already has a review for this spot",
-    });
-  }
-
-  try {
     const newReview = await Review.create({
       userId: req.user.id,
       spotId: spotId,
@@ -302,19 +282,7 @@ router.post("/:spotId/reviews", requireAuth, async (req, res) => {
     });
 
     return res.status(201).json(newReview);
-  } catch (error) {
-    if (error.name === "SequelizeValidationError") {
-      return res.status(400).json({
-        message: "Bad Request",
-        errors: {
-          review: "Review text is required",
-          stars: "Stars must be an integer from 1 to 5",
-        },
-      });
-    }
   }
-});
-
-
+);
 
 module.exports = router;
