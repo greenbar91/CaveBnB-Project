@@ -123,7 +123,7 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
 
   if (findSpotById.ownerId !== req.user.id) {
     return res.status(403).json({
-      message: "Unauthorized to add an image to this spot",
+      message: "Forbidden",
     });
   }
 
@@ -174,7 +174,7 @@ router.put(
 
     if (findSpotById.ownerId !== req.user.id) {
       return res.status(403).json({
-        message: "Unauthorized to edit this spot",
+        message: "Forbidden",
       });
     }
 
@@ -207,8 +207,8 @@ router.delete("/:spotId", requireAuth, async (req, res) => {
   }
 
   if (findSpotById.ownerId !== req.user.id) {
-    return res.status(400).json({
-      message: "Unauthorized to delete this spot",
+    return res.status(403).json({
+      message: "Forbidden",
     });
   }
 

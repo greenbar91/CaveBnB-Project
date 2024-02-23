@@ -42,8 +42,8 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
   }
 
   if (findReviewById.userId !== req.user.id) {
-    return res.status(400).json({
-      message: "Unauthorized to add an image to this review",
+    return res.status(403).json({
+      message: "Forbidden",
     });
   }
 
@@ -118,8 +118,8 @@ router.delete("/:reviewId", requireAuth, async (req, res) => {
   }
 
   if (findReviewById.userId !== req.user.id) {
-    return res.status(400).json({
-      message: "Unauthorized to delete this review",
+    return res.status(403).json({
+      message: "Forbidden",
     });
   }
 
