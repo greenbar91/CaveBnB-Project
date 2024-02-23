@@ -13,8 +13,21 @@ const {
   formatStartDatesEndDates,
   formatAllDates,
 } = require("../../utils/helper");
+const { check } = require("express-validator");
+const { handleValidationErrors } = require("../../utils/validation");
 
 const router = express.Router();
+
+const validationCheck = [
+  check("startDate").isAfter().withMessage("startDate cannot be in the past"),
+  check("endDate").custom((dateValue, { req }) => {
+    if (dateValue <= req.body.startDate) {
+      throw new Error("endDate cannot be on or before startDate");
+    }
+    return true;
+  }),
+  handleValidationErrors,
+];
 
 //Get all Spots
 router.get("/", async (req, res) => {
@@ -326,7 +339,8 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
 //Create a Booking from a Spot based on the Spot's id
 router.post(
   "/:spotId/bookings",
-  /*put validation middleware here*/ requireAuth,
+  validationCheck,
+  requireAuth,
   async (req, res) => {
     const { spotId } = req.params;
     const { startDate, endDate } = req.body;

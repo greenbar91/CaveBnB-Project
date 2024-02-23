@@ -11,10 +11,17 @@ const handleValidationErrors = (req, _res, next) => {
     validationErrors
       .array()
       .forEach(error => errors[error.path] = error.msg);
+    let status = 400
+
+    if(errors.startDate || errors.endDate){
+      status = 403
+    }
+
+    console.log(errors.startDate)
 
     const err = Error("Bad request.");
     err.errors = errors;
-    err.status = 400;
+    err.status = status;
     err.title = "Bad request.";
     next(err);
   }
