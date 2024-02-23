@@ -14,16 +14,16 @@ router.get("/current", requireAuth, async (req, res) => {
   });
 
   currentUserBookings.forEach((booking) => {
-    booking.createdAt = booking.createdAt
+    booking.dataValues.createdAt = booking.dataValues.createdAt
       .toISOString()
       .slice(0, 19)
       .replace("T", " ");
-    booking.updatedAt = booking.updatedAt
+    booking.dataValues.updatedAt = booking.dataValues.updatedAt
       .toISOString()
       .slice(0, 19)
       .replace("T", " ");
-    booking.startDate = booking.startDate.toISOString().slice(0, 9);
-    booking.endDate = booking.endDate.toISOString().slice(0, 9);
+    booking.dataValues.startDate = booking.dataValues.startDate.toISOString().slice(0, 10);
+    booking.dataValues.endDate = booking.dataValues.endDate.toISOString().slice(0, 10);
   });
 
 

@@ -298,6 +298,11 @@ router.get('/:spotId/bookings', requireAuth, (async (req,res) => {
       attributes:['spotId', 'startDate','endDate']
     })
 
+    notOwnerBookings.forEach((booking) => {
+      booking.dataValues.startDate = booking.dataValues.startDate.toISOString().slice(0, 10);
+      booking.dataValues.endDate = booking.dataValues.endDate.toISOString().slice(0, 10);
+    });
+
     return res.status(200).json({Bookings:notOwnerBookings})
   }
 }))

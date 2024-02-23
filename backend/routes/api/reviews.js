@@ -1,10 +1,5 @@
 const express = require("express");
-const {
-  Spot,
-  User,
-  Review,
-  ReviewImage,
-} = require("../../db/models");
+const { Spot, User, Review, ReviewImage } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 
 const router = express.Router();
@@ -94,7 +89,17 @@ router.put(
       userId: req.user.id,
       review,
       stars,
+
     });
+
+    updatedReview.dataValues.createdAt = updatedReview.dataValues.createdAt
+    .toISOString()
+    .slice(0, 19)
+    .replace("T", " ");
+    updatedReview.dataValues.updatedAt = updatedReview.dataValues.updatedAt
+    .toISOString()
+    .slice(0, 19)
+    .replace("T", " ");
 
     return res.status(200).json(updatedReview);
   }
