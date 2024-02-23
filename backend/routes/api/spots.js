@@ -6,9 +6,10 @@ const {
   User,
   Review,
   ReviewImage,
-  Booking
+  Booking,
 } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
+const { formatStartDatesEndDates, formatAllDates } = require("../../utils/helper");
 
 const router = express.Router();
 
@@ -287,24 +288,36 @@ router.post(
 );
 
 //Get all Bookings for a Spot based on the Spot's id
-router.get('/:spotId/bookings', requireAuth, (async (req,res) => {
-  const {spotId} = req.params
+router.get("/:spotId/bookings", requireAuth, async (req, res) => {
+  const { spotId } = req.params;
 
-  const findSpotById = await Spot.findByPk(spotId)
+  const findSpotById = await Spot.findByPk(spotId);
 
-  if(findSpotById.ownerId !== req.user.id){
-
-    const notOwnerBookings = await findSpotById.getBookings({
-      attributes:['spotId', 'startDate','endDate']
+  if(!findSpotById){
+    return res.status(404).json({
+      message: "Spot couldn't be found"
     })
+  }
 
-    notOwnerBookings.forEach((booking) => {
-      booking.dataValues.startDate = booking.dataValues.startDate.toISOString().slice(0, 10);
-      booking.dataValues.endDate = booking.dataValues.endDate.toISOString().slice(0, 10);
+  if (findSpotById.ownerId !== req.user.id) {
+    const notOwnerBookings = await findSpotById.getBookings({
+      attributes: ["spotId", "startDate", "endDate"],
     });
 
-    return res.status(200).json({Bookings:notOwnerBookings})
+    formatStartDatesEndDates(notOwnerBookings);
+
+    return res.status(200).json({ Bookings: notOwnerBookings });
   }
-}))
+
+  if (findSpotById.ownerId === req.user.id) {
+    const ownerBookings = await findSpotById.getBookings({
+      include: [{ model: User, attributes: ["id", "firstName", "lastName"] }],
+    });
+
+    formatAllDates(ownerBookings)
+
+    return res.status(200).json({Bookings:ownerBookings})
+  }
+});
 
 module.exports = router;
