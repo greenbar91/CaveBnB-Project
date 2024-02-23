@@ -9,7 +9,10 @@ const {
   Booking,
 } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
-const { formatStartDatesEndDates, formatAllDates } = require("../../utils/helper");
+const {
+  formatStartDatesEndDates,
+  formatAllDates,
+} = require("../../utils/helper");
 
 const router = express.Router();
 
@@ -293,10 +296,10 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
 
   const findSpotById = await Spot.findByPk(spotId);
 
-  if(!findSpotById){
+  if (!findSpotById) {
     return res.status(404).json({
-      message: "Spot couldn't be found"
-    })
+      message: "Spot couldn't be found",
+    });
   }
 
   if (findSpotById.ownerId !== req.user.id) {
@@ -314,10 +317,42 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
       include: [{ model: User, attributes: ["id", "firstName", "lastName"] }],
     });
 
-    formatAllDates(ownerBookings)
+    formatAllDates(ownerBookings);
 
-    return res.status(200).json({Bookings:ownerBookings})
+    return res.status(200).json({ Bookings: ownerBookings });
   }
+});
+
+//Create a Booking from a Spot based on the Spot's id
+router.post("/:spotId/bookings", /*put validation middleware here*/ requireAuth, async (req, res) => {
+  const { spotId } = req.params;
+  const { startDate, endDate } = req.body;
+
+  const findSpotById = await Spot.findByPk(spotId);
+
+  if (!findSpotById) {
+    return res.status(404).json({
+      message: "Spot couldn't be found",
+    });
+  }
+
+  if (findSpotById.ownerId === req.user.id) {
+    return res.status(403).json({
+      message: "Forbidden",
+    });
+  }
+  console.log(spotId)
+  const newBooking = await Booking.create({
+    spotId:spotId,
+    userId: req.user.id,
+    startDate,
+    endDate
+  })
+
+  formatAllDates(newBooking)
+
+  return res.status(200).json(newBooking)
+
 });
 
 module.exports = router;
