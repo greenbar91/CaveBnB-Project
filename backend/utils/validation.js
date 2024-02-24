@@ -1,7 +1,7 @@
 // backend/utils/validation.js
 const { validationResult } = require("express-validator");
 const { check } = require("express-validator");
-const { Booking } = require("../db/models");
+const { Booking, User } = require("../db/models");
 const { Op } = require("sequelize");
 // middleware for formatting errors from express-validator middleware
 
@@ -25,12 +25,11 @@ const handleValidationErrors = (req, _res, next) => {
       status = 403;
     }
 
-    if (
-      errors.startDate === "startDate cannot be in the past" ||
-      errors.endDate === "endDate cannot be on or before startDate"
-    ) {
-      status = 400
+    if(errors.email === 'User with that email already exists'){
+      err = Error("User already exists")
+      status = 500
     }
+
     err.errors = errors;
     err.status = status;
     err.title = "Bad request";
@@ -38,6 +37,36 @@ const handleValidationErrors = (req, _res, next) => {
   }
   next();
 };
+
+const validateSignup = [
+  check("email")
+    .exists({ checkFalsy: true })
+    .isEmail()
+    .withMessage("Please provide a valid email."),
+  check("username")
+    .exists({ checkFalsy: true })
+    .isLength({ min: 4 })
+    .withMessage("Please provide a username with at least 4 characters."),
+  check("username").not().isEmail().withMessage("Username cannot be an email."),
+  check("password")
+    .exists({ checkFalsy: true })
+    .isLength({ min: 6 })
+    .withMessage("Password must be 6 characters or more."),
+  handleValidationErrors,
+];
+
+const validateUserExists = [
+  check("email")
+  .custom(async (email, {req}) => {
+    const userAlreadyExists = await User.findOne({
+      where:{email}
+    })
+    if(userAlreadyExists){
+      throw new Error("User with that email already exists")
+    }
+  })
+]
+
 const validationCheckDateErrors = [
   check("startDate").isAfter().withMessage("startDate cannot be in the past"),
   check("endDate").custom((dateValue, { req }) => {
@@ -46,6 +75,7 @@ const validationCheckDateErrors = [
     }
     return true;
   }),
+  handleValidationErrors,
 ];
 const validationCheckBookingConflict = [
   check("startDate").custom(async (startDate, { req }) => {
@@ -90,7 +120,6 @@ const validationCheckBookingConflict = [
     if (conflictBooking) {
       throw new Error("End date conflicts with an existing booking");
     }
-    return true;
   }),
   handleValidationErrors,
 ];
@@ -99,4 +128,6 @@ module.exports = {
   handleValidationErrors,
   validationCheckDateErrors,
   validationCheckBookingConflict,
+  validateSignup,
+  validateUserExists
 };
