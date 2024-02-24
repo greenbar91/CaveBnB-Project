@@ -225,10 +225,10 @@ const validationCheckDateErrors = [
 const validationCheckBookingConflict = [
   check("startDate").custom(async (startDate, { req }) => {
     const endDate = req.body.endDate;
+
     const conflictBookings = await Booking.findOne({
       where: {
         spotId: req.params.spotId,
-
         [Op.or]: [
           { endDate: { [Op.between]: [startDate, endDate] } },
           {

@@ -26,7 +26,7 @@ const formatAllDates = async (bookings) => {
     });
     return formattedBookings;
   } else {
-    if (booking.dataValues.createdAt) {
+    if (bookings.dataValues.createdAt) {
       bookings.dataValues.createdAt = bookings.dataValues.createdAt
         .toISOString()
         .slice(0, 19)

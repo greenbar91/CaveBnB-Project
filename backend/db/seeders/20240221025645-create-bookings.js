@@ -27,8 +27,8 @@ module.exports = {
             previewImage: "image url",
           },
           userId: 2,
-          startDate: "2024-02-21",
-          endDate: "2024-02-24",
+          startDate: "2025-02-21",
+          endDate: "2025-02-24",
         },
         {
           id: 2,
@@ -48,8 +48,8 @@ module.exports = {
             previewImage: "image url",
           },
           userId: 1,
-          startDate: "2024-02-25",
-          endDate: "2024-02-28",
+          startDate: "2025-02-25",
+          endDate: "2025-02-28",
         },
         {
           id: 3,
@@ -70,8 +70,8 @@ module.exports = {
             previewImage: "image url",
           },
           userId: 3,
-          startDate: "2024-02-26",
-          endDate: "2024-02-27",
+          startDate: "2025-02-26",
+          endDate: "2025-02-27",
         },
       ],
       { validate: true }
