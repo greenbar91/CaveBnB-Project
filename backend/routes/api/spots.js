@@ -14,7 +14,7 @@ const {
   formatAllDates,
 } = require("../../utils/helper");
 
-const {validationCheckDateErrors,validationCheckBookingConflict ,validateSpotBody,validateReviewBody} = require("../../utils/validation");
+const {validationCheckDateErrors,validateNewBooking ,validateSpotBody,validateReviewBody} = require("../../utils/validation");
 
 
 const router = express.Router();
@@ -290,6 +290,8 @@ router.post(
       stars,
     });
 
+    formatAllDates(newReview)
+
     return res.status(201).json(newReview);
   }
 );
@@ -330,7 +332,7 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
 //Create a Booking from a Spot based on the Spot's id
 router.post(
   "/:spotId/bookings",
-  validationCheckDateErrors,validationCheckBookingConflict,
+  validationCheckDateErrors,validateNewBooking,
   requireAuth,
   async (req, res) => {
     const { spotId } = req.params;

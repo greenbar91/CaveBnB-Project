@@ -88,11 +88,10 @@ router.put(
     }
 
     const updatedReview = await findReviewById.update({
-      userId: req.user.id,
       review,
       stars,
-
     });
+
     formatAllDates(updatedReview)
 
     return res.status(200).json(updatedReview);

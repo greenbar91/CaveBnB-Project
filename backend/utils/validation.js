@@ -5,43 +5,6 @@ const { Booking, User } = require("../db/models");
 const { Op } = require("sequelize");
 // middleware for formatting errors from express-validator middleware
 
-// const handleValidationErrors = (req, _res, next) => {
-//   const validationErrors = validationResult(req);
-
-//   if (!validationErrors.isEmpty()) {
-//     const errors = {};
-//     validationErrors
-//       .array()
-//       .forEach((error) => (errors[error.path] = error.msg));
-//     let status = 400;
-
-//     let err = Error("Bad request");
-
-//     if (
-//       errors.startDate === "Start date conflicts with an existing booking" ||
-//       errors.endDate === "End date conflicts with an existing booking"
-//     ) {
-//       err.message =
-//         "Sorry, this spot is already booked for the specified dates";
-//       status = 403;
-//     }
-
-//     if (
-//       errors.email === "User with that email already exists" ||
-//       "User with that username already exists"
-//     ) {
-//       err.message = "User already exists";
-//       status = 500;
-//     }
-
-//     err.errors = errors;
-//     err.status = status;
-//     err.title = "Bad request";
-//     next(err);
-//   }
-//   next();
-// };
-
 const validateLogin = [
   check("credential")
     .exists({ checkFalsy: true })
@@ -222,13 +185,14 @@ const validationCheckDateErrors = [
   },
 ];
 
-const validationCheckBookingConflict = [
+const validateNewBooking = [
   check("startDate").custom(async (startDate, { req }) => {
     const endDate = req.body.endDate;
-
+    const { spotId } = req.params;
     const conflictBookings = await Booking.findOne({
       where: {
-        spotId: req.params.spotId,
+        spotId,
+        endDate: startDate,
         [Op.or]: [
           { endDate: { [Op.between]: [startDate, endDate] } },
           {
@@ -247,10 +211,84 @@ const validationCheckBookingConflict = [
   }),
   check("endDate").custom(async (endDate, { req }) => {
     const startDate = req.body.startDate;
+    const { spotId } = req.params;
     const conflictBooking = await Booking.findOne({
       where: {
-        spotId: req.params.spotId,
+        spotId,
+        startDate: endDate,
+        [Op.or]: [
+          { startDate: { [Op.between]: [startDate, endDate] } },
+          {
+            [Op.and]: [
+              { startDate: { [Op.lte]: endDate } },
+              { endDate: { [Op.gte]: endDate } },
+            ],
+          },
+        ],
+      },
+    });
+    if (conflictBooking) {
+      throw new Error("End date conflicts with an existing booking");
+    }
+  }),
+  (req, _res, next) => {
+    const validationErrors = validationResult(req);
 
+    if (!validationErrors.isEmpty()) {
+      const errors = {};
+      validationErrors
+        .array()
+        .forEach((error) => (errors[error.path] = error.msg));
+      let err = Error(
+        "Sorry, this spot is already booked for the specified dates"
+      );
+      err.errors = errors;
+      err.status = 403;
+      next(err);
+    }
+    next();
+  },
+];
+
+const validateEditBooking = [
+  check("startDate").custom(async (startDate, { req }) => {
+    const endDate = req.body.endDate;
+    const { bookingId } = req.params;
+    const findBookingById = await Booking.findByPk(bookingId);
+
+    const conflictBookings = await Booking.findOne({
+      where: {
+        spotId: findBookingById.spotId,
+        id: { [Op.ne]: bookingId },
+        endDate: startDate,
+
+        [Op.or]: [
+          { endDate: { [Op.between]: [startDate, endDate] } },
+          {
+            [Op.and]: [
+              { startDate: { [Op.lte]: startDate } },
+              { endDate: { [Op.gte]: startDate } },
+            ],
+          },
+        ],
+      },
+    });
+    if (conflictBookings) {
+      throw new Error("Start date conflicts with an existing booking");
+    }
+    return true;
+  }),
+  check("endDate").custom(async (endDate, { req }) => {
+    const startDate = req.body.startDate;
+    const { bookingId } = req.params;
+    const findBookingById = await Booking.findByPk(bookingId);
+
+    const conflictBooking = await Booking.findOne({
+      where: {
+        spotId: findBookingById.spotId,
+
+        id: { [Op.ne]: bookingId },
+        startDate: endDate,
         [Op.or]: [
           { startDate: { [Op.between]: [startDate, endDate] } },
           {
@@ -287,10 +325,11 @@ const validationCheckBookingConflict = [
 
 module.exports = {
   validationCheckDateErrors,
-  validationCheckBookingConflict,
+  validateNewBooking,
   validateSignup,
   validateUserExists,
   validateLogin,
   validateSpotBody,
-  validateReviewBody
+  validateReviewBody,
+  validateEditBooking,
 };

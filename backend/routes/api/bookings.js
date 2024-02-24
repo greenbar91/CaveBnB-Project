@@ -4,7 +4,7 @@ const { requireAuth } = require("../../utils/auth");
 const { formatAllDates } = require("../../utils/helper");
 const {
   validationCheckDateErrors,
-  validationCheckBookingConflict,
+  validateEditBooking,
 } = require("../../utils/validation");
 
 const router = express.Router();
@@ -28,13 +28,13 @@ router.put(
   "/:bookingId",
   requireAuth,
   validationCheckDateErrors,
-  validationCheckBookingConflict,
+  validateEditBooking,
   async (req, res) => {
+
     const {bookingId} = req.params
     const {startDate,endDate} = req.body
-    const currentDate = new Date()
-    const findBookingById = await Booking.findByPk(bookingId)
 
+    const findBookingById = await Booking.findByPk(bookingId)
 
 
     if(!findBookingById){
@@ -44,21 +44,12 @@ router.put(
       })
     }
 
-    if(findBookingById.endDate < currentDate){
-      return res.status(403).json({
-        message:"Past bookings can't be modified"
-
-      })
-    }
-
-    formatAllDates(findBookingById)
-
-
-
     const editedBooking = await findBookingById.update({
       startDate,
       endDate
     })
+
+    formatAllDates(editedBooking)
 
     return res.status(200).json(editedBooking)
   }
