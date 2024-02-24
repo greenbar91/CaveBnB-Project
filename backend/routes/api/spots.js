@@ -13,66 +13,66 @@ const {
   formatStartDatesEndDates,
   formatAllDates,
 } = require("../../utils/helper");
-const { check } = require("express-validator");
-const { handleValidationErrors } = require("../../utils/validation");
-const { Op } = require("sequelize");
+
+const {validationCheckDateErrors,validationCheckBookingConflict } = require("../../utils/validation");
+
 
 const router = express.Router();
 
-const validationCheck = [
-  check("startDate").isAfter().withMessage("startDate cannot be in the past"),
-  check("endDate").custom((dateValue, { req }) => {
-    if (dateValue <= req.body.startDate) {
-      throw new Error("endDate cannot be on or before startDate");
-    }
-    return true;
-  }),
-  check("startDate").custom(async (startDate, { req }) => {
-    const endDate = req.body.endDate;
-    const conflictBookings = await Booking.findOne({
-      where: {
-        spotId: req.params.spotId,
+// const validationCheck = [
+//   check("startDate").isAfter().withMessage("startDate cannot be in the past"),
+//   check("endDate").custom((dateValue, { req }) => {
+//     if (dateValue <= req.body.startDate) {
+//       throw new Error("endDate cannot be on or before startDate");
+//     }
+//     return true;
+//   }),
+//   check("startDate").custom(async (startDate, { req }) => {
+//     const endDate = req.body.endDate;
+//     const conflictBookings = await Booking.findOne({
+//       where: {
+//         spotId: req.params.spotId,
 
-        [Op.or]: [
-          { endDate: { [Op.between]: [startDate, endDate] } },
-          {
-            [Op.and]: [
-              { startDate: { [Op.lte]: startDate } },
-              { endDate: { [Op.gte]: startDate } },
-            ],
-          },
-        ],
-      },
-    });
-    if (conflictBookings) {
-      throw new Error("Start date conflicts with an existing booking");
-    }
-    return true;
-  }),
-  check("endDate").custom(async (endDate, { req }) => {
-    const startDate = req.body.startDate;
-    const conflictBooking = await Booking.findOne({
-      where: {
-        spotId: req.params.spotId,
+//         [Op.or]: [
+//           { endDate: { [Op.between]: [startDate, endDate] } },
+//           {
+//             [Op.and]: [
+//               { startDate: { [Op.lte]: startDate } },
+//               { endDate: { [Op.gte]: startDate } },
+//             ],
+//           },
+//         ],
+//       },
+//     });
+//     if (conflictBookings) {
+//       throw new Error("Start date conflicts with an existing booking");
+//     }
+//     return true;
+//   }),
+//   check("endDate").custom(async (endDate, { req }) => {
+//     const startDate = req.body.startDate;
+//     const conflictBooking = await Booking.findOne({
+//       where: {
+//         spotId: req.params.spotId,
 
-        [Op.or]: [
-          { startDate: { [Op.between]: [startDate, endDate] } },
-          {
-            [Op.and]: [
-              { startDate: { [Op.lte]: endDate } },
-              { endDate: { [Op.gte]: endDate } },
-            ],
-          },
-        ],
-      },
-    });
-    if (conflictBooking) {
-      throw new Error("End date conflicts with an existing booking");
-    }
-    return true;
-  }),
-  handleValidationErrors,
-];
+//         [Op.or]: [
+//           { startDate: { [Op.between]: [startDate, endDate] } },
+//           {
+//             [Op.and]: [
+//               { startDate: { [Op.lte]: endDate } },
+//               { endDate: { [Op.gte]: endDate } },
+//             ],
+//           },
+//         ],
+//       },
+//     });
+//     if (conflictBooking) {
+//       throw new Error("End date conflicts with an existing booking");
+//     }
+//     return true;
+//   }),
+//   handleValidationErrors,
+// ];
 
 //Get all Spots
 router.get("/", async (req, res) => {
@@ -384,7 +384,7 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
 //Create a Booking from a Spot based on the Spot's id
 router.post(
   "/:spotId/bookings",
-  validationCheck,
+  validationCheckBookingConflict,validationCheckDateErrors,
   requireAuth,
   async (req, res) => {
     const { spotId } = req.params;
