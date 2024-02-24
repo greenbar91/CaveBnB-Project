@@ -5,76 +5,197 @@ const { Booking, User } = require("../db/models");
 const { Op } = require("sequelize");
 // middleware for formatting errors from express-validator middleware
 
-const handleValidationErrors = (req, _res, next) => {
-  const validationErrors = validationResult(req);
+// const handleValidationErrors = (req, _res, next) => {
+//   const validationErrors = validationResult(req);
 
-  if (!validationErrors.isEmpty()) {
-    const errors = {};
-    validationErrors
-      .array()
-      .forEach((error) => (errors[error.path] = error.msg));
-    let status = 400;
+//   if (!validationErrors.isEmpty()) {
+//     const errors = {};
+//     validationErrors
+//       .array()
+//       .forEach((error) => (errors[error.path] = error.msg));
+//     let status = 400;
 
-    let err = Error("Bad request");
+//     let err = Error("Bad request");
 
-    if (
-      errors.startDate === "Start date conflicts with an existing booking" ||
-      errors.endDate === "End date conflicts with an existing booking"
-    ) {
-      err = Error("Sorry, this spot is already booked for the specified dates");
-      status = 403;
+//     if (
+//       errors.startDate === "Start date conflicts with an existing booking" ||
+//       errors.endDate === "End date conflicts with an existing booking"
+//     ) {
+//       err.message =
+//         "Sorry, this spot is already booked for the specified dates";
+//       status = 403;
+//     }
+
+//     if (
+//       errors.email === "User with that email already exists" ||
+//       "User with that username already exists"
+//     ) {
+//       err.message = "User already exists";
+//       status = 500;
+//     }
+
+//     err.errors = errors;
+//     err.status = status;
+//     err.title = "Bad request";
+//     next(err);
+//   }
+//   next();
+// };
+
+const validateLogin = [
+  check("credential")
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage("Email or username is required"),
+  check("password")
+    .exists({ checkFalsy: true })
+    .withMessage("Password is required"),
+  (req, _res, next) => {
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      const errors = {};
+      validationErrors
+        .array()
+        .forEach((error) => (errors[error.path] = error.msg));
+      let err = Error("Bad request");
+      err.errors = errors;
+      err.status = 400;
+      next(err);
     }
+    next();
+  },
+];
 
-    if(errors.email === 'User with that email already exists' || "User with that username already exists"){
-      err = Error("User already exists")
-      status = 500
+const validateUserExists = [
+  check("email").custom(async (email, { req }) => {
+    const userAlreadyExists = await User.findOne({
+      where: { email },
+    });
+    if (userAlreadyExists) {
+      throw new Error("User with that email already exists");
     }
+  }),
+  check("username").custom(async (username, { req }) => {
+    const userAlreadyExists = await User.findOne({
+      where: { username },
+    });
+    if (userAlreadyExists) {
+      throw new Error("User with that username already exists");
+    }
+  }),
+  (req, _res, next) => {
+    const validationErrors = validationResult(req);
 
-    err.errors = errors;
-    err.status = status;
-    err.title = "Bad request";
-    next(err);
-  }
-  next();
-};
+    if (!validationErrors.isEmpty()) {
+      const errors = {};
+      validationErrors
+        .array()
+        .forEach((error) => (errors[error.path] = error.msg));
+      let err = Error("User already exists");
+      err.errors = errors;
+      err.status = 500;
+      next(err);
+    }
+    next();
+  },
+];
 
 const validateSignup = [
   check("email")
     .exists({ checkFalsy: true })
     .isEmail()
-    .withMessage("Please provide a valid email."),
+    .withMessage("Invalid email"),
   check("username")
     .exists({ checkFalsy: true })
-    .isLength({ min: 4 })
-    .withMessage("Please provide a username with at least 4 characters."),
-  check("username").not().isEmail().withMessage("Username cannot be an email."),
-  check("password")
+    .withMessage("Username is required"),
+  check("firstName")
     .exists({ checkFalsy: true })
-    .isLength({ min: 6 })
-    .withMessage("Password must be 6 characters or more."),
-  handleValidationErrors,
+    .withMessage("First Name is required"),
+  check("lastName")
+    .exists({ checkFalsy: true })
+    .withMessage("Last Name is required"),
+  (req, _res, next) => {
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      const errors = {};
+      validationErrors
+        .array()
+        .forEach((error) => (errors[error.path] = error.msg));
+      let err = Error("Bad request");
+      err.errors = errors;
+      err.status = 400;
+      next(err);
+    }
+    next();
+  },
 ];
 
-const validateUserExists = [
-  check("email")
-  .custom(async (email, {req}) => {
-    const userAlreadyExists = await User.findOne({
-      where:{email}
-    })
-    if(userAlreadyExists){
-      throw new Error("User with that email already exists")
+const validateSpotBody = [
+  check("address")
+    .exists({ checkFalsy: true })
+    .withMessage("Street address is required"),
+  check("city").exists({ checkFalsy: true }).withMessage("City is required"),
+  check("state").exists({ checkFalsy: true }).withMessage("State is required"),
+  check("country")
+    .exists({ checkFalsy: true })
+    .withMessage("Country is required"),
+  check("lat")
+    .isFloat({ min: -90, max: 90 })
+    .withMessage("Latitude must be within -90 and 90"),
+  check("lng")
+    .isFloat({ min: -180, max: 180 })
+    .withMessage("Longitude must be within -180 and 180"),
+  check("name")
+    .isLength({ max: 49 })
+    .withMessage("Name must be less than 50 characters"),
+  check("description")
+    .exists({ checkFalsy: true })
+    .withMessage("Description is required"),
+  check("price")
+    .isFloat({ min: 1 })
+    .withMessage("Price per day must be a positive number"),
+  (req, _res, next) => {
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      const errors = {};
+      validationErrors
+        .array()
+        .forEach((error) => (errors[error.path] = error.msg));
+      let err = Error("Bad request");
+      err.errors = errors;
+      err.status = 400;
+      next(err);
     }
-  }),
-  check("username")
-  .custom(async (username, {req}) => {
-    const userAlreadyExists = await User.findOne({
-      where:{username}
-    })
-    if(userAlreadyExists){
-      throw new Error("User with that username already exists")
+    next();
+  },
+];
+
+const validateReviewBody = [
+  check("review")
+    .exists({ checkFalsy: true })
+    .withMessage("Review text is required"),
+  check("stars")
+    .isInt({ min: 1, max: 5 })
+    .withMessage("Stars must be an integer from 1 to 5"),
+  (req, _res, next) => {
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      const errors = {};
+      validationErrors
+        .array()
+        .forEach((error) => (errors[error.path] = error.msg));
+      let err = Error("Bad request");
+      err.errors = errors;
+      err.status = 400;
+      next(err);
     }
-  })
-]
+    next();
+  },
+];
 
 const validationCheckDateErrors = [
   check("startDate").isAfter().withMessage("startDate cannot be in the past"),
@@ -84,8 +205,23 @@ const validationCheckDateErrors = [
     }
     return true;
   }),
-  handleValidationErrors,
+  (req, _res, next) => {
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      const errors = {};
+      validationErrors
+        .array()
+        .forEach((error) => (errors[error.path] = error.msg));
+      let err = Error("Bad request");
+      err.errors = errors;
+      err.status = 400;
+      next(err);
+    }
+    next();
+  },
 ];
+
 const validationCheckBookingConflict = [
   check("startDate").custom(async (startDate, { req }) => {
     const endDate = req.body.endDate;
@@ -130,13 +266,31 @@ const validationCheckBookingConflict = [
       throw new Error("End date conflicts with an existing booking");
     }
   }),
-  handleValidationErrors,
+  (req, _res, next) => {
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      const errors = {};
+      validationErrors
+        .array()
+        .forEach((error) => (errors[error.path] = error.msg));
+      let err = Error(
+        "Sorry, this spot is already booked for the specified dates"
+      );
+      err.errors = errors;
+      err.status = 403;
+      next(err);
+    }
+    next();
+  },
 ];
 
 module.exports = {
-  handleValidationErrors,
   validationCheckDateErrors,
   validationCheckBookingConflict,
   validateSignup,
-  validateUserExists
+  validateUserExists,
+  validateLogin,
+  validateSpotBody,
+  validateReviewBody
 };

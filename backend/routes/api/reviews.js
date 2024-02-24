@@ -1,6 +1,8 @@
 const express = require("express");
 const { Spot, User, Review, ReviewImage } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
+const {validateReviewBody} = require('../../utils/validation');
+const { formatAllDates } = require("../../utils/helper");
 
 const router = express.Router();
 
@@ -72,7 +74,7 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
 //Edit a Review
 router.put(
   "/:reviewId",
-  /*put validation middleware here*/ requireAuth,
+  validateReviewBody, requireAuth,
   async (req, res) => {
     const { reviewId } = req.params;
     const { review, stars } = req.body;
@@ -91,15 +93,7 @@ router.put(
       stars,
 
     });
-
-    updatedReview.dataValues.createdAt = updatedReview.dataValues.createdAt
-    .toISOString()
-    .slice(0, 19)
-    .replace("T", " ");
-    updatedReview.dataValues.updatedAt = updatedReview.dataValues.updatedAt
-    .toISOString()
-    .slice(0, 19)
-    .replace("T", " ");
+    formatAllDates(updatedReview)
 
     return res.status(200).json(updatedReview);
   }

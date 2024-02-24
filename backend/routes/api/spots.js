@@ -10,69 +10,15 @@ const {
 } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 const {
-  formatStartDatesEndDates,
+
   formatAllDates,
 } = require("../../utils/helper");
 
-const {validationCheckDateErrors,validationCheckBookingConflict } = require("../../utils/validation");
+const {validationCheckDateErrors,validationCheckBookingConflict ,validateSpotBody,validateReviewBody} = require("../../utils/validation");
 
 
 const router = express.Router();
 
-// const validationCheck = [
-//   check("startDate").isAfter().withMessage("startDate cannot be in the past"),
-//   check("endDate").custom((dateValue, { req }) => {
-//     if (dateValue <= req.body.startDate) {
-//       throw new Error("endDate cannot be on or before startDate");
-//     }
-//     return true;
-//   }),
-//   check("startDate").custom(async (startDate, { req }) => {
-//     const endDate = req.body.endDate;
-//     const conflictBookings = await Booking.findOne({
-//       where: {
-//         spotId: req.params.spotId,
-
-//         [Op.or]: [
-//           { endDate: { [Op.between]: [startDate, endDate] } },
-//           {
-//             [Op.and]: [
-//               { startDate: { [Op.lte]: startDate } },
-//               { endDate: { [Op.gte]: startDate } },
-//             ],
-//           },
-//         ],
-//       },
-//     });
-//     if (conflictBookings) {
-//       throw new Error("Start date conflicts with an existing booking");
-//     }
-//     return true;
-//   }),
-//   check("endDate").custom(async (endDate, { req }) => {
-//     const startDate = req.body.startDate;
-//     const conflictBooking = await Booking.findOne({
-//       where: {
-//         spotId: req.params.spotId,
-
-//         [Op.or]: [
-//           { startDate: { [Op.between]: [startDate, endDate] } },
-//           {
-//             [Op.and]: [
-//               { startDate: { [Op.lte]: endDate } },
-//               { endDate: { [Op.gte]: endDate } },
-//             ],
-//           },
-//         ],
-//       },
-//     });
-//     if (conflictBooking) {
-//       throw new Error("End date conflicts with an existing booking");
-//     }
-//     return true;
-//   }),
-//   handleValidationErrors,
-// ];
 
 //Get all Spots
 router.get("/", async (req, res) => {
@@ -141,7 +87,7 @@ router.get("/:spotId", async (req, res) => {
 //Create a Spot
 router.post(
   "/",
-  /*put validation middleware here*/ async (req, res) => {
+  validateSpotBody, async (req, res) => {
     const {
       address,
       city,
@@ -211,7 +157,7 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
 //Edit a Spot
 router.put(
   "/:spotId",
-  /*put validation middleware here*/ requireAuth,
+  validateSpotBody, requireAuth,
   async (req, res) => {
     const { spotId } = req.params;
     const {
@@ -311,7 +257,7 @@ router.get("/:spotId/reviews", async (req, res) => {
 //Create a Review for a Spot based on the Spot's id
 router.post(
   "/:spotId/reviews",
-  /*put validation middleware here*/ requireAuth,
+  validateReviewBody, requireAuth,
   async (req, res) => {
     const { spotId } = req.params;
     const { review, stars } = req.body;
@@ -365,7 +311,7 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
       attributes: ["spotId", "startDate", "endDate"],
     });
 
-    formatStartDatesEndDates(notOwnerBookings);
+    formatAllDates(notOwnerBookings);
 
     return res.status(200).json({ Bookings: notOwnerBookings });
   }
