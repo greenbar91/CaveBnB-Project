@@ -15,6 +15,7 @@ const {
 } = require("../../utils/helper");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
+const { Op } = require("sequelize");
 
 const router = express.Router();
 
@@ -23,6 +24,50 @@ const validationCheck = [
   check("endDate").custom((dateValue, { req }) => {
     if (dateValue <= req.body.startDate) {
       throw new Error("endDate cannot be on or before startDate");
+    }
+    return true;
+  }),
+  check("startDate").custom(async (startDate, { req }) => {
+    const endDate = req.body.endDate;
+    const conflictBookings = await Booking.findOne({
+      where: {
+        spotId: req.params.spotId,
+
+        [Op.or]: [
+          { endDate: { [Op.between]: [startDate, endDate] } },
+          {
+            [Op.and]: [
+              { startDate: { [Op.lte]: startDate } },
+              { endDate: { [Op.gte]: startDate } },
+            ],
+          },
+        ],
+      },
+    });
+    if (conflictBookings) {
+      throw new Error("Start date conflicts with an existing booking");
+    }
+    return true;
+  }),
+  check("endDate").custom(async (endDate, { req }) => {
+    const startDate = req.body.startDate;
+    const conflictBooking = await Booking.findOne({
+      where: {
+        spotId: req.params.spotId,
+
+        [Op.or]: [
+          { startDate: { [Op.between]: [startDate, endDate] } },
+          {
+            [Op.and]: [
+              { startDate: { [Op.lte]: endDate } },
+              { endDate: { [Op.gte]: endDate } },
+            ],
+          },
+        ],
+      },
+    });
+    if (conflictBooking) {
+      throw new Error("End date conflicts with an existing booking");
     }
     return true;
   }),
