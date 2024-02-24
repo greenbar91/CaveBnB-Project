@@ -25,7 +25,7 @@ const handleValidationErrors = (req, _res, next) => {
       status = 403;
     }
 
-    if(errors.email === 'User with that email already exists'){
+    if(errors.email === 'User with that email already exists' || "User with that username already exists"){
       err = Error("User already exists")
       status = 500
     }
@@ -63,6 +63,15 @@ const validateUserExists = [
     })
     if(userAlreadyExists){
       throw new Error("User with that email already exists")
+    }
+  }),
+  check("username")
+  .custom(async (username, {req}) => {
+    const userAlreadyExists = await User.findOne({
+      where:{username}
+    })
+    if(userAlreadyExists){
+      throw new Error("User with that username already exists")
     }
   })
 ]
