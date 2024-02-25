@@ -3,6 +3,7 @@ const { validationResult } = require("express-validator");
 const { check } = require("express-validator");
 const { Booking, User } = require("../db/models");
 const { Op } = require("sequelize");
+
 // middleware for formatting errors from express-validator middleware
 
 const validateLogin = [
@@ -160,6 +161,7 @@ const validateReviewBody = [
   },
 ];
 
+
 const validationCheckDateErrors = [
   check("startDate").isAfter().withMessage("startDate cannot be in the past"),
   check("endDate").custom((dateValue, { req }) => {
@@ -168,7 +170,7 @@ const validationCheckDateErrors = [
     }
     return true;
   }),
-  (req, _res, next) => {
+  (req, res, next) => {
     const validationErrors = validationResult(req);
 
     if (!validationErrors.isEmpty()) {
@@ -179,11 +181,17 @@ const validationCheckDateErrors = [
       let err = Error("Bad request");
       err.errors = errors;
       err.status = 400;
-      next(err);
+      return res.status(400).json({
+        message: "Bad request",
+        errors: errors
+      });
     }
+
     next();
   },
 ];
+
+
 
 const validateNewBooking = [
   check("startDate").custom(async (startDate, { req }) => {
@@ -332,4 +340,5 @@ module.exports = {
   validateSpotBody,
   validateReviewBody,
   validateEditBooking,
+ 
 };

@@ -5,6 +5,7 @@ const { formatAllDates } = require("../../utils/helper");
 const {
   validationCheckDateErrors,
   validateEditBooking,
+
 } = require("../../utils/validation");
 
 const router = express.Router();
@@ -30,36 +31,43 @@ router.put(
   validationCheckDateErrors,
   validateEditBooking,
   async (req, res) => {
+    const { bookingId } = req.params;
+    const { startDate, endDate } = req.body;
 
-    const {bookingId} = req.params
-    const {startDate,endDate} = req.body
+    const findBookingById = await Booking.findByPk(bookingId);
 
-    const findBookingById = await Booking.findByPk(bookingId)
+    if(findBookingById.endDate < new Date()){
+      return res.status(403).json({
+        message: "Past bookings can't be modified"
+      }
+      )
+    }
 
-
-    if(!findBookingById){
+    if (!findBookingById) {
       return res.status(404).json({
-        message:"Booking couldn't be found"
-
-      })
+        message: "Booking couldn't be found",
+      });
     }
 
     if (findBookingById.endDate < new Date()) {
       return res.status(403).json({
-        message: "Past bookings can't be modified"
+        message: "Past bookings can't be modified",
       });
     }
 
     const editedBooking = await findBookingById.update({
       startDate,
-      endDate
-    })
+      endDate,
+    });
 
-    formatAllDates(editedBooking)
+    formatAllDates(editedBooking);
 
-    return res.status(200).json(editedBooking)
+    return res.status(200).json(editedBooking);
   }
-
 );
+
+
+//Delete a Booking
+router.delete("/:bookingId", requireAuth, async (req,res) => {})
 
 module.exports = router;
