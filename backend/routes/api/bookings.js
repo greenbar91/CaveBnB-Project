@@ -5,7 +5,6 @@ const { formatAllDates } = require("../../utils/helper");
 const {
   validationCheckDateErrors,
   validateEditBooking,
-
 } = require("../../utils/validation");
 
 const router = express.Router();
@@ -36,11 +35,10 @@ router.put(
 
     const findBookingById = await Booking.findByPk(bookingId);
 
-    if(findBookingById.endDate < new Date()){
+    if (findBookingById.endDate < new Date()) {
       return res.status(403).json({
-        message: "Past bookings can't be modified"
-      }
-      )
+        message: "Past bookings can't be modified",
+      });
     }
 
     if (!findBookingById) {
@@ -66,8 +64,37 @@ router.put(
   }
 );
 
-
 //Delete a Booking
-router.delete("/:bookingId", requireAuth, async (req,res) => {})
+router.delete("/:bookingId", requireAuth, async (req, res) => {
+  const { bookingId } = req.params;
+
+  const findBookingById = await Booking.findByPk(bookingId, {
+    include: [{ model: Spot }],
+  });
+
+  if (!findBookingById) {
+    return res.status(404).json({
+      message: "Booking couldn't be found",
+    });
+  }
+
+  if (findBookingById.userId !== req.user.id) {
+    if (findBookingById.Spot.ownerId !== req.user.id) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+  }
+
+  if (findBookingById.startDate < new Date()) {
+    return res.status(403).json({
+      message: "Bookings that have been started can't be deleted",
+    });
+  }
+
+  await findBookingById.destroy();
+
+  return res.status(200).json({
+    message: "Successfully deleted",
+  });
+});
 
 module.exports = router;
