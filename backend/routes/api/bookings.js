@@ -44,6 +44,12 @@ router.put(
       })
     }
 
+    if (findBookingById.endDate < new Date()) {
+      return res.status(403).json({
+        message: "Past bookings can't be modified"
+      });
+    }
+
     const editedBooking = await findBookingById.update({
       startDate,
       endDate
