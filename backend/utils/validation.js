@@ -192,7 +192,7 @@ const validateNewBooking = [
     const conflictBookings = await Booking.findOne({
       where: {
         spotId,
-        endDate: startDate,
+
         [Op.or]: [
           { endDate: { [Op.between]: [startDate, endDate] } },
           {
@@ -215,7 +215,7 @@ const validateNewBooking = [
     const conflictBooking = await Booking.findOne({
       where: {
         spotId,
-        startDate: endDate,
+
         [Op.or]: [
           { startDate: { [Op.between]: [startDate, endDate] } },
           {
@@ -260,7 +260,7 @@ const validateEditBooking = [
       where: {
         spotId: findBookingById.spotId,
         id: { [Op.ne]: bookingId },
-        endDate: startDate,
+
 
         [Op.or]: [
           { endDate: { [Op.between]: [startDate, endDate] } },
@@ -270,6 +270,7 @@ const validateEditBooking = [
               { endDate: { [Op.gte]: startDate } },
             ],
           },
+
         ],
       },
     });
@@ -288,7 +289,7 @@ const validateEditBooking = [
         spotId: findBookingById.spotId,
 
         id: { [Op.ne]: bookingId },
-        startDate: endDate,
+
         [Op.or]: [
           { startDate: { [Op.between]: [startDate, endDate] } },
           {
@@ -297,6 +298,7 @@ const validateEditBooking = [
               { endDate: { [Op.gte]: endDate } },
             ],
           },
+
         ],
       },
     });
