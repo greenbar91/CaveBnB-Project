@@ -202,11 +202,11 @@ const validateNewBooking = [
         spotId,
 
         [Op.or]: [
-          { endDate: { [Op.between]: [startDate, endDate] } },
+          { startDate: { [Op.between]: [startDate, endDate] } },
           {
             [Op.and]: [
-              { startDate: { [Op.lte]: startDate } },
-              { endDate: { [Op.gte]: startDate } },
+              { startDate: { [Op.lte]: endDate } },
+              { endDate: { [Op.gte]: endDate } },
             ],
           },
         ],
@@ -225,11 +225,11 @@ const validateNewBooking = [
         spotId,
 
         [Op.or]: [
-          { startDate: { [Op.between]: [startDate, endDate] } },
+          { endDate: { [Op.between]: [startDate, endDate] } },
           {
             [Op.and]: [
-              { startDate: { [Op.lte]: endDate } },
-              { endDate: { [Op.gte]: endDate } },
+              { startDate: { [Op.lte]: startDate } },
+              { endDate: { [Op.gte]: startDate } },
             ],
           },
         ],
@@ -342,5 +342,5 @@ module.exports = {
   validateSpotBody,
   validateReviewBody,
   validateEditBooking,
- 
+
 };

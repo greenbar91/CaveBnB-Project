@@ -1,11 +1,6 @@
 const express = require("express");
-const { Spot, Booking, SpotImage } = require("../../db/models");
+const { Spot,SpotImage } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
-const { formatAllDates } = require("../../utils/helper");
-const {
-  validationCheckDateErrors,
-  validateEditBooking,
-} = require("../../utils/validation");
 
 const router = express.Router();
 
@@ -14,14 +9,15 @@ router.delete("/:imageId", requireAuth, async (req, res) => {
 
   const findImageById = await SpotImage.findByPk(imageId);
 
-  const findSpotBySpotId = await Spot.findByPk(findImageById.spotId);
 
   if (!findImageById) {
-    return res.status(404).json({
-      message: "Spot Image couldn't be found",
-    });
-  }
+      return res.status(404).json({
+          message: "Spot Image couldn't be found",
+        });
+    }
 
+    const findSpotBySpotId = await Spot.findByPk(findImageById.spotId);
+    
   if (findSpotBySpotId.ownerId !== req.user.id) {
     return res.status(403).json({
       message: "Forbidden",
