@@ -200,13 +200,13 @@ const validateNewBooking = [
     const conflictBookings = await Booking.findOne({
       where: {
         spotId,
-        endDate: startDate,
+
         [Op.or]: [
-          { endDate: { [Op.between]: [startDate, endDate] } },
+          { startDate: { [Op.between]: [startDate, endDate] } },
           {
             [Op.and]: [
-              { startDate: { [Op.lte]: startDate } },
-              { endDate: { [Op.gte]: startDate } },
+              { startDate: { [Op.lte]: endDate } },
+              { endDate: { [Op.gte]: endDate } },
             ],
           },
         ],
@@ -223,13 +223,13 @@ const validateNewBooking = [
     const conflictBooking = await Booking.findOne({
       where: {
         spotId,
-        startDate: endDate,
+        
         [Op.or]: [
-          { startDate: { [Op.between]: [startDate, endDate] } },
+          { endDate: { [Op.between]: [startDate, endDate] } },
           {
             [Op.and]: [
-              { startDate: { [Op.lte]: endDate } },
-              { endDate: { [Op.gte]: endDate } },
+              { startDate: { [Op.lte]: startDate } },
+              { endDate: { [Op.gte]: startDate } },
             ],
           },
         ],
@@ -340,5 +340,5 @@ module.exports = {
   validateSpotBody,
   validateReviewBody,
   validateEditBooking,
- 
+
 };

@@ -49,9 +49,8 @@ router.get("/current", requireAuth, async (req, res) => {
     });
   }
 
-  if (currentUserSpots) {
     return res.status(200).json(currentUserSpots);
-  }
+
 });
 
 //Get details of a Spot from an id
@@ -62,7 +61,7 @@ router.get("/:spotId", async (req, res) => {
     include: [
       {
         model: SpotImage,
-        as: "SpotImages",
+
         attributes: ["id", "url", "preview"],
       },
       {
@@ -220,13 +219,13 @@ router.delete("/:spotId", requireAuth, async (req, res) => {
     });
   }
 
-  if (findSpotById) {
+
     await findSpotById.destroy();
 
     return res.status(200).json({
       message: "Successfully deleted",
     });
-  }
+
 });
 
 //Get all Reviews by a Spot's id
@@ -330,6 +329,7 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
 });
 
 //Create a Booking from a Spot based on the Spot's id
+//!Allows the user to post multiple bookings on the same date
 router.post(
   "/:spotId/bookings",
   validationCheckDateErrors,validateNewBooking,
