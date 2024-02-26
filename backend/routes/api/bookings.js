@@ -1,5 +1,5 @@
 const express = require("express");
-const { Spot, User, Review, ReviewImage, Booking } = require("../../db/models");
+const { Spot, Booking } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 const { formatAllDates } = require("../../utils/helper");
 const {
