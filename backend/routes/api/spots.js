@@ -9,16 +9,16 @@ const {
   Booking,
 } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
+const { formatAllDates } = require("../../utils/helper");
+
 const {
-
-  formatAllDates,
-} = require("../../utils/helper");
-
-const {validationCheckDateErrors,validateNewBooking ,validateSpotBody,validateReviewBody} = require("../../utils/validation");
-
+  validationCheckDateErrors,
+  validateNewBooking,
+  validateSpotBody,
+  validateReviewBody,
+} = require("../../utils/validation");
 
 const router = express.Router();
-
 
 //Get all Spots
 router.get("/", async (req, res) => {
@@ -49,8 +49,7 @@ router.get("/current", requireAuth, async (req, res) => {
     });
   }
 
-    return res.status(200).json(currentUserSpots);
-
+  return res.status(200).json(currentUserSpots);
 });
 
 //Get details of a Spot from an id
@@ -84,36 +83,24 @@ router.get("/:spotId", async (req, res) => {
 });
 
 //Create a Spot
-router.post(
-  "/",
-  validateSpotBody, async (req, res) => {
-    const {
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    } = req.body;
+router.post("/", validateSpotBody, async (req, res) => {
+  const { address, city, state, country, lat, lng, name, description, price } =
+    req.body;
 
-    const newSpot = await Spot.create({
-      ownerId: req.user.id,
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    });
-    return res.status(201).json(newSpot);
-  }
-);
+  const newSpot = await Spot.create({
+    ownerId: req.user.id,
+    address,
+    city,
+    state,
+    country,
+    lat,
+    lng,
+    name,
+    description,
+    price,
+  });
+  return res.status(201).json(newSpot);
+});
 
 //Add an Image to a Spot based on the Spot's id
 router.post("/:spotId/images", requireAuth, async (req, res) => {
@@ -154,52 +141,39 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
 });
 
 //Edit a Spot
-router.put(
-  "/:spotId",
-  validateSpotBody, requireAuth,
-  async (req, res) => {
-    const { spotId } = req.params;
-    const {
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    } = req.body;
+router.put("/:spotId", validateSpotBody, requireAuth, async (req, res) => {
+  const { spotId } = req.params;
+  const { address, city, state, country, lat, lng, name, description, price } =
+    req.body;
 
-    const findSpotById = await Spot.findByPk(spotId);
+  const findSpotById = await Spot.findByPk(spotId);
 
-    if (!findSpotById) {
-      return res.status(404).json({
-        message: "Spot couldn't be found",
-      });
-    }
-
-    if (findSpotById.ownerId !== req.user.id) {
-      return res.status(403).json({
-        message: "Forbidden",
-      });
-    }
-
-    const spotToUpdate = await findSpotById.update({
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
+  if (!findSpotById) {
+    return res.status(404).json({
+      message: "Spot couldn't be found",
     });
-
-    return res.status(200).json(spotToUpdate);
   }
-);
+
+  if (findSpotById.ownerId !== req.user.id) {
+    return res.status(403).json({
+      message: "Forbidden",
+    });
+  }
+
+  const spotToUpdate = await findSpotById.update({
+    address,
+    city,
+    state,
+    country,
+    lat,
+    lng,
+    name,
+    description,
+    price,
+  });
+
+  return res.status(200).json(spotToUpdate);
+});
 
 //Delete a Spot
 router.delete("/:spotId", requireAuth, async (req, res) => {
@@ -219,13 +193,11 @@ router.delete("/:spotId", requireAuth, async (req, res) => {
     });
   }
 
+  await findSpotById.destroy();
 
-    await findSpotById.destroy();
-
-    return res.status(200).json({
-      message: "Successfully deleted",
-    });
-
+  return res.status(200).json({
+    message: "Successfully deleted",
+  });
 });
 
 //Get all Reviews by a Spot's id
@@ -256,7 +228,8 @@ router.get("/:spotId/reviews", async (req, res) => {
 //Create a Review for a Spot based on the Spot's id
 router.post(
   "/:spotId/reviews",
-  validateReviewBody, requireAuth,
+  validateReviewBody,
+  requireAuth,
   async (req, res) => {
     const { spotId } = req.params;
     const { review, stars } = req.body;
@@ -289,7 +262,7 @@ router.post(
       stars,
     });
 
-    formatAllDates(newReview)
+    formatAllDates(newReview);
 
     return res.status(201).json(newReview);
   }
@@ -329,10 +302,11 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
 });
 
 //Create a Booking from a Spot based on the Spot's id
-//!Allows the user to post multiple bookings on the same date
+//!ERROR - Create a Booking - Start Date On Existing End Date, still gives successful booking
 router.post(
   "/:spotId/bookings",
-  validationCheckDateErrors,validateNewBooking,
+  validationCheckDateErrors,
+  validateNewBooking,
   requireAuth,
   async (req, res) => {
     const { spotId } = req.params;

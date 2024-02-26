@@ -74,7 +74,8 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
 //Edit a Review
 router.put(
   "/:reviewId",
-  validateReviewBody, requireAuth,
+  requireAuth,
+  validateReviewBody,
   async (req, res) => {
     const { reviewId } = req.params;
     const { review, stars } = req.body;
@@ -85,6 +86,12 @@ router.put(
       return res.status(404).json({
         message: "Review couldn't be found",
       });
+    }
+
+    if(findReviewById.userId !== req.user.id){
+      return res.status(403).json({
+        message:"Forbidden"
+      })
     }
 
     const updatedReview = await findReviewById.update({

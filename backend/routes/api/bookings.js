@@ -24,6 +24,7 @@ router.get("/current", requireAuth, async (req, res) => {
 });
 
 //Edit a Booking
+//!ERROR - Edit a Booking - Start Date On Existing End Date, still lets you
 router.put(
   "/:bookingId",
   requireAuth,
@@ -47,9 +48,9 @@ router.put(
       });
     }
 
-    if (findBookingById.endDate < new Date()) {
+    if (findBookingById.ownerId !== req.user.id) {
       return res.status(403).json({
-        message: "Past bookings can't be modified",
+        message: "Forbidden",
       });
     }
 

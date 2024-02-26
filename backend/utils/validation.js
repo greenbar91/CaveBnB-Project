@@ -263,7 +263,9 @@ const validateEditBooking = [
     const endDate = req.body.endDate;
     const { bookingId } = req.params;
     const findBookingById = await Booking.findByPk(bookingId);
-
+    if(!findBookingById){
+      return true
+    }
     const conflictBookings = await Booking.findOne({
       where: {
         spotId: findBookingById.spotId,
@@ -291,6 +293,9 @@ const validateEditBooking = [
     const startDate = req.body.startDate;
     const { bookingId } = req.params;
     const findBookingById = await Booking.findByPk(bookingId);
+    if(!findBookingById){
+      return true
+    }
 
     const conflictBooking = await Booking.findOne({
       where: {
