@@ -63,7 +63,7 @@ router.get("/?", async (req, res) => {
   }
 
   const filteredSpots = await Spot.findAll({
-    where: { queryFilter },
+    where: queryFilter ,
     limit: size,
     offset: size * (page - 1),
   });
