@@ -209,6 +209,12 @@ const validateNewBooking = [
               { endDate: { [Op.gte]: endDate } },
             ],
           },
+          {
+            [Op.and]: [
+              { startDate: { [Op.lte]: startDate } },
+              { endDate: { [Op.gte]: endDate } },
+            ],
+          },
         ],
       },
     });
@@ -230,6 +236,12 @@ const validateNewBooking = [
             [Op.and]: [
               { startDate: { [Op.lte]: startDate } },
               { endDate: { [Op.gte]: startDate } },
+            ],
+          },
+          {
+            [Op.and]: [
+              { startDate: { [Op.lte]: startDate } },
+              { endDate: { [Op.gte]: endDate } },
             ],
           },
         ],
