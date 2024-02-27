@@ -96,6 +96,9 @@ const validateSignup = [
   },
 ];
 
+
+
+
 const validateSpotBody = [
   check("address")
     .exists({ checkFalsy: true })

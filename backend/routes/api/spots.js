@@ -23,9 +23,9 @@ const router = express.Router();
 
 //Add Query Filters to Get All Spots
 router.get("/?", async (req, res) => {
-  const {
-    page = 1,
-    size = 20,
+  let {
+    page ,
+    size ,
     minLat,
     maxLat,
     minLng,
@@ -34,38 +34,44 @@ router.get("/?", async (req, res) => {
     maxPrice,
   } = req.query;
 
+  if(page === ''){
+    page = 1
+  }
+  if(size === ''){
+    size = 20
+  }
   const queryFilter = {};
 
   if (minLat && maxLat) {
-    queryFilter.lat = { [Op.between]: [minLat, maxLat] };
+    queryFilter.lat = { [Op.between]: [parseFloat(minLat), parseFloat(maxLat)] };
   } else if (minLat && !maxLat) {
-    queryFilter.lat = { [Op.gte]: minLat };
+    queryFilter.lat = { [Op.gte]: parseFloat(minLat) };
   } else if (maxLat && !minLat) {
-    queryFilter.lat = { [Op.lte]: maxLat };
+    queryFilter.lat = { [Op.lte]: parseFloat(maxLat) };
   }
 
-  console.log("queryFIlter\n\n", queryFilter)
+
 
   if (minLng && maxLng) {
-    queryFilter.lng = { [Op.between]: [minLng, maxLng] };
+    queryFilter.lng = { [Op.between]: [parseFloat(minLng), parseFloat(maxLng)] };
   } else if (minLng && !maxLng) {
-    queryFilter.lng = { [Op.gte]: minLng };
+    queryFilter.lng = { [Op.gte]: parseFloat(minLng) };
   } else if (maxLng && !minLng) {
-    queryFilter.lng = { [Op.lte]: maxLng };
+    queryFilter.lng = { [Op.lte]: parseFloat(maxLng) };
   }
 
   if (minPrice && maxPrice) {
-    queryFilter.price = { [Op.between]: [minPrice, maxPrice] };
+    queryFilter.price = { [Op.between]: [parseFloat(minPrice), parseFloat(maxPrice)] };
   } else if (minPrice && !maxPrice) {
-    queryFilter.price = { [Op.gte]: minPrice };
+    queryFilter.price = { [Op.gte]: parseFloat(minPrice) };
   } else if (maxPrice && !minPrice) {
-    queryFilter.price = { [Op.lte]: maxPrice };
+    queryFilter.price = { [Op.lte]: parseFloat(maxPrice) };
   }
 
   const filteredSpots = await Spot.findAll({
     where: queryFilter ,
-    limit: size,
-    offset: size * (page - 1),
+    limit: Number(size),
+    offset: Number(size) * (Number(page) - 1),
   });
 
   return res
