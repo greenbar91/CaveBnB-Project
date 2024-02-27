@@ -10,6 +10,7 @@ const {
 } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 const { formatAllDates } = require("../../utils/helper");
+const {Op} = require("sequelize");
 
 const {
   validationCheckDateErrors,
@@ -19,6 +20,59 @@ const {
 } = require("../../utils/validation");
 
 const router = express.Router();
+
+//Add Query Filters to Get All Spots
+router.get("/?", async (req, res) => {
+  const {
+    page = 1,
+    size = 20,
+    minLat,
+    maxLat,
+    minLng,
+    maxLng,
+    minPrice,
+    maxPrice,
+  } = req.query;
+
+  const queryFilter = {};
+
+  if (minLat && maxLat) {
+    queryFilter.lat = { [Op.between]: [minLat, maxLat] };
+  } else if (minLat && !maxLat) {
+    queryFilter.lat = { [Op.gte]: minLat };
+  } else if (maxLat && !minLat) {
+    queryFilter.lat = { [Op.lte]: maxLat };
+  }
+
+  console.log("queryFIlter\n\n", queryFilter)
+
+  if (minLng && maxLng) {
+    queryFilter.lng = { [Op.between]: [minLng, maxLng] };
+  } else if (minLng && !maxLng) {
+    queryFilter.lng = { [Op.gte]: minLng };
+  } else if (maxLng && !minLng) {
+    queryFilter.lng = { [Op.lte]: maxLng };
+  }
+
+  if (minPrice && maxPrice) {
+    queryFilter.price = { [Op.between]: [minPrice, maxPrice] };
+  } else if (minPrice && !maxPrice) {
+    queryFilter.price = { [Op.gte]: minPrice };
+  } else if (maxPrice && !minPrice) {
+    queryFilter.price = { [Op.lte]: maxPrice };
+  }
+
+  const filteredSpots = await Spot.findAll({
+    where: { queryFilter },
+    limit: size,
+    offset: size * (page - 1),
+  });
+
+  return res
+    .status(200)
+    .json({ Spots: filteredSpots, page: Number(page), size: filteredSpots.length });
+});
+
 
 //Get all Spots
 router.get("/", async (req, res) => {
@@ -338,5 +392,7 @@ router.post(
     return res.status(200).json(newBooking);
   }
 );
+
+
 
 module.exports = router;
