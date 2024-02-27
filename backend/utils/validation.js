@@ -96,7 +96,55 @@ const validateSignup = [
   },
 ];
 
+const validateSpotQueryFilters = [
+  check("page")
+  .optional({ checkFalsy: true })
+  .isInt({min:1})
+  .withMessage("Page must be greater than or equal to 1"),
+  check("size")
+  .optional({ checkFalsy: true })
+  .isInt({min:1})
+  .withMessage("Size must be greater than or equal to 1"),
+  check("maxLat")
+  .optional({ checkFalsy: true })
+  .isFloat({max:90})
+  .withMessage("Maximum latitude is invalid"),
+  check("minLat")
+  .optional({ checkFalsy: true })
+  .isFloat({min:-90})
+  .withMessage("Minimum latitude is invalid"),
+  check("minLng")
+  .optional({ checkFalsy: true })
+  .isFloat({min:-180})
+  .withMessage("Maximum longitude is invalid"),
+  check("maxLng")
+  .optional({ checkFalsy: true })
+  .isFloat({max:180})
+  .withMessage("Minimum longitude is invalid"),
+  check("minPrice")
+  .optional({ checkFalsy: true })
+  .isInt({min:0})
+  .withMessage("Minimum price must be greater than or equal to 0"),
+  check("maxPrice")
+  .optional({ checkFalsy: true })
+  .isInt({min:0})
+  .withMessage("Maximum price must be greater than or equal to 0"),
+  (req, _res, next) => {
+    const validationErrors = validationResult(req);
 
+    if (!validationErrors.isEmpty()) {
+      const errors = {};
+      validationErrors
+        .array()
+        .forEach((error) => (errors[error.path] = error.msg));
+      let err = Error("Bad request");
+      err.errors = errors;
+      err.status = 400;
+      next(err);
+    }
+    next();
+  },
+]
 
 
 const validateSpotBody = [
@@ -362,5 +410,5 @@ module.exports = {
   validateSpotBody,
   validateReviewBody,
   validateEditBooking,
-
+  validateSpotQueryFilters
 };

@@ -10,50 +10,48 @@ const {
 } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 const { formatAllDates } = require("../../utils/helper");
-const {Op} = require("sequelize");
+const { Op } = require("sequelize");
 
 const {
   validationCheckDateErrors,
   validateNewBooking,
   validateSpotBody,
   validateReviewBody,
+  validateSpotQueryFilters,
 } = require("../../utils/validation");
 
 const router = express.Router();
 
 //Add Query Filters to Get All Spots
-router.get("/?", async (req, res) => {
-  let {
-    page ,
-    size ,
-    minLat,
-    maxLat,
-    minLng,
-    maxLng,
-    minPrice,
-    maxPrice,
-  } = req.query;
+router.get("/?", validateSpotQueryFilters, async (req, res) => {
+  let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
+    req.query;
 
-  if(page === ''){
-    page = 1
+  if (page === "") {
+    page = 1;
   }
-  if(size === ''){
-    size = 20
+  if (page > 10) {
+    page = 10;
+  }
+  if (size === "" || size > 20) {
+    size = 20;
   }
   const queryFilter = {};
 
   if (minLat && maxLat) {
-    queryFilter.lat = { [Op.between]: [parseFloat(minLat), parseFloat(maxLat)] };
+    queryFilter.lat = {
+      [Op.between]: [parseFloat(minLat), parseFloat(maxLat)],
+    };
   } else if (minLat && !maxLat) {
     queryFilter.lat = { [Op.gte]: parseFloat(minLat) };
   } else if (maxLat && !minLat) {
     queryFilter.lat = { [Op.lte]: parseFloat(maxLat) };
   }
 
-
-
   if (minLng && maxLng) {
-    queryFilter.lng = { [Op.between]: [parseFloat(minLng), parseFloat(maxLng)] };
+    queryFilter.lng = {
+      [Op.between]: [parseFloat(minLng), parseFloat(maxLng)],
+    };
   } else if (minLng && !maxLng) {
     queryFilter.lng = { [Op.gte]: parseFloat(minLng) };
   } else if (maxLng && !minLng) {
@@ -61,7 +59,9 @@ router.get("/?", async (req, res) => {
   }
 
   if (minPrice && maxPrice) {
-    queryFilter.price = { [Op.between]: [parseFloat(minPrice), parseFloat(maxPrice)] };
+    queryFilter.price = {
+      [Op.between]: [parseFloat(minPrice), parseFloat(maxPrice)],
+    };
   } else if (minPrice && !maxPrice) {
     queryFilter.price = { [Op.gte]: parseFloat(minPrice) };
   } else if (maxPrice && !minPrice) {
@@ -69,16 +69,15 @@ router.get("/?", async (req, res) => {
   }
 
   const filteredSpots = await Spot.findAll({
-    where: queryFilter ,
-    limit: Number(size),
-    offset: Number(size) * (Number(page) - 1),
+    where: queryFilter,
+    limit: size,
+    offset: size * (page - 1),
   });
 
   return res
     .status(200)
-    .json({ Spots: filteredSpots, page: Number(page), size: filteredSpots.length });
+    .json({ Spots: filteredSpots, page: page, size: filteredSpots.length });
 });
-
 
 //Get all Spots
 router.get("/", async (req, res) => {
@@ -398,7 +397,5 @@ router.post(
     return res.status(200).json(newBooking);
   }
 );
-
-
 
 module.exports = router;
