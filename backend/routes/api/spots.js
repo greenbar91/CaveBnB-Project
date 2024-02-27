@@ -22,18 +22,38 @@ const {
 
 const router = express.Router();
 
+//Get all Spots
+// router.get("/", async (req, res) => {
+//   const allSpots = await Spot.findAll();
+
+//   if (!allSpots) {
+//     return res.status(200).json({
+//       message: "No spots currently listed",
+//     });
+//   }
+
+//     formatAllDates(allSpots)
+
+//     return res.status(200).json(allSpots);
+
+// });
+
 //Add Query Filters to Get All Spots
+//!Need to add avgRating and previewImage
 router.get("/?", validateSpotQueryFilters, async (req, res) => {
   let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
     req.query;
 
-  if (page === "") {
+  page = Number(page);
+  size = Number(size);
+
+  if (page === "" || isNaN(page) ) {
     page = 1;
   }
   if (page > 10) {
     page = 10;
   }
-  if (size === "" || size > 20) {
+  if (size === "" || size > 20 || isNaN(size)) {
     size = 20;
   }
   const queryFilter = {};
@@ -74,27 +94,22 @@ router.get("/?", validateSpotQueryFilters, async (req, res) => {
     offset: size * (page - 1),
   });
 
-  return res
-    .status(200)
-    .json({ Spots: filteredSpots, page: page, size: filteredSpots.length });
-});
-
-//Get all Spots
-router.get("/", async (req, res) => {
-  const allSpots = await Spot.findAll();
-
-  if (!allSpots) {
+  if (!filteredSpots) {
     return res.status(200).json({
       message: "No spots currently listed",
     });
   }
 
-  if (allSpots) {
-    return res.status(200).json(allSpots);
-  }
+  formatAllDates(filteredSpots)
+
+  return res
+    .status(200)
+    .json({ Spots: filteredSpots, page: page, size: filteredSpots.length });
 });
 
+
 //Get all Spots owned by the Current User
+//!Need to add avgRating and previewImage
 router.get("/current", requireAuth, async (req, res) => {
   const currentUserSpots = await Spot.findAll({
     where: {
@@ -107,6 +122,8 @@ router.get("/current", requireAuth, async (req, res) => {
       message: "You don't have any spots listed",
     });
   }
+
+  formatAllDates(currentUserSpots)
 
   return res.status(200).json(currentUserSpots);
 });
@@ -136,9 +153,9 @@ router.get("/:spotId", async (req, res) => {
     });
   }
 
-  if (specifiedSpot) {
+    formatAllDates(specifiedSpot)
     return res.status(200).json(specifiedSpot);
-  }
+
 });
 
 //Create a Spot
@@ -158,6 +175,10 @@ router.post("/", validateSpotBody, async (req, res) => {
     description,
     price,
   });
+
+    formatAllDates(newSpot)
+
+
   return res.status(201).json(newSpot);
 });
 
@@ -231,6 +252,7 @@ router.put("/:spotId", validateSpotBody, requireAuth, async (req, res) => {
     price,
   });
 
+  formatAllDates(spotToUpdate)
   return res.status(200).json(spotToUpdate);
 });
 
@@ -280,7 +302,7 @@ router.get("/:spotId/reviews", async (req, res) => {
       },
     ],
   });
-
+  formatAllDates(findReviewBySpotId)
   return res.status(200).json({ Reviews: findReviewBySpotId });
 });
 
