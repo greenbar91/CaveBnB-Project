@@ -98,37 +98,37 @@ const validateSignup = [
 
 const validateSpotQueryFilters = [
   check("page")
-  .optional({ checkFalsy: true })
-  .isInt({min:1})
-  .withMessage("Page must be greater than or equal to 1"),
+    .optional({ checkFalsy: true })
+    .isInt({ min: 1 })
+    .withMessage("Page must be greater than or equal to 1"),
   check("size")
-  .optional({ checkFalsy: true })
-  .isInt({min:1})
-  .withMessage("Size must be greater than or equal to 1"),
+    .optional({ checkFalsy: true })
+    .isInt({ min: 1 })
+    .withMessage("Size must be greater than or equal to 1"),
   check("maxLat")
-  .optional({ checkFalsy: true })
-  .isFloat({max:90})
-  .withMessage("Maximum latitude is invalid"),
+    .optional({ checkFalsy: true })
+    .isFloat({ max: 90 })
+    .withMessage("Maximum latitude is invalid"),
   check("minLat")
-  .optional({ checkFalsy: true })
-  .isFloat({min:-90})
-  .withMessage("Minimum latitude is invalid"),
+    .optional({ checkFalsy: true })
+    .isFloat({ min: -90 })
+    .withMessage("Minimum latitude is invalid"),
   check("minLng")
-  .optional({ checkFalsy: true })
-  .isFloat({min:-180})
-  .withMessage("Maximum longitude is invalid"),
+    .optional({ checkFalsy: true })
+    .isFloat({ min: -180 })
+    .withMessage("Maximum longitude is invalid"),
   check("maxLng")
-  .optional({ checkFalsy: true })
-  .isFloat({max:180})
-  .withMessage("Minimum longitude is invalid"),
+    .optional({ checkFalsy: true })
+    .isFloat({ max: 180 })
+    .withMessage("Minimum longitude is invalid"),
   check("minPrice")
-  .optional({ checkFalsy: true })
-  .isInt({min:0})
-  .withMessage("Minimum price must be greater than or equal to 0"),
+    .optional({ checkFalsy: true })
+    .isInt({ min: 0 })
+    .withMessage("Minimum price must be greater than or equal to 0"),
   check("maxPrice")
-  .optional({ checkFalsy: true })
-  .isInt({min:0})
-  .withMessage("Maximum price must be greater than or equal to 0"),
+    .optional({ checkFalsy: true })
+    .isInt({ min: 0 })
+    .withMessage("Maximum price must be greater than or equal to 0"),
   (req, _res, next) => {
     const validationErrors = validationResult(req);
 
@@ -144,8 +144,7 @@ const validateSpotQueryFilters = [
     }
     next();
   },
-]
-
+];
 
 const validateSpotBody = [
   check("address")
@@ -212,7 +211,6 @@ const validateReviewBody = [
   },
 ];
 
-
 const validationCheckDateErrors = [
   check("startDate").isAfter().withMessage("startDate cannot be in the past"),
   check("endDate").custom((dateValue, { req }) => {
@@ -234,15 +232,13 @@ const validationCheckDateErrors = [
       err.status = 400;
       return res.status(400).json({
         message: "Bad request",
-        errors: errors
+        errors: errors,
       });
     }
 
     next();
   },
 ];
-
-
 
 const validateNewBooking = [
   check("startDate").custom(async (startDate, { req }) => {
@@ -253,19 +249,25 @@ const validateNewBooking = [
         spotId,
 
         [Op.or]: [
+          //Within
           { startDate: { [Op.between]: [startDate, endDate] } },
           {
             [Op.and]: [
-              { startDate: { [Op.lte]: endDate } },
-              { endDate: { [Op.gte]: endDate } },
+              //startDate in conflict, endDate not in conflict
+              { startDate: { [Op.lt]: endDate } },
+
+              { endDate: { [Op.gt]: endDate } },
             ],
           },
           {
             [Op.and]: [
-              { startDate: { [Op.lte]: startDate } },
-              { endDate: { [Op.gte]: endDate } },
+              //Surrounding
+              { startDate: { [Op.lt]: startDate } },
+              { endDate: { [Op.gt]: endDate } },
             ],
           },
+          //Same day conflict
+          // {startDate:startDate}
         ],
       },
     });
@@ -282,19 +284,25 @@ const validateNewBooking = [
         spotId,
 
         [Op.or]: [
+          //Within
           { endDate: { [Op.between]: [startDate, endDate] } },
           {
             [Op.and]: [
-              { startDate: { [Op.lte]: startDate } },
-              { endDate: { [Op.gte]: startDate } },
+              //endDate in conflict, startDate not in conflict
+              { startDate: { [Op.lt]: startDate } },
+
+              { endDate: { [Op.lt]: endDate } },
             ],
           },
           {
             [Op.and]: [
-              { startDate: { [Op.lte]: startDate } },
-              { endDate: { [Op.gte]: endDate } },
+              //Surrounding
+              { startDate: { [Op.lt]: startDate } },
+              { endDate: { [Op.gt]: endDate } },
             ],
           },
+          //Same day conflict
+          // {endDate:endDate}
         ],
       },
     });
@@ -326,24 +334,34 @@ const validateEditBooking = [
     const endDate = req.body.endDate;
     const { bookingId } = req.params;
     const findBookingById = await Booking.findByPk(bookingId);
-    if(!findBookingById){
-      return true
+    if (!findBookingById) {
+      return true;
     }
     const conflictBookings = await Booking.findOne({
       where: {
         spotId: findBookingById.spotId,
         id: { [Op.ne]: bookingId },
 
-
         [Op.or]: [
-          { endDate: { [Op.between]: [startDate, endDate] } },
+          //Within
+          { startDate: { [Op.between]: [startDate, endDate] } },
           {
             [Op.and]: [
-              { startDate: { [Op.lte]: startDate } },
-              { endDate: { [Op.gte]: startDate } },
+              //startDate in conflict, endDate not in conflict
+              { startDate: { [Op.lte]: endDate } },
+
+              { endDate: { [Op.gte]: endDate } },
             ],
           },
-
+          {
+            [Op.and]: [
+              //Surrounding
+              { startDate: { [Op.lt]: startDate } },
+              { endDate: { [Op.gt]: endDate } },
+            ],
+          },
+          //Same day conflict
+          // {startDate:startDate}
         ],
       },
     });
@@ -356,8 +374,8 @@ const validateEditBooking = [
     const startDate = req.body.startDate;
     const { bookingId } = req.params;
     const findBookingById = await Booking.findByPk(bookingId);
-    if(!findBookingById){
-      return true
+    if (!findBookingById) {
+      return true;
     }
 
     const conflictBooking = await Booking.findOne({
@@ -367,14 +385,25 @@ const validateEditBooking = [
         id: { [Op.ne]: bookingId },
 
         [Op.or]: [
-          { startDate: { [Op.between]: [startDate, endDate] } },
+          //Within
+          { endDate: { [Op.between]: [startDate, endDate] } },
           {
             [Op.and]: [
-              { startDate: { [Op.lte]: endDate } },
-              { endDate: { [Op.gte]: endDate } },
+              //endDate in conflict, startDate not in conflict
+              { startDate: { [Op.lte]: startDate } },
+
+              { endDate: { [Op.lte]: endDate } },
             ],
           },
-
+          {
+            [Op.and]: [
+              //Surrounding
+              { startDate: { [Op.lt]: startDate } },
+              { endDate: { [Op.gt]: endDate } },
+            ],
+          },
+          //Same day conflict
+          // {endDate:endDate}
         ],
       },
     });
@@ -410,5 +439,5 @@ module.exports = {
   validateSpotBody,
   validateReviewBody,
   validateEditBooking,
-  validateSpotQueryFilters
+  validateSpotQueryFilters,
 };

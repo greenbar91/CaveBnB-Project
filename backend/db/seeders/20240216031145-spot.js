@@ -24,7 +24,7 @@ module.exports = {
           description: "Place where web developers are created",
           price: 123,
           avgRating: 4.5,
-          previewImage: "image url",
+          previewImage: "image url1",
         },
         {
           id: 2,
@@ -39,7 +39,7 @@ module.exports = {
           description: "It's Times Square baby!",
           price: 999,
           avgRating: 4.6,
-          previewImage: "image url",
+          previewImage: "image url2",
         },
         {
           id: 3,
@@ -54,7 +54,7 @@ module.exports = {
           description: "Puttin' on the Ritz!",
           price: 500,
           avgRating: 4.7,
-          previewImage: "image url",
+          previewImage: "image url3",
         },
       ],
       { validate: true }

@@ -54,6 +54,10 @@ module.exports = (sequelize, DataTypes) => {
           min: 1,
         },
       },
+      previewImage:{
+        type: DataTypes.STRING,
+        allowNull: false,
+      }
     },
     {
       sequelize,

@@ -15,7 +15,8 @@ router.get("/current", requireAuth, async (req, res) => {
     where: {
       userId: req.user.id,
     },
-    include: [{ model: Spot }],
+    include: [{ model: Spot , attributes:['id','ownerId','address','city','state','country',
+    'lat','lng','name','price', "previewImage"]}],
   });
 
   formatAllDates(currentUserBookings);
