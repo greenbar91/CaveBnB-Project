@@ -268,10 +268,11 @@ const validateNewBooking = [
           },
           //Same day conflict
 
-          {endDate:startDate}
+          {endDate:{[Op.eq]:new Date(startDate)}}
         ],
       },
     });
+    console.log(conflictBookings)
     if (conflictBookings) {
       throw new Error("Start date conflicts with an existing booking");
     }
@@ -363,7 +364,7 @@ const validateEditBooking = [
             ],
           },
           //Same day conflict
-          {endDate:startDate}
+          {endDate:{[Op.eq]:new Date(startDate)}}
         ],
       },
     });

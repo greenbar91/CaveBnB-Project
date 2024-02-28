@@ -159,7 +159,7 @@ router.get("/:spotId", async (req, res) => {
 });
 
 //Create a Spot
-router.post("/", validateSpotBody, async (req, res) => {
+router.post("/",requireAuth, validateSpotBody, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } =
     req.body;
 
