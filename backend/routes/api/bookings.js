@@ -49,7 +49,7 @@ router.put(
       });
     }
 
-    if (findBookingById.ownerId !== req.user.id) {
+    if (findBookingById.userId !== req.user.id) {
       return res.status(403).json({
         message: "Forbidden",
       });

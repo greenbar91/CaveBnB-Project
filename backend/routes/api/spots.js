@@ -221,7 +221,7 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
 });
 
 //Edit a Spot
-router.put("/:spotId", validateSpotBody, requireAuth, async (req, res) => {
+router.put("/:spotId", requireAuth, validateSpotBody, async (req, res) => {
   const { spotId } = req.params;
   const { address, city, state, country, lat, lng, name, description, price } =
     req.body;
@@ -309,8 +309,8 @@ router.get("/:spotId/reviews", async (req, res) => {
 //Create a Review for a Spot based on the Spot's id
 router.post(
   "/:spotId/reviews",
-  validateReviewBody,
   requireAuth,
+  validateReviewBody,
   async (req, res) => {
     const { spotId } = req.params;
     const { review, stars } = req.body;
@@ -386,9 +386,9 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
 //!ERROR - Create a Booking - Start Date On Existing End Date, still gives successful booking
 router.post(
   "/:spotId/bookings",
+  requireAuth,
   validationCheckDateErrors,
   validateNewBooking,
-  requireAuth,
   async (req, res) => {
     const { spotId } = req.params;
     const { startDate, endDate } = req.body;

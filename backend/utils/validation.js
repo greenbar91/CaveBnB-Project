@@ -246,28 +246,29 @@ const validateNewBooking = [
     const { spotId } = req.params;
     const conflictBookings = await Booking.findOne({
       where: {
-        spotId,
+        spotId:spotId,
 
         [Op.or]: [
           //Within
-          { startDate: { [Op.between]: [startDate, endDate] } },
+          { endDate: { [Op.between]: [startDate, endDate] } },
           {
             [Op.and]: [
-              //startDate in conflict, endDate not in conflict
-              { startDate: { [Op.lt]: endDate } },
+            //startDate in conflict, endDate not in conflict
+              { startDate: { [Op.lte]: startDate } },
 
-              { endDate: { [Op.gt]: endDate } },
+              {endDate:{[Op.gte]:startDate}}
             ],
           },
           {
             [Op.and]: [
               //Surrounding
-              { startDate: { [Op.lt]: startDate } },
-              { endDate: { [Op.gt]: endDate } },
+              { startDate: { [Op.lte]: startDate } },
+              { endDate: { [Op.gte]: endDate } },
             ],
           },
           //Same day conflict
-          // {startDate:startDate}
+
+          {endDate:startDate}
         ],
       },
     });
@@ -281,29 +282,30 @@ const validateNewBooking = [
     const { spotId } = req.params;
     const conflictBooking = await Booking.findOne({
       where: {
-        spotId,
-
+        spotId:spotId,
         [Op.or]: [
           //Within
-          { endDate: { [Op.between]: [startDate, endDate] } },
+          { startDate: { [Op.between]: [startDate, endDate] } },
           {
             [Op.and]: [
               //endDate in conflict, startDate not in conflict
-              { startDate: { [Op.lt]: startDate } },
 
-              { endDate: { [Op.lt]: endDate } },
+              { startDate: { [Op.lte]: endDate } },
+
+              { endDate: { [Op.gte]: endDate } },
             ],
           },
           {
             [Op.and]: [
               //Surrounding
-              { startDate: { [Op.lt]: startDate } },
-              { endDate: { [Op.gt]: endDate } },
+              { startDate: { [Op.lte]: startDate } },
+              { endDate: { [Op.gte]: endDate } },
             ],
           },
           //Same day conflict
-          // {endDate:endDate}
+          {startDate:startDate}
         ],
+
       },
     });
     if (conflictBooking) {
@@ -344,24 +346,24 @@ const validateEditBooking = [
 
         [Op.or]: [
           //Within
-          { startDate: { [Op.between]: [startDate, endDate] } },
+          { endDate: { [Op.between]: [startDate, endDate] } },
           {
             [Op.and]: [
-              //startDate in conflict, endDate not in conflict
-              { startDate: { [Op.lte]: endDate } },
+            //startDate in conflict, endDate not in conflict
+              { startDate: { [Op.lte]: startDate } },
 
-              { endDate: { [Op.gte]: endDate } },
+              {endDate:{[Op.gte]:startDate}}
             ],
           },
           {
             [Op.and]: [
               //Surrounding
-              { startDate: { [Op.lt]: startDate } },
-              { endDate: { [Op.gt]: endDate } },
+              { startDate: { [Op.lte]: startDate } },
+              { endDate: { [Op.gte]: endDate } },
             ],
           },
           //Same day conflict
-          // {startDate:startDate}
+          {endDate:startDate}
         ],
       },
     });
@@ -386,24 +388,25 @@ const validateEditBooking = [
 
         [Op.or]: [
           //Within
-          { endDate: { [Op.between]: [startDate, endDate] } },
+          { startDate: { [Op.between]: [startDate, endDate] } },
           {
             [Op.and]: [
               //endDate in conflict, startDate not in conflict
-              { startDate: { [Op.lte]: startDate } },
 
-              { endDate: { [Op.lte]: endDate } },
+              { startDate: { [Op.lte]: endDate } },
+
+              { endDate: { [Op.gte]: endDate } },
             ],
           },
           {
             [Op.and]: [
               //Surrounding
-              { startDate: { [Op.lt]: startDate } },
-              { endDate: { [Op.gt]: endDate } },
+              { startDate: { [Op.lte]: startDate } },
+              { endDate: { [Op.gte]: endDate } },
             ],
           },
           //Same day conflict
-          // {endDate:endDate}
+          {startDate:startDate}
         ],
       },
     });
