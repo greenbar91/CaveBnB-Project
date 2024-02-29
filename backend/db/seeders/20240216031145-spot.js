@@ -12,7 +12,6 @@ module.exports = {
     await Spot.bulkCreate(
       [
         {
-
           ownerId: 1,
           address: "123 Disney Lane",
           city: "San Francisco",
@@ -23,26 +22,20 @@ module.exports = {
           name: "App Academy",
           description: "Place where web developers are created",
           price: 123,
-
-
         },
         {
-
           ownerId: 2,
           address: "987 Times Square",
           city: "New York City",
           state: "New York",
           country: "United States of America",
           lat: 40.758896,
-          lng: -73.985130,
+          lng: -73.98513,
           name: "Times Square Penthouse",
           description: "It's Times Square baby!",
           price: 999,
-
-
         },
         {
-
           ownerId: 3,
           address: " 2820 Industrial Dr",
           city: "Raleigh",
@@ -53,8 +46,6 @@ module.exports = {
           name: "The Ritz",
           description: "Puttin' on the Ritz!",
           price: 500,
-          
-
         },
       ],
       { validate: true }

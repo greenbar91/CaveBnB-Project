@@ -49,4 +49,4 @@ const formatAllDates = async (bookings) => {
   }
 };
 
-module.exports = {  formatAllDates };
+module.exports = { formatAllDates };

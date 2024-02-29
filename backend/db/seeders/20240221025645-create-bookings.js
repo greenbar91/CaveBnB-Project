@@ -11,10 +11,8 @@ module.exports = {
     await Booking.bulkCreate(
       [
         {
-
           spotId: 1,
           Spot: {
-
             ownerId: 1,
             address: "123 Disney Lane",
             city: "San Francisco",
@@ -31,10 +29,8 @@ module.exports = {
           endDate: "2025-02-24",
         },
         {
-
           spotId: 3,
           Spot: {
-
             ownerId: 3,
             address: " 2820 Industrial Dr",
             city: "Raleigh",
@@ -52,10 +48,8 @@ module.exports = {
           endDate: "2025-02-28",
         },
         {
-
           spotId: 2,
           Spot: {
-          
             ownerId: 2,
             address: "987 Times Square",
             city: "New York City",

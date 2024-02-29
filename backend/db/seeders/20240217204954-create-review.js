@@ -12,7 +12,6 @@ module.exports = {
     await Review.bulkCreate(
       [
         {
-
           userId: 1,
           spotId: 1,
           review: "This was an awesome spot!",
@@ -21,7 +20,6 @@ module.exports = {
           updatedAt: "2023-11-19 20:39:36",
         },
         {
-
           userId: 2,
           spotId: 2,
           review: "Meh",
@@ -30,7 +28,6 @@ module.exports = {
           updatedAt: "2023-11-20 20:39:36",
         },
         {
-         
           userId: 3,
           spotId: 3,
           review: "Nice Spot!",
@@ -39,7 +36,7 @@ module.exports = {
           updatedAt: "2023-11-21 20:39:36",
         },
       ],
-      {validate:true}
+      { validate: true }
     );
   },
 

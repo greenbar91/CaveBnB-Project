@@ -1,9 +1,14 @@
 const express = require("express");
-const { Spot,SpotImage, User, Review, ReviewImage } = require("../../db/models");
+const {
+  Spot,
+  SpotImage,
+  User,
+  Review,
+  ReviewImage,
+} = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
-const {validateReviewBody} = require('../../utils/validation');
+const { validateReviewBody } = require("../../utils/validation");
 const { formatAllDates } = require("../../utils/helper");
-
 
 const router = express.Router();
 
@@ -21,8 +26,19 @@ router.get("/current", requireAuth, async (req, res) => {
       },
       {
         model: Spot,
-        attributes:['id','ownerId','address','city','state','country',
-      'lat','lng','name','price', "previewImage"]
+        attributes: [
+          "id",
+          "ownerId",
+          "address",
+          "city",
+          "state",
+          "country",
+          "lat",
+          "lng",
+          "name",
+          "price",
+          "previewImage",
+        ],
       },
       {
         model: ReviewImage,
@@ -31,23 +47,22 @@ router.get("/current", requireAuth, async (req, res) => {
     ],
   });
 
-  for(const review of allCurrentReviews){
+  for (const review of allCurrentReviews) {
     const imagePreview = await SpotImage.findOne({
-      where:{
-        spotId:review.Spot.id,
-        preview:true
-      }
-    })
+      where: {
+        spotId: review.Spot.id,
+        preview: true,
+      },
+    });
 
-    if(imagePreview){
-      review.Spot.previewImage = imagePreview.url
+    if (imagePreview) {
+      review.Spot.previewImage = imagePreview.url;
     } else {
-      delete review.Spot.dataValues.previewImage
+      delete review.Spot.dataValues.previewImage;
     }
   }
 
-
-  formatAllDates(allCurrentReviews)
+  formatAllDates(allCurrentReviews);
   return res.status(200).json({ Reviews: allCurrentReviews });
 });
 
@@ -93,38 +108,33 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
 });
 
 //Edit a Review
-router.put(
-  "/:reviewId",
-  requireAuth,
-  validateReviewBody,
-  async (req, res) => {
-    const { reviewId } = req.params;
-    const { review, stars } = req.body;
+router.put("/:reviewId", requireAuth, validateReviewBody, async (req, res) => {
+  const { reviewId } = req.params;
+  const { review, stars } = req.body;
 
-    const findReviewById = await Review.findByPk(reviewId);
+  const findReviewById = await Review.findByPk(reviewId);
 
-    if (!findReviewById) {
-      return res.status(404).json({
-        message: "Review couldn't be found",
-      });
-    }
-
-    if(findReviewById.userId !== req.user.id){
-      return res.status(403).json({
-        message:"Forbidden"
-      })
-    }
-
-    const updatedReview = await findReviewById.update({
-      review,
-      stars,
+  if (!findReviewById) {
+    return res.status(404).json({
+      message: "Review couldn't be found",
     });
-
-    formatAllDates(updatedReview)
-
-    return res.status(200).json(updatedReview);
   }
-);
+
+  if (findReviewById.userId !== req.user.id) {
+    return res.status(403).json({
+      message: "Forbidden",
+    });
+  }
+
+  const updatedReview = await findReviewById.update({
+    review,
+    stars,
+  });
+
+  formatAllDates(updatedReview);
+
+  return res.status(200).json(updatedReview);
+});
 
 //Delete a Review
 router.delete("/:reviewId", requireAuth, async (req, res) => {

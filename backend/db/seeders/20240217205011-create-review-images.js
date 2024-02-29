@@ -11,22 +11,19 @@ module.exports = {
     await ReviewImage.bulkCreate(
       [
         {
-
           url: "image url1",
           reviewId: 1,
         },
         {
-
           url: "image url2",
           reviewId: 2,
         },
         {
-          
           url: "image url3",
           reviewId: 3,
         },
       ],
-      {validate:true}
+      { validate: true }
     );
   },
 

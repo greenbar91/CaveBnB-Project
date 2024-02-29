@@ -338,7 +338,6 @@ const validateEditBooking = [
 
     const endDate = req.body.endDate;
 
-
     const conflictBookings = await Booking.findOne({
       where: {
         spotId: findBookingById.spotId,
@@ -373,14 +372,13 @@ const validateEditBooking = [
     return true;
   }),
   check("endDate").custom(async (endDate, { req }) => {
-
     const { bookingId } = req.params;
     const findBookingById = await Booking.findByPk(bookingId);
 
     const startDate = req.body.startDate;
     if (!startDate) {
       throw new Error("End date is required");
-  }
+    }
 
     const conflictBooking = await Booking.findOne({
       where: {

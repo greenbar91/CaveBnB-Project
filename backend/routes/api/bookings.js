@@ -1,5 +1,5 @@
 const express = require("express");
-const { Spot,SpotImage, Booking } = require("../../db/models");
+const { Spot, SpotImage, Booking } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 const { formatAllDates } = require("../../utils/helper");
 const {
@@ -15,25 +15,40 @@ router.get("/current", requireAuth, async (req, res) => {
     where: {
       userId: req.user.id,
     },
-    include: [{ model: Spot , attributes:['id','ownerId','address','city','state','country',
-    'lat','lng','name','price', "previewImage"]}],
+    include: [
+      {
+        model: Spot,
+        attributes: [
+          "id",
+          "ownerId",
+          "address",
+          "city",
+          "state",
+          "country",
+          "lat",
+          "lng",
+          "name",
+          "price",
+          "previewImage",
+        ],
+      },
+    ],
   });
 
-  for(const review of currentUserBookings){
+  for (const review of currentUserBookings) {
     const imagePreview = await SpotImage.findOne({
-      where:{
-        spotId:review.Spot.id,
-        preview:true
-      }
-    })
+      where: {
+        spotId: review.Spot.id,
+        preview: true,
+      },
+    });
 
-    if(imagePreview){
-      review.Spot.previewImage = imagePreview.url
+    if (imagePreview) {
+      review.Spot.previewImage = imagePreview.url;
     } else {
-      delete review.Spot.dataValues.previewImage
+      delete review.Spot.dataValues.previewImage;
     }
   }
-
 
   formatAllDates(currentUserBookings);
 
@@ -76,7 +91,6 @@ router.put(
     const { startDate, endDate } = req.body;
 
     const findBookingById = await Booking.findByPk(bookingId);
-
 
     const editedBooking = await findBookingById.update({
       startDate,

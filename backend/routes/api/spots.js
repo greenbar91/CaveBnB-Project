@@ -26,17 +26,16 @@ router.get("/", validateSpotQueryFilters, async (req, res) => {
   let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
     req.query;
 
-
-    if (page === "" || isNaN(page)) {
-      page = 1;
-      page = Number(page);
-    }
-    if (page > 10) {
-      page = 10;
-    }
-    if (size === "" || size > 20 || isNaN(size)) {
-      size = 20;
-      size = Number(size);
+  if (page === "" || isNaN(page)) {
+    page = 1;
+    page = Number(page);
+  }
+  if (page > 10) {
+    page = 10;
+  }
+  if (size === "" || size > 20 || isNaN(size)) {
+    size = 20;
+    size = Number(size);
   }
   const queryFilter = {};
 
@@ -102,14 +101,14 @@ router.get("/", validateSpotQueryFilters, async (req, res) => {
       preview: true,
     });
 
-    if(previewImages){
-    spot.previewImage = previewImages.url;
+    if (previewImages) {
+      spot.previewImage = previewImages.url;
     } else {
-      delete spot.dataValues.previewImage
+      delete spot.dataValues.previewImage;
     }
 
-    if(spot.avgRating === null){
-      delete spot.dataValues.avgRating
+    if (spot.avgRating === null) {
+      delete spot.dataValues.avgRating;
     }
   }
 
@@ -121,9 +120,11 @@ router.get("/", validateSpotQueryFilters, async (req, res) => {
 
   formatAllDates(filteredSpots);
 
-  return res
-    .status(200)
-    .json({ Spots: filteredSpots, page: Number(page), size: filteredSpots.length });
+  return res.status(200).json({
+    Spots: filteredSpots,
+    page: Number(page),
+    size: filteredSpots.length,
+  });
 });
 
 //Get all Spots owned by the Current User
@@ -158,8 +159,8 @@ router.get("/current", requireAuth, async (req, res) => {
 
     spot.avgRating = reviewCount > 0 ? totalStars / reviewCount : null;
 
-    if(spot.avgRating === null){
-      delete spot.dataValues.avgRating
+    if (spot.avgRating === null) {
+      delete spot.dataValues.avgRating;
     }
   }
 
@@ -171,16 +172,16 @@ router.get("/current", requireAuth, async (req, res) => {
       preview: true,
     });
 
-    if(previewImages){
+    if (previewImages) {
       spot.previewImage = previewImages.url;
-      } else {
-        delete spot.dataValues.previewImage
-      }
+    } else {
+      delete spot.dataValues.previewImage;
+    }
   }
 
   formatAllDates(currentUserSpots);
 
-  return res.status(200).json({Spots:currentUserSpots});
+  return res.status(200).json({ Spots: currentUserSpots });
 });
 
 //Get details of a Spot from an id
@@ -231,13 +232,12 @@ router.get("/:spotId", async (req, res) => {
     preview: true,
   });
 
-  if(previewImages){
-  specifiedSpot.previewImage = previewImages.url;
+  if (previewImages) {
+    specifiedSpot.previewImage = previewImages.url;
   }
-  if (specifiedSpot.previewImage === null){
-    delete specifiedSpot.dataValues.previewImage
-   }
-
+  if (specifiedSpot.previewImage === null) {
+    delete specifiedSpot.dataValues.previewImage;
+  }
 
   formatAllDates(specifiedSpot);
   return res.status(200).json(specifiedSpot);
@@ -261,12 +261,12 @@ router.post("/", requireAuth, validateSpotBody, async (req, res) => {
     price,
   });
 
-  if (newSpot.avgRating === null){
-    delete newSpot.dataValues.avgRating
-   }
-   if (newSpot.previewImage === null){
-     delete newSpot.dataValues.previewImage
-    }
+  if (newSpot.avgRating === null) {
+    delete newSpot.dataValues.avgRating;
+  }
+  if (newSpot.previewImage === null) {
+    delete newSpot.dataValues.previewImage;
+  }
   formatAllDates(newSpot);
 
   return res.status(201).json(newSpot);
@@ -342,12 +342,12 @@ router.put("/:spotId", requireAuth, validateSpotBody, async (req, res) => {
     price,
   });
 
-  if (spotToUpdate.avgRating === null){
-   delete spotToUpdate.dataValues.avgRating
+  if (spotToUpdate.avgRating === null) {
+    delete spotToUpdate.dataValues.avgRating;
   }
-  if (spotToUpdate.previewImage === null){
-    delete spotToUpdate.dataValues.previewImage
-   }
+  if (spotToUpdate.previewImage === null) {
+    delete spotToUpdate.dataValues.previewImage;
+  }
 
   formatAllDates(spotToUpdate);
   return res.status(200).json(spotToUpdate);
