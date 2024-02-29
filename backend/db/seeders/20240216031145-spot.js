@@ -23,8 +23,8 @@ module.exports = {
           name: "App Academy",
           description: "Place where web developers are created",
           price: 123,
-          avgRating: null,
-          previewImage: "image url1",
+
+
         },
         {
 
@@ -38,11 +38,11 @@ module.exports = {
           name: "Times Square Penthouse",
           description: "It's Times Square baby!",
           price: 999,
-          avgRating: null,
-          previewImage: "image url2",
+
+
         },
         {
-          
+
           ownerId: 3,
           address: " 2820 Industrial Dr",
           city: "Raleigh",
@@ -53,8 +53,8 @@ module.exports = {
           name: "The Ritz",
           description: "Puttin' on the Ritz!",
           price: 500,
-          avgRating: null,
-          previewImage: "image url3",
+          
+
         },
       ],
       { validate: true }

@@ -1,8 +1,9 @@
 const express = require("express");
-const { Spot, User, Review, ReviewImage } = require("../../db/models");
+const { Spot,SpotImage, User, Review, ReviewImage } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 const {validateReviewBody} = require('../../utils/validation');
 const { formatAllDates } = require("../../utils/helper");
+
 
 const router = express.Router();
 
@@ -29,6 +30,22 @@ router.get("/current", requireAuth, async (req, res) => {
       },
     ],
   });
+
+  for(const review of allCurrentReviews){
+    const imagePreview = await SpotImage.findOne({
+      where:{
+        spotId:review.Spot.id,
+        preview:true
+      }
+    })
+
+    if(imagePreview){
+      review.Spot.previewImage = imagePreview.url
+    } else {
+      delete review.Spot.dataValues.previewImage
+    }
+  }
+
 
   formatAllDates(allCurrentReviews)
   return res.status(200).json({ Reviews: allCurrentReviews });

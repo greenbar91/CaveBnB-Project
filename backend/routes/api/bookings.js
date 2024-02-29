@@ -1,5 +1,5 @@
 const express = require("express");
-const { Spot, Booking } = require("../../db/models");
+const { Spot,SpotImage, Booking } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 const { formatAllDates } = require("../../utils/helper");
 const {
@@ -18,6 +18,21 @@ router.get("/current", requireAuth, async (req, res) => {
     include: [{ model: Spot , attributes:['id','ownerId','address','city','state','country',
     'lat','lng','name','price', "previewImage"]}],
   });
+
+  for(const review of currentUserBookings){
+    const imagePreview = await SpotImage.findOne({
+      where:{
+        spotId:review.Spot.id,
+        preview:true
+      }
+    })
+    if(imagePreview){
+      review.Spot.previewImage = imagePreview.url
+    } else {
+      delete review.Spot.dataValues.previewImage
+    }
+  }
+
 
   formatAllDates(currentUserBookings);
 

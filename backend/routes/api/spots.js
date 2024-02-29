@@ -11,7 +11,6 @@ const {
 const { requireAuth } = require("../../utils/auth");
 const { formatAllDates } = require("../../utils/helper");
 const { Op } = require("sequelize");
-const { Sequelize } = require("sequelize");
 const {
   validationCheckDateErrors,
   validateNewBooking,
@@ -23,22 +22,21 @@ const {
 const router = express.Router();
 
 //Get All Spots with Query filters
-
-router.get("/?", validateSpotQueryFilters, async (req, res) => {
+router.get("/", validateSpotQueryFilters, async (req, res) => {
   let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
     req.query;
 
-  page = Number(page);
-  size = Number(size);
 
-  if (page === "" || isNaN(page)) {
-    page = 1;
-  }
-  if (page > 10) {
-    page = 10;
-  }
-  if (size === "" || size > 20 || isNaN(size)) {
-    size = 20;
+    if (page === "" || isNaN(page)) {
+      page = 1;
+      page = Number(page);
+    }
+    if (page > 10) {
+      page = 10;
+    }
+    if (size === "" || size > 20 || isNaN(size)) {
+      size = 20;
+      size = Number(size);
   }
   const queryFilter = {};
 
@@ -72,14 +70,11 @@ router.get("/?", validateSpotQueryFilters, async (req, res) => {
     queryFilter.price = { [Op.lte]: parseFloat(maxPrice) };
   }
 
-
   const filteredSpots = await Spot.findAll({
     where: queryFilter,
     limit: size,
     offset: size * (page - 1),
   });
-
-
 
   for (const spot of filteredSpots) {
     let totalStars = 0;
@@ -87,11 +82,11 @@ router.get("/?", validateSpotQueryFilters, async (req, res) => {
 
     const reviews = await Review.findAll({
       where: {
-        spotId: spot.id
-      }
+        spotId: spot.id,
+      },
     });
 
-    reviews.forEach(review => {
+    reviews.forEach((review) => {
       totalStars += review.stars;
       reviewCount++;
     });
@@ -99,7 +94,20 @@ router.get("/?", validateSpotQueryFilters, async (req, res) => {
     spot.avgRating = reviewCount > 0 ? totalStars / reviewCount : null;
   }
 
+  for (const spot of filteredSpots) {
+    const previewImages = await SpotImage.findOne({
+      where: {
+        spotId: spot.id,
+      },
+      preview: true,
+    });
 
+    if(previewImages){
+    spot.previewImage = previewImages.url;
+    } else {
+      delete spot.dataValues.previewImage
+    }
+  }
 
   if (!filteredSpots) {
     return res.status(200).json({
@@ -111,7 +119,7 @@ router.get("/?", validateSpotQueryFilters, async (req, res) => {
 
   return res
     .status(200)
-    .json({ Spots: filteredSpots, page: page, size: filteredSpots.length });
+    .json({ Spots: filteredSpots, page: Number(page), size: filteredSpots.length });
 });
 
 //Get all Spots owned by the Current User
@@ -135,11 +143,11 @@ router.get("/current", requireAuth, async (req, res) => {
 
     const reviews = await Review.findAll({
       where: {
-        spotId: spot.id
-      }
+        spotId: spot.id,
+      },
     });
 
-    reviews.forEach(review => {
+    reviews.forEach((review) => {
       totalStars += review.stars;
       reviewCount++;
     });
@@ -147,9 +155,24 @@ router.get("/current", requireAuth, async (req, res) => {
     spot.avgRating = reviewCount > 0 ? totalStars / reviewCount : null;
   }
 
+  for (const spot of currentUserSpots) {
+    const previewImages = await SpotImage.findOne({
+      where: {
+        spotId: spot.id,
+      },
+      preview: true,
+    });
+
+    if(previewImages){
+      spot.previewImage = previewImages.url;
+      } else {
+        delete spot.dataValues.previewImage
+      }
+  }
+
   formatAllDates(currentUserSpots);
 
-  return res.status(200).json(currentUserSpots);
+  return res.status(200).json({Spots:currentUserSpots});
 });
 
 //Get details of a Spot from an id
@@ -177,22 +200,30 @@ router.get("/:spotId", async (req, res) => {
     });
   }
 
-    let totalStars = 0;
-    let reviewCount = 0;
+  let totalStars = 0;
+  let reviewCount = 0;
 
-    const reviews = await Review.findAll({
-      where: {
-        spotId: specifiedSpot.id
-      }
-    });
+  const reviews = await Review.findAll({
+    where: {
+      spotId: specifiedSpot.id,
+    },
+  });
 
-    reviews.forEach(review => {
-      totalStars += review.stars;
-      reviewCount++;
-    });
+  reviews.forEach((review) => {
+    totalStars += review.stars;
+    reviewCount++;
+  });
 
-    specifiedSpot.avgRating = reviewCount > 0 ? totalStars / reviewCount : null;
+  specifiedSpot.avgRating = reviewCount > 0 ? totalStars / reviewCount : null;
 
+  const previewImages = await SpotImage.findOne({
+    where: {
+      spotId: specifiedSpot.id,
+    },
+    preview: true,
+  });
+
+  specifiedSpot.previewImage = previewImages.url;
 
   formatAllDates(specifiedSpot);
   return res.status(200).json(specifiedSpot);
@@ -265,11 +296,7 @@ router.put("/:spotId", requireAuth, validateSpotBody, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } =
     req.body;
 
-  const findSpotById = await Spot.findByPk(spotId,{
-    exclude:[
-      {attributes:['avgRating','previewImage']}
-    ]
-  });
+  const findSpotById = await Spot.findByPk(spotId);
 
   if (!findSpotById) {
     return res.status(404).json({
@@ -294,6 +321,13 @@ router.put("/:spotId", requireAuth, validateSpotBody, async (req, res) => {
     description,
     price,
   });
+
+  if (spotToUpdate.avgRating === null){
+   delete spotToUpdate.dataValues.avgRating
+  }
+  if (spotToUpdate.previewImage === null){
+    delete spotToUpdate.dataValues.previewImage
+   }
 
   formatAllDates(spotToUpdate);
   return res.status(200).json(spotToUpdate);
