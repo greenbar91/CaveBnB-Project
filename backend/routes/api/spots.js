@@ -246,7 +246,12 @@ router.post("/", requireAuth, validateSpotBody, async (req, res) => {
     description,
     price,
   });
-
+  if (newSpot.avgRating === null){
+    delete newSpot.dataValues.avgRating
+   }
+   if (newSpot.previewImage === null){
+     delete newSpot.dataValues.previewImage
+    }
   formatAllDates(newSpot);
 
   return res.status(201).json(newSpot);
