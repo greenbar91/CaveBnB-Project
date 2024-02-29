@@ -6,7 +6,6 @@ const {
   validationCheckDateErrors,
   validateEditBooking,
 } = require("../../utils/validation");
-
 const router = express.Router();
 
 //--------------------------------------------------------------------------------------//
@@ -54,7 +53,6 @@ router.get("/current", requireAuth, async (req, res) => {
   }
 
   formatAllDates(currentUserBookings);
-
   return res.status(200).json({ Bookings: currentUserBookings });
 });
 
@@ -102,7 +100,6 @@ router.put(
     });
 
     formatAllDates(editedBooking);
-
     return res.status(200).json(editedBooking);
   }
 );
