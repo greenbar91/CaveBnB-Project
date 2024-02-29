@@ -1,6 +1,6 @@
 //backend/utils/helper.js
 
-const formatAllDates = async (bookings) => {
+const formatAllDates = (bookings) => {
   if (Array.isArray(bookings)) {
     const formattedBookings = bookings.forEach((booking) => {
       if (booking.dataValues.createdAt) {
