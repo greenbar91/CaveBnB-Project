@@ -2,7 +2,6 @@
 const express = require("express");
 const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
-
 const { validateLogin } = require("../../utils/validation");
 const {
   setTokenCookie,
@@ -10,10 +9,11 @@ const {
   requireAuth,
 } = require("../../utils/auth");
 const { User } = require("../../db/models");
-
 const router = express.Router();
 
-// Log in
+//--------------------------------------------------------------------------------------//
+//                                        Log in                                        //
+//--------------------------------------------------------------------------------------//
 router.post("/", validateLogin, async (req, res, next) => {
   const { credential, password } = req.body;
 
@@ -54,7 +54,9 @@ router.post("/", validateLogin, async (req, res, next) => {
   });
 });
 
-// Restore session user
+//--------------------------------------------------------------------------------------//
+//                                 Restore session user                                 //
+//--------------------------------------------------------------------------------------//
 router.get("/", (req, res) => {
   const { user } = req;
   if (user) {
@@ -71,7 +73,9 @@ router.get("/", (req, res) => {
   } else return res.json({ user: null });
 });
 
-// Log out
+//--------------------------------------------------------------------------------------//
+//                                       Log out                                        //
+//--------------------------------------------------------------------------------------//
 router.delete("/", (_req, res) => {
   res.clearCookie("token");
   return res.json({ message: "success" });
