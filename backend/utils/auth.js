@@ -63,7 +63,7 @@ const setTokenCookie = (res, user) => {
   };
 
   // If there is no current user, return an error
-  //!Ask if title is needed
+  //!Ask if title is required or not (not in README)
 const requireAuth = function (req, _res, next) {
     if (req.user) return next();
 

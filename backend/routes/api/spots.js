@@ -107,6 +107,10 @@ router.get("/", validateSpotQueryFilters, async (req, res) => {
     } else {
       delete spot.dataValues.previewImage
     }
+
+    if(spot.avgRating === null){
+      delete spot.dataValues.avgRating
+    }
   }
 
   if (!filteredSpots) {
@@ -153,6 +157,10 @@ router.get("/current", requireAuth, async (req, res) => {
     });
 
     spot.avgRating = reviewCount > 0 ? totalStars / reviewCount : null;
+
+    if(spot.avgRating === null){
+      delete spot.dataValues.avgRating
+    }
   }
 
   for (const spot of currentUserSpots) {
@@ -223,7 +231,13 @@ router.get("/:spotId", async (req, res) => {
     preview: true,
   });
 
+  if(previewImages){
   specifiedSpot.previewImage = previewImages.url;
+  }
+  if (specifiedSpot.previewImage === null){
+    delete specifiedSpot.dataValues.previewImage
+   }
+
 
   formatAllDates(specifiedSpot);
   return res.status(200).json(specifiedSpot);
@@ -246,6 +260,7 @@ router.post("/", requireAuth, validateSpotBody, async (req, res) => {
     description,
     price,
   });
+
   if (newSpot.avgRating === null){
     delete newSpot.dataValues.avgRating
    }

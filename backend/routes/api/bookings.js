@@ -26,6 +26,7 @@ router.get("/current", requireAuth, async (req, res) => {
         preview:true
       }
     })
+
     if(imagePreview){
       review.Spot.previewImage = imagePreview.url
     } else {
@@ -40,23 +41,13 @@ router.get("/current", requireAuth, async (req, res) => {
 });
 
 //Edit a Booking
-//!ERROR - Edit a Booking - Start Date On Existing End Date, still lets you
+
 router.put(
   "/:bookingId",
   requireAuth,
-  validationCheckDateErrors,
-  validateEditBooking,
-  async (req, res) => {
+  async (req, res, next) => {
     const { bookingId } = req.params;
-    const { startDate, endDate } = req.body;
-
     const findBookingById = await Booking.findByPk(bookingId);
-
-    if (findBookingById.endDate < new Date()) {
-      return res.status(403).json({
-        message: "Past bookings can't be modified",
-      });
-    }
 
     if (!findBookingById) {
       return res.status(404).json({
@@ -69,6 +60,23 @@ router.put(
         message: "Forbidden",
       });
     }
+
+    if (findBookingById.endDate < new Date()) {
+      return res.status(403).json({
+        message: "Past bookings can't be modified",
+      });
+    }
+
+    next();
+  },
+  validationCheckDateErrors,
+  validateEditBooking,
+  async (req, res) => {
+    const { bookingId } = req.params;
+    const { startDate, endDate } = req.body;
+
+    const findBookingById = await Booking.findByPk(bookingId);
+
 
     const editedBooking = await findBookingById.update({
       startDate,

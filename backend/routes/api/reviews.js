@@ -8,7 +8,7 @@ const { formatAllDates } = require("../../utils/helper");
 const router = express.Router();
 
 //Get all Reviews of the Current User
-//!Need to add previewImage to Spot
+
 router.get("/current", requireAuth, async (req, res) => {
   const allCurrentReviews = await Review.findAll({
     where: {

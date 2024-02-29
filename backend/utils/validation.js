@@ -246,17 +246,17 @@ const validateNewBooking = [
     const { spotId } = req.params;
     const conflictBookings = await Booking.findOne({
       where: {
-        spotId:spotId,
+        spotId: spotId,
 
         [Op.or]: [
           //Within
           { endDate: { [Op.between]: [startDate, endDate] } },
           {
             [Op.and]: [
-            //startDate in conflict, endDate not in conflict
+              //startDate in conflict, endDate not in conflict
               { startDate: { [Op.lte]: startDate } },
 
-              {endDate:{[Op.gte]:startDate}}
+              { endDate: { [Op.gte]: startDate } },
             ],
           },
           {
@@ -268,11 +268,11 @@ const validateNewBooking = [
           },
           //Same day conflict
 
-          {endDate:{[Op.eq]:new Date(startDate)}}
+          { endDate: { [Op.eq]: new Date(startDate) } },
         ],
       },
     });
-    console.log(conflictBookings)
+    console.log(conflictBookings);
     if (conflictBookings) {
       throw new Error("Start date conflicts with an existing booking");
     }
@@ -283,7 +283,7 @@ const validateNewBooking = [
     const { spotId } = req.params;
     const conflictBooking = await Booking.findOne({
       where: {
-        spotId:spotId,
+        spotId: spotId,
         [Op.or]: [
           //Within
           { startDate: { [Op.between]: [startDate, endDate] } },
@@ -304,9 +304,8 @@ const validateNewBooking = [
             ],
           },
           //Same day conflict
-          {startDate:startDate}
+          { startDate: startDate },
         ],
-
       },
     });
     if (conflictBooking) {
@@ -336,10 +335,10 @@ const validateEditBooking = [
   check("startDate").custom(async (startDate, { req }) => {
     const { bookingId } = req.params;
     const findBookingById = await Booking.findByPk(bookingId);
-    if (!findBookingById) {
-      return true;
-    }
+
     const endDate = req.body.endDate;
+
+
     const conflictBookings = await Booking.findOne({
       where: {
         spotId: findBookingById.spotId,
@@ -350,10 +349,10 @@ const validateEditBooking = [
           { endDate: { [Op.between]: [startDate, endDate] } },
           {
             [Op.and]: [
-            //startDate in conflict, endDate not in conflict
+              //startDate in conflict, endDate not in conflict
               { startDate: { [Op.lte]: startDate } },
 
-              {endDate:{[Op.gte]:startDate}}
+              { endDate: { [Op.gte]: startDate } },
             ],
           },
           {
@@ -364,7 +363,7 @@ const validateEditBooking = [
             ],
           },
           //Same day conflict
-          {endDate:{[Op.eq]:new Date(startDate)}}
+          { endDate: { [Op.eq]: new Date(startDate) } },
         ],
       },
     });
@@ -374,12 +373,14 @@ const validateEditBooking = [
     return true;
   }),
   check("endDate").custom(async (endDate, { req }) => {
-    const startDate = req.body.startDate;
+
     const { bookingId } = req.params;
     const findBookingById = await Booking.findByPk(bookingId);
-    if (!findBookingById) {
-      return true;
-    }
+
+    const startDate = req.body.startDate;
+    if (!startDate) {
+      throw new Error("End date is required");
+  }
 
     const conflictBooking = await Booking.findOne({
       where: {
@@ -407,7 +408,7 @@ const validateEditBooking = [
             ],
           },
           //Same day conflict
-          {startDate:startDate}
+          { startDate: startDate },
         ],
       },
     });
