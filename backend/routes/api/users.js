@@ -1,18 +1,16 @@
-// backend/routes/api/users.js
 const express = require("express");
 const bcrypt = require("bcryptjs");
-
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
 const { User } = require("../../db/models");
-
 const {
   validateSignup,
   validateUserExists,
 } = require("../../utils/validation");
-
 const router = express.Router();
 
-// Sign up
+//--------------------------------------------------------------------------------------//
+//                                       Sign up                                        //
+//--------------------------------------------------------------------------------------//
 router.post("/", validateUserExists, validateSignup, async (req, res) => {
   const { email, firstName, lastName, password, username } = req.body;
   const hashedPassword = bcrypt.hashSync(password);
