@@ -9,7 +9,9 @@ const {
 
 const router = express.Router();
 
-//Get all of the Current User's Bookings
+//--------------------------------------------------------------------------------------//
+//                        Get all of the Current User's Bookings                        //
+//--------------------------------------------------------------------------------------//
 router.get("/current", requireAuth, async (req, res) => {
   const currentUserBookings = await Booking.findAll({
     where: {
@@ -35,18 +37,19 @@ router.get("/current", requireAuth, async (req, res) => {
     ],
   });
 
-  for (const review of currentUserBookings) {
+  /* N+1 query to add previewImage url to Spots */
+  for (const booking of currentUserBookings) {
     const imagePreview = await SpotImage.findOne({
       where: {
-        spotId: review.Spot.id,
+        spotId: booking.Spot.id,
         preview: true,
       },
     });
 
     if (imagePreview) {
-      review.Spot.previewImage = imagePreview.url;
+      booking.Spot.previewImage = imagePreview.url;
     } else {
-      delete review.Spot.dataValues.previewImage;
+      delete booking.Spot.dataValues.previewImage;
     }
   }
 
@@ -55,8 +58,9 @@ router.get("/current", requireAuth, async (req, res) => {
   return res.status(200).json({ Bookings: currentUserBookings });
 });
 
-//Edit a Booking
-
+//--------------------------------------------------------------------------------------//
+//                                    Edit a Booking                                    //
+//--------------------------------------------------------------------------------------//
 router.put(
   "/:bookingId",
   requireAuth,
@@ -103,37 +107,49 @@ router.put(
   }
 );
 
-//Delete a Booking
-router.delete("/:bookingId", requireAuth, async (req, res) => {
-  const { bookingId } = req.params;
-
-  const findBookingById = await Booking.findByPk(bookingId, {
-    include: [{ model: Spot }],
-  });
-
-  if (!findBookingById) {
-    return res.status(404).json({
-      message: "Booking couldn't be found",
+//--------------------------------------------------------------------------------------//
+//                                   Delete a Booking                                   //
+//--------------------------------------------------------------------------------------//
+router.delete(
+  "/:bookingId",
+  requireAuth,
+  async (req, res, next) => {
+    const { bookingId } = req.params;
+    const findBookingById = await Booking.findByPk(bookingId, {
+      include: [{ model: Spot }],
     });
-  }
 
-  if (findBookingById.userId !== req.user.id) {
-    if (findBookingById.Spot.ownerId !== req.user.id) {
-      return res.status(403).json({ message: "Forbidden" });
+    if (!findBookingById) {
+      return res.status(404).json({
+        message: "Booking couldn't be found",
+      });
     }
-  }
 
-  if (findBookingById.startDate < new Date()) {
-    return res.status(403).json({
-      message: "Bookings that have been started can't be deleted",
+    if (findBookingById.userId !== req.user.id) {
+      if (findBookingById.Spot.ownerId !== req.user.id) {
+        return res.status(403).json({ message: "Forbidden" });
+      }
+    }
+
+    if (findBookingById.startDate < new Date()) {
+      return res.status(403).json({
+        message: "Bookings that have been started can't be deleted",
+      });
+    }
+    next();
+  },
+  async (req, res) => {
+    const { bookingId } = req.params;
+    const findBookingById = await Booking.findByPk(bookingId, {
+      include: [{ model: Spot }],
+    });
+
+    await findBookingById.destroy();
+
+    return res.status(200).json({
+      message: "Successfully deleted",
     });
   }
-
-  await findBookingById.destroy();
-
-  return res.status(200).json({
-    message: "Successfully deleted",
-  });
-});
+);
 
 module.exports = router;
