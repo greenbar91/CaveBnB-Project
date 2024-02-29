@@ -22,23 +22,8 @@ const {
 
 const router = express.Router();
 
-//Get all Spots
-// router.get("/", async (req, res) => {
-//   const allSpots = await Spot.findAll();
 
-//   if (!allSpots) {
-//     return res.status(200).json({
-//       message: "No spots currently listed",
-//     });
-//   }
-
-//     formatAllDates(allSpots)
-
-//     return res.status(200).json(allSpots);
-
-// });
-
-//Add Query Filters to Get All Spots
+//Get All Spots with Query filters
 //!Need to add avgRating and previewImage
 router.get("/?", validateSpotQueryFilters, async (req, res) => {
   let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
@@ -383,7 +368,6 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
 });
 
 //Create a Booking from a Spot based on the Spot's id
-//!ERROR - Create a Booking - Start Date On Existing End Date, still gives successful booking
 router.post(
   "/:spotId/bookings",
   requireAuth,
