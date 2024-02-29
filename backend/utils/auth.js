@@ -69,6 +69,9 @@ const requireAuth = function (req, _res, next) {
   err.title = "Authentication required";
   err.errors = { message: "Authentication required" };
   err.status = 401;
+  if (err.errors && err.errors.credential === "Authentication required") {
+    return _res.status(401).json({ message: "Authentication required" });
+  }
   return next(err);
 };
 
