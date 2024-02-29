@@ -238,6 +238,9 @@ router.get("/:spotId", async (req, res) => {
   if (specifiedSpot.previewImage === null) {
     delete specifiedSpot.dataValues.previewImage;
   }
+  if(specifiedSpot.avgRating === null){
+    delete specifiedSpot.dataValues.avgRating
+  }
 
   formatAllDates(specifiedSpot);
   return res.status(200).json(specifiedSpot);
