@@ -12,7 +12,7 @@ module.exports = {
     await Spot.bulkCreate(
       [
         {
-          id: 1,
+
           ownerId: 1,
           address: "123 Disney Lane",
           city: "San Francisco",
@@ -27,7 +27,7 @@ module.exports = {
           previewImage: "image url1",
         },
         {
-          id: 2,
+
           ownerId: 2,
           address: "987 Times Square",
           city: "New York City",
@@ -42,7 +42,7 @@ module.exports = {
           previewImage: "image url2",
         },
         {
-          id: 3,
+          
           ownerId: 3,
           address: " 2820 Industrial Dr",
           city: "Raleigh",
