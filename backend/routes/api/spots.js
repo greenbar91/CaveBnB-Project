@@ -11,7 +11,7 @@ const {
 const { requireAuth } = require("../../utils/auth");
 const { formatAllDates } = require("../../utils/helper");
 const { Op } = require("sequelize");
-
+const { Sequelize } = require("sequelize");
 const {
   validationCheckDateErrors,
   validateNewBooking,
@@ -22,9 +22,8 @@ const {
 
 const router = express.Router();
 
-
 //Get All Spots with Query filters
-//!Need to add avgRating and previewImage
+
 router.get("/?", validateSpotQueryFilters, async (req, res) => {
   let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
     req.query;
@@ -32,7 +31,7 @@ router.get("/?", validateSpotQueryFilters, async (req, res) => {
   page = Number(page);
   size = Number(size);
 
-  if (page === "" || isNaN(page) ) {
+  if (page === "" || isNaN(page)) {
     page = 1;
   }
   if (page > 10) {
@@ -73,11 +72,34 @@ router.get("/?", validateSpotQueryFilters, async (req, res) => {
     queryFilter.price = { [Op.lte]: parseFloat(maxPrice) };
   }
 
+
   const filteredSpots = await Spot.findAll({
     where: queryFilter,
     limit: size,
     offset: size * (page - 1),
   });
+
+
+
+  for (const spot of filteredSpots) {
+    let totalStars = 0;
+    let reviewCount = 0;
+
+    const reviews = await Review.findAll({
+      where: {
+        spotId: spot.id
+      }
+    });
+
+    reviews.forEach(review => {
+      totalStars += review.stars;
+      reviewCount++;
+    });
+
+    spot.avgRating = reviewCount > 0 ? totalStars / reviewCount : null;
+  }
+
+
 
   if (!filteredSpots) {
     return res.status(200).json({
@@ -85,16 +107,15 @@ router.get("/?", validateSpotQueryFilters, async (req, res) => {
     });
   }
 
-  formatAllDates(filteredSpots)
+  formatAllDates(filteredSpots);
 
   return res
     .status(200)
     .json({ Spots: filteredSpots, page: page, size: filteredSpots.length });
 });
 
-
 //Get all Spots owned by the Current User
-//!Need to add avgRating and previewImage
+
 router.get("/current", requireAuth, async (req, res) => {
   const currentUserSpots = await Spot.findAll({
     where: {
@@ -108,7 +129,25 @@ router.get("/current", requireAuth, async (req, res) => {
     });
   }
 
-  formatAllDates(currentUserSpots)
+  for (const spot of currentUserSpots) {
+    let totalStars = 0;
+    let reviewCount = 0;
+
+    const reviews = await Review.findAll({
+      where: {
+        spotId: spot.id
+      }
+    });
+
+    reviews.forEach(review => {
+      totalStars += review.stars;
+      reviewCount++;
+    });
+
+    spot.avgRating = reviewCount > 0 ? totalStars / reviewCount : null;
+  }
+
+  formatAllDates(currentUserSpots);
 
   return res.status(200).json(currentUserSpots);
 });
@@ -137,14 +176,30 @@ router.get("/:spotId", async (req, res) => {
       message: "Spot couldn't be found",
     });
   }
+  for (const spot of specifiedSpot) {
+    let totalStars = 0;
+    let reviewCount = 0;
 
-    formatAllDates(specifiedSpot)
-    return res.status(200).json(specifiedSpot);
+    const reviews = await Review.findAll({
+      where: {
+        spotId: spot.id
+      }
+    });
 
+    reviews.forEach(review => {
+      totalStars += review.stars;
+      reviewCount++;
+    });
+
+    spot.avgRating = reviewCount > 0 ? totalStars / reviewCount : null;
+  }
+
+  formatAllDates(specifiedSpot);
+  return res.status(200).json(specifiedSpot);
 });
 
 //Create a Spot
-router.post("/",requireAuth, validateSpotBody, async (req, res) => {
+router.post("/", requireAuth, validateSpotBody, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } =
     req.body;
 
@@ -161,8 +216,7 @@ router.post("/",requireAuth, validateSpotBody, async (req, res) => {
     price,
   });
 
-    formatAllDates(newSpot)
-
+  formatAllDates(newSpot);
 
   return res.status(201).json(newSpot);
 });
@@ -237,7 +291,7 @@ router.put("/:spotId", requireAuth, validateSpotBody, async (req, res) => {
     price,
   });
 
-  formatAllDates(spotToUpdate)
+  formatAllDates(spotToUpdate);
   return res.status(200).json(spotToUpdate);
 });
 
@@ -287,7 +341,7 @@ router.get("/:spotId/reviews", async (req, res) => {
       },
     ],
   });
-  formatAllDates(findReviewBySpotId)
+  formatAllDates(findReviewBySpotId);
   return res.status(200).json({ Reviews: findReviewBySpotId });
 });
 

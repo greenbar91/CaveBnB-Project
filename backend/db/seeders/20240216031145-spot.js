@@ -23,7 +23,7 @@ module.exports = {
           name: "App Academy",
           description: "Place where web developers are created",
           price: 123,
-          avgRating: 4.5,
+          avgRating: null,
           previewImage: "image url1",
         },
         {
@@ -38,7 +38,7 @@ module.exports = {
           name: "Times Square Penthouse",
           description: "It's Times Square baby!",
           price: 999,
-          avgRating: 4.6,
+          avgRating: null,
           previewImage: "image url2",
         },
         {
@@ -53,7 +53,7 @@ module.exports = {
           name: "The Ritz",
           description: "Puttin' on the Ritz!",
           price: 500,
-          avgRating: 4.7,
+          avgRating: null,
           previewImage: "image url3",
         },
       ],
