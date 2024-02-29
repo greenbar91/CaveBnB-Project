@@ -176,13 +176,13 @@ router.get("/:spotId", async (req, res) => {
       message: "Spot couldn't be found",
     });
   }
-  for (const spot of specifiedSpot) {
+
     let totalStars = 0;
     let reviewCount = 0;
 
     const reviews = await Review.findAll({
       where: {
-        spotId: spot.id
+        spotId: specifiedSpot.id
       }
     });
 
@@ -191,8 +191,8 @@ router.get("/:spotId", async (req, res) => {
       reviewCount++;
     });
 
-    spot.avgRating = reviewCount > 0 ? totalStars / reviewCount : null;
-  }
+    specifiedSpot.avgRating = reviewCount > 0 ? totalStars / reviewCount : null;
+
 
   formatAllDates(specifiedSpot);
   return res.status(200).json(specifiedSpot);
