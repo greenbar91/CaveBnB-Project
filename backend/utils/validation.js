@@ -334,12 +334,12 @@ const validateNewBooking = [
 
 const validateEditBooking = [
   check("startDate").custom(async (startDate, { req }) => {
-    const endDate = req.body.endDate;
     const { bookingId } = req.params;
     const findBookingById = await Booking.findByPk(bookingId);
     if (!findBookingById) {
       return true;
     }
+    const endDate = req.body.endDate;
     const conflictBookings = await Booking.findOne({
       where: {
         spotId: findBookingById.spotId,

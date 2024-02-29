@@ -265,7 +265,11 @@ router.put("/:spotId", requireAuth, validateSpotBody, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } =
     req.body;
 
-  const findSpotById = await Spot.findByPk(spotId);
+  const findSpotById = await Spot.findByPk(spotId,{
+    exclude:[
+      {attributes:['avgRating','previewImage']}
+    ]
+  });
 
   if (!findSpotById) {
     return res.status(404).json({
@@ -377,7 +381,7 @@ router.post(
 
     const newReview = await Review.create({
       userId: req.user.id,
-      spotId: spotId,
+      spotId: Number(spotId),
       review,
       stars,
     });
