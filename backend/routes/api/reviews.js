@@ -63,10 +63,19 @@ router.get("/current", requireAuth, async (req, res) => {
       delete review.Spot.dataValues.previewImage;
     }
   }
-
+  // console.log(allCurrentReviews[0].Spot.lat)
   formatAllDates(allCurrentReviews);
-  formatLatLng(allCurrentReviews)
-  return res.status(200).json({ Reviews: allCurrentReviews });
+  const formattedReviews = await allCurrentReviews.map(review => {
+    if(review.Spot.lat){
+      review.Spot.lat = parseFloat(review.Spot.lat)
+    }
+    if(review.Spot.lng){
+      review.Spot.lng = parseFloat(review.Spot.lng)
+    }
+    return review
+  })
+  
+  return res.status(200).json({ Reviews:formattedReviews });
 });
 
 //--------------------------------------------------------------------------------------//
