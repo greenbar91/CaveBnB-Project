@@ -47,15 +47,19 @@ router.get("/current", requireAuth, async (req, res) => {
 
     if (imagePreview) {
       booking.Spot.previewImage = imagePreview.url;
-    } else {
-      delete booking.Spot.dataValues.previewImage;
     }
   }
 
   formatAllDates(currentUserBookings);
-  formatLatLng(currentUserBookings)
+  const formattedBookings = await currentUserBookings.map(booking => {
+    if(booking.Spot.lat && booking.Spot.lng){
+      booking.Spot.lat = parseFloat(booking.Spot.lat)
+      booking.Spot.lng = parseFloat(booking.Spot.lng)
+    }
+    return booking
+  })
 
-  return res.status(200).json({ Bookings: currentUserBookings });
+  return res.status(200).json({ Bookings: formattedBookings });
 });
 
 //--------------------------------------------------------------------------------------//
