@@ -58,9 +58,9 @@ const formatLatLng = (spotData) => {
       if (data.lng) {
         data.lng = parseFloat(data.lng);
       }
-      if (spotData.Spot.lat && spotData.Spot.lng) {
-        spotData.Spot.lat = parseFloat(spotData.Spot.lat);
-        spotData.Spot.lng = parseFloat(spotData.Spot.lng);
+      if (spotData.Spot.dataValues.lat && spotData.Spot.dataValues.lng) {
+        spotData.Spot.dataValues.lat = parseFloat(spotData.Spot.dataValues.lat);
+        spotData.Spot.dataValues.lng = parseFloat(spotData.Spot.dataValues.lng);
       }
     });
     return formattedLatLngArray;
