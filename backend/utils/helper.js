@@ -58,10 +58,10 @@ const formatLatLng = (spotData) => {
       if (data.dataValues.lng) {
         data.dataValues.lng = parseFloat(data.dataValues.lng);
       }
-      if (spotData.Spot.dataValues.lat && spotData.Spot.dataValues.lng) {
-        spotData.Spot.dataValues.lat = parseFloat(spotData.Spot.dataValues.lat);
-        spotData.Spot.dataValues.lng = parseFloat(spotData.Spot.dataValues.lng);
-      }
+      // if (spotData.Spot.dataValues.lat && spotData.Spot.dataValues.lng) {
+      //   spotData.Spot.dataValues.lat = parseFloat(spotData.Spot.dataValues.lat);
+      //   spotData.Spot.dataValues.lng = parseFloat(spotData.Spot.dataValues.lng);
+      // }
     });
     return formattedLatLngArray;
   } else {
