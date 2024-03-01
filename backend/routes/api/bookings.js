@@ -1,7 +1,7 @@
 const express = require("express");
 const { Spot, SpotImage, Booking } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
-const { formatAllDates } = require("../../utils/helper");
+const { formatAllDates,formatLatLng } = require("../../utils/helper");
 const {
   validationCheckDateErrors,
   validateEditBooking,
@@ -53,6 +53,8 @@ router.get("/current", requireAuth, async (req, res) => {
   }
 
   formatAllDates(currentUserBookings);
+  formatLatLng(currentUserBookings)
+
   return res.status(200).json({ Bookings: currentUserBookings });
 });
 

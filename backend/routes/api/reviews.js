@@ -8,7 +8,8 @@ const {
 } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 const { validateReviewBody } = require("../../utils/validation");
-const { formatAllDates } = require("../../utils/helper");
+const { formatAllDates,formatLatLng } = require("../../utils/helper");
+
 const router = express.Router();
 
 //--------------------------------------------------------------------------------------//
@@ -64,6 +65,7 @@ router.get("/current", requireAuth, async (req, res) => {
   }
 
   formatAllDates(allCurrentReviews);
+  formatLatLng(allCurrentReviews)
   return res.status(200).json({ Reviews: allCurrentReviews });
 });
 
