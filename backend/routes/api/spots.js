@@ -26,10 +26,6 @@ router.get("/", validateSpotQueryFilters, async (req, res) => {
   let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
     req.query;
 
-  // minLat = Number(minLat)
-  // maxLat = Number(maxLat)
-  // minLng = Number(minLng)
-  // maxLng = Number(maxLng)
   /* Setting defaults for page/size and checking for isNaN */
   if (page === "" || isNaN(page)) {
     page = 1;
@@ -126,7 +122,7 @@ router.get("/", validateSpotQueryFilters, async (req, res) => {
       message: "No spots currently listed",
     });
   }
-
+  // console.log(filteredSpots[2].dataValues.lat)
   formatAllDates(filteredSpots);
   formatLatLng(filteredSpots)
 
@@ -171,9 +167,6 @@ router.get("/current", requireAuth, async (req, res) => {
 
     spot.avgRating = reviewCount > 0 ? totalStars / reviewCount : null;
 
-    if (spot.avgRating === null) {
-      delete spot.dataValues.avgRating;
-    }
   }
 
   /* Finding previewImage for all Spots */
@@ -187,13 +180,12 @@ router.get("/current", requireAuth, async (req, res) => {
 
     if (previewImages) {
       spot.previewImage = previewImages.url;
-    } else {
-      delete spot.dataValues.previewImage;
     }
   }
 
   formatAllDates(currentUserSpots);
   formatLatLng(currentUserSpots)
+  // console.log(currentUserSpots[0].toJSON())
 
   return res.status(200).json({ Spots: currentUserSpots });
 });
@@ -243,29 +235,28 @@ router.get("/:spotId", async (req, res) => {
 
   specifiedSpot.avgRating = reviewCount > 0 ? totalStars / reviewCount : null;
 
-  if (specifiedSpot.avgRating === null) {
-    delete specifiedSpot.dataValues.avgRating;
-  }
-
-  /* Finding previewImage for Spot */
-  const previewImages = await SpotImage.findOne({
-    where: {
-      spotId: specifiedSpot.id,
-    },
-    preview: true,
-  });
-
-  if (previewImages) {
-    specifiedSpot.previewImage = previewImages.url;
-  }
-  if (specifiedSpot.previewImage === null) {
-    delete specifiedSpot.dataValues.previewImage;
-  }
-
   formatAllDates(specifiedSpot);
   formatLatLng(specifiedSpot)
 
-  return res.status(200).json(specifiedSpot);
+  return res.status(200).json({
+    id:specifiedSpot.id,
+    ownerId:specifiedSpot.ownerId,
+    address:specifiedSpot.address,
+    city:specifiedSpot.city,
+    state:specifiedSpot.state,
+    country:specifiedSpot.country,
+    lat:specifiedSpot.lat,
+    lng:specifiedSpot.lng,
+    name:specifiedSpot.name,
+    description:specifiedSpot.description,
+    price:specifiedSpot.price,
+    createdAt:specifiedSpot.createdAt,
+    updatedAt:specifiedSpot.updatedAt,
+    numReviews:reviewCount,
+    avgStarRating:specifiedSpot.avgRating,
+    SpotImages: specifiedSpot.SpotImages,
+    Owner: specifiedSpot.Owner
+  });
 });
 
 //--------------------------------------------------------------------------------------//
