@@ -8,7 +8,7 @@ const {
   Booking,
 } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
-const { formatAllDates } = require("../../utils/helper");
+const { formatAllDates, formatLatLng } = require("../../utils/helper");
 const { Op } = require("sequelize");
 const {
   validationCheckDateErrors,
@@ -26,6 +26,10 @@ router.get("/", validateSpotQueryFilters, async (req, res) => {
   let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
     req.query;
 
+  // minLat = Number(minLat)
+  // maxLat = Number(maxLat)
+  // minLng = Number(minLng)
+  // maxLng = Number(maxLng)
   /* Setting defaults for page/size and checking for isNaN */
   if (page === "" || isNaN(page)) {
     page = 1;
@@ -124,6 +128,7 @@ router.get("/", validateSpotQueryFilters, async (req, res) => {
   }
 
   formatAllDates(filteredSpots);
+  formatLatLng(filteredSpots)
 
   return res.status(200).json({
     Spots: filteredSpots,
@@ -188,6 +193,7 @@ router.get("/current", requireAuth, async (req, res) => {
   }
 
   formatAllDates(currentUserSpots);
+  formatLatLng(currentUserSpots)
 
   return res.status(200).json({ Spots: currentUserSpots });
 });
@@ -257,6 +263,7 @@ router.get("/:spotId", async (req, res) => {
   }
 
   formatAllDates(specifiedSpot);
+  formatLatLng(specifiedSpot)
 
   return res.status(200).json(specifiedSpot);
 });
@@ -289,6 +296,7 @@ router.post("/", requireAuth, validateSpotBody, async (req, res) => {
   }
 
   formatAllDates(newSpot);
+  formatLatLng(newSpot)
 
   return res.status(201).json(newSpot);
 });
@@ -395,6 +403,7 @@ router.put(
     }
 
     formatAllDates(spotToUpdate);
+    formatLatLng(spotToUpdate)
 
     return res.status(200).json(spotToUpdate);
   }
