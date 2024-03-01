@@ -96,9 +96,6 @@ router.get("/", validateSpotQueryFilters, async (req, res) => {
 
     spot.avgRating = reviewCount > 0 ? totalStars / reviewCount : null;
 
-    if (spot.avgRating === null) {
-      delete spot.dataValues.avgRating;
-    }
   }
 
   /* Finding previewImage for all Spots */
@@ -112,8 +109,6 @@ router.get("/", validateSpotQueryFilters, async (req, res) => {
 
     if (previewImages) {
       spot.previewImage = previewImages.url;
-    } else {
-      delete spot.dataValues.previewImage;
     }
   }
 
