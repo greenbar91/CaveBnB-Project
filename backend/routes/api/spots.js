@@ -19,6 +19,7 @@ const {
 } = require("../../utils/validation");
 const router = express.Router();
 
+//!Replace all 403/404 error checks in associated endpoints with new validations in utils/validation
 //--------------------------------------------------------------------------------------//
 //                           Get All Spots with Query filters                           //
 //--------------------------------------------------------------------------------------//
@@ -79,6 +80,7 @@ router.get("/", validateSpotQueryFilters, async (req, res) => {
   });
 
   /* Finding avgRating for all Spots */
+  //!Refactor to make output x.0 if the avgRating is a whole number
   for (const spot of filteredSpots) {
     let totalStars = 0;
     let reviewCount = 0;
@@ -95,7 +97,6 @@ router.get("/", validateSpotQueryFilters, async (req, res) => {
     });
 
     spot.avgRating = reviewCount > 0 ? totalStars / reviewCount : null;
-
   }
 
   /* Finding previewImage for all Spots */
@@ -117,10 +118,11 @@ router.get("/", validateSpotQueryFilters, async (req, res) => {
       message: "No spots currently listed",
     });
   }
-  // console.log(filteredSpots[2].dataValues.lat)
-  formatAllDates(filteredSpots);
-  formatLatLng(filteredSpots)
 
+  formatAllDates(filteredSpots);
+  formatLatLng(filteredSpots);
+
+  //!Refactor size response to conform to default value of size (20)
   return res.status(200).json({
     Spots: filteredSpots,
     page: Number(page),
@@ -145,6 +147,7 @@ router.get("/current", requireAuth, async (req, res) => {
   }
 
   /* Finding avgRating for all Spots */
+  //!Refactor to make output x.0 if the avgRating is a whole number
   for (const spot of currentUserSpots) {
     let totalStars = 0;
     let reviewCount = 0;
@@ -161,7 +164,6 @@ router.get("/current", requireAuth, async (req, res) => {
     });
 
     spot.avgRating = reviewCount > 0 ? totalStars / reviewCount : null;
-
   }
 
   /* Finding previewImage for all Spots */
@@ -179,7 +181,7 @@ router.get("/current", requireAuth, async (req, res) => {
   }
 
   formatAllDates(currentUserSpots);
-  formatLatLng(currentUserSpots)
+  formatLatLng(currentUserSpots);
   // console.log(currentUserSpots[0].toJSON())
 
   return res.status(200).json({ Spots: currentUserSpots });
@@ -214,6 +216,7 @@ router.get("/:spotId", async (req, res) => {
   }
 
   /* Finding avgRating for Spot */
+  //!Refactor to make output x.0 if the avgRating is a whole number
   let totalStars = 0;
   let reviewCount = 0;
 
@@ -231,26 +234,26 @@ router.get("/:spotId", async (req, res) => {
   specifiedSpot.avgRating = reviewCount > 0 ? totalStars / reviewCount : null;
 
   formatAllDates(specifiedSpot);
-  formatLatLng(specifiedSpot)
+  formatLatLng(specifiedSpot);
 
   return res.status(200).json({
-    id:specifiedSpot.id,
-    ownerId:specifiedSpot.ownerId,
-    address:specifiedSpot.address,
-    city:specifiedSpot.city,
-    state:specifiedSpot.state,
-    country:specifiedSpot.country,
-    lat:specifiedSpot.lat,
-    lng:specifiedSpot.lng,
-    name:specifiedSpot.name,
-    description:specifiedSpot.description,
-    price:specifiedSpot.price,
-    createdAt:specifiedSpot.createdAt,
-    updatedAt:specifiedSpot.updatedAt,
-    numReviews:reviewCount,
-    avgStarRating:specifiedSpot.avgRating,
+    id: specifiedSpot.id,
+    ownerId: specifiedSpot.ownerId,
+    address: specifiedSpot.address,
+    city: specifiedSpot.city,
+    state: specifiedSpot.state,
+    country: specifiedSpot.country,
+    lat: specifiedSpot.lat,
+    lng: specifiedSpot.lng,
+    name: specifiedSpot.name,
+    description: specifiedSpot.description,
+    price: specifiedSpot.price,
+    createdAt: specifiedSpot.createdAt,
+    updatedAt: specifiedSpot.updatedAt,
+    numReviews: reviewCount,
+    avgStarRating: specifiedSpot.avgRating,
     SpotImages: specifiedSpot.SpotImages,
-    Owner: specifiedSpot.Owner
+    Owner: specifiedSpot.Owner,
   });
 });
 
@@ -274,6 +277,7 @@ router.post("/", requireAuth, validateSpotBody, async (req, res) => {
     price,
   });
 
+  //!Remove this and change res.json() to only include wanted key/values
   if (newSpot.avgRating === null) {
     delete newSpot.dataValues.avgRating;
   }
@@ -282,7 +286,8 @@ router.post("/", requireAuth, validateSpotBody, async (req, res) => {
   }
 
   formatAllDates(newSpot);
-  formatLatLng(newSpot)
+  //!Check to see if format lat/lng is necessary here
+  formatLatLng(newSpot);
 
   return res.status(201).json(newSpot);
 });
@@ -381,6 +386,7 @@ router.put(
       price,
     });
 
+    //!Remove this and change res.json() to only include wanted key/values
     if (spotToUpdate.avgRating === null) {
       delete spotToUpdate.dataValues.avgRating;
     }
@@ -389,7 +395,8 @@ router.put(
     }
 
     formatAllDates(spotToUpdate);
-    formatLatLng(spotToUpdate)
+    //!Check to see if format lat/lng is necessary here
+    formatLatLng(spotToUpdate);
 
     return res.status(200).json(spotToUpdate);
   }
@@ -512,44 +519,49 @@ router.post(
 //--------------------------------------------------------------------------------------//
 //                  Get all Bookings for a Spot based on the Spot's id                  //
 //--------------------------------------------------------------------------------------//
-router.get("/:spotId/bookings", requireAuth, async (req,res,next)=> {
-  const { spotId } = req.params;
+router.get(
+  "/:spotId/bookings",
+  requireAuth,
+  async (req, res, next) => {
+    const { spotId } = req.params;
 
-  const findSpotById = await Spot.findByPk(spotId);
+    const findSpotById = await Spot.findByPk(spotId);
 
-  if (!findSpotById) {
-    return res.status(404).json({
-      message: "Spot couldn't be found",
-    });
+    if (!findSpotById) {
+      return res.status(404).json({
+        message: "Spot couldn't be found",
+      });
+    }
+    next();
+  },
+  async (req, res) => {
+    const { spotId } = req.params;
+
+    const findSpotById = await Spot.findByPk(spotId);
+
+    /* Response sent if Spot is not owned by current user */
+    if (findSpotById.ownerId !== req.user.id) {
+      const notOwnerBookings = await findSpotById.getBookings({
+        attributes: ["spotId", "startDate", "endDate"],
+      });
+
+      formatAllDates(notOwnerBookings);
+
+      return res.status(200).json({ Bookings: notOwnerBookings });
+    }
+
+    /* Response sent if Spot is owned by current user */
+    if (findSpotById.ownerId === req.user.id) {
+      const ownerBookings = await findSpotById.getBookings({
+        include: [{ model: User, attributes: ["id", "firstName", "lastName"] }],
+      });
+
+      formatAllDates(ownerBookings);
+
+      return res.status(200).json({ Bookings: ownerBookings });
+    }
   }
-  next()
-},async (req, res) => {
-  const { spotId } = req.params;
-
-  const findSpotById = await Spot.findByPk(spotId);
-
-  /* Response sent if Spot is not owned by current user */
-  if (findSpotById.ownerId !== req.user.id) {
-    const notOwnerBookings = await findSpotById.getBookings({
-      attributes: ["spotId", "startDate", "endDate"],
-    });
-
-    formatAllDates(notOwnerBookings);
-
-    return res.status(200).json({ Bookings: notOwnerBookings });
-  }
-
-  /* Response sent if Spot is owned by current user */
-  if (findSpotById.ownerId === req.user.id) {
-    const ownerBookings = await findSpotById.getBookings({
-      include: [{ model: User, attributes: ["id", "firstName", "lastName"] }],
-    });
-
-    formatAllDates(ownerBookings);
-
-    return res.status(200).json({ Bookings: ownerBookings });
-  }
-});
+);
 
 //--------------------------------------------------------------------------------------//
 //                 Create a Booking from a Spot based on the Spot's id                  //
@@ -557,7 +569,7 @@ router.get("/:spotId/bookings", requireAuth, async (req,res,next)=> {
 router.post(
   "/:spotId/bookings",
   requireAuth,
-  async(req,res,next)=> {
+  async (req, res, next) => {
     const { spotId } = req.params;
 
     const findSpotById = await Spot.findByPk(spotId);
@@ -573,9 +585,8 @@ router.post(
         message: "Forbidden",
       });
     }
-    next()
-  }
-  ,
+    next();
+  },
   validationCheckDateErrors,
   validateNewBooking,
   async (req, res) => {

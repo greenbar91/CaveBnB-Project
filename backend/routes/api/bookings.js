@@ -1,13 +1,14 @@
 const express = require("express");
 const { Spot, SpotImage, Booking } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
-const { formatAllDates,formatLatLng } = require("../../utils/helper");
+const { formatAllDates, formatLatLng } = require("../../utils/helper");
 const {
   validationCheckDateErrors,
   validateEditBooking,
 } = require("../../utils/validation");
 const router = express.Router();
 
+//!Replace all 403/404 error checks in associated endpoints with new validations in utils/validation
 //--------------------------------------------------------------------------------------//
 //                        Get all of the Current User's Bookings                        //
 //--------------------------------------------------------------------------------------//
@@ -53,7 +54,8 @@ router.get("/current", requireAuth, async (req, res) => {
   }
 
   formatAllDates(currentUserBookings);
-  formatLatLng(currentUserBookings)
+  //!Format lat/lng not needed since we're including Spot lat/lng attributes in our query
+  formatLatLng(currentUserBookings);
 
   return res.status(200).json({ Bookings: currentUserBookings });
 });

@@ -58,6 +58,7 @@ const formatLatLng = (spotData) => {
       if (data.lng) {
         data.lng = parseFloat(data.lng);
       }
+      //!Refactor this to apply to endpoints that have Spot nested
       // if (spotData.Spot.dataValues.lat && spotData.Spot.dataValues.lng) {
       //   spotData.Spot.dataValues.lat = parseFloat(spotData.Spot.dataValues.lat);
       //   spotData.Spot.dataValues.lng = parseFloat(spotData.Spot.dataValues.lng);

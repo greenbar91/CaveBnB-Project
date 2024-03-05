@@ -8,10 +8,11 @@ const {
 } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 const { validateReviewBody } = require("../../utils/validation");
-const { formatAllDates,formatLatLng } = require("../../utils/helper");
+const { formatAllDates, formatLatLng } = require("../../utils/helper");
 
 const router = express.Router();
 
+//!Replace all 403/404 error checks in associated endpoints with new validations in utils/validation
 //--------------------------------------------------------------------------------------//
 //                         Get all Reviews of the Current User                          //
 //--------------------------------------------------------------------------------------//
@@ -63,19 +64,21 @@ router.get("/current", requireAuth, async (req, res) => {
       delete review.Spot.dataValues.previewImage;
     }
   }
-  // console.log(allCurrentReviews[0].Spot.lat)
+
   formatAllDates(allCurrentReviews);
-  const formattedReviews = await allCurrentReviews.map(review => {
-    if(review.Spot.lat){
-      review.Spot.lat = parseFloat(review.Spot.lat)
+  //!Refactor formatLatLng to include code below and just pass in
+  //!formatLatLng(allCurrentReviews)
+  const formattedReviews = await allCurrentReviews.map((review) => {
+    if (review.Spot.lat) {
+      review.Spot.lat = parseFloat(review.Spot.lat);
     }
-    if(review.Spot.lng){
-      review.Spot.lng = parseFloat(review.Spot.lng)
+    if (review.Spot.lng) {
+      review.Spot.lng = parseFloat(review.Spot.lng);
     }
-    return review
-  })
-  
-  return res.status(200).json({ Reviews:formattedReviews });
+    return review;
+  });
+
+  return res.status(200).json({ Reviews: formattedReviews });
 });
 
 //--------------------------------------------------------------------------------------//

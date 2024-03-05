@@ -3,6 +3,7 @@ const { Spot, SpotImage } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 const router = express.Router();
 
+//!Replace all 403/404 error checks in associated endpoints with new validations in utils/validation
 //--------------------------------------------------------------------------------------//
 //                                 Delete a Spot Image                                  //
 //--------------------------------------------------------------------------------------//

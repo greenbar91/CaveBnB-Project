@@ -25,7 +25,6 @@ router.post("/", validateLogin, async (req, res, next) => {
     },
   });
 
-  //!Ask if title is required or not (not in README)
   if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
     const err = new Error("Login failed");
     err.status = 401;
