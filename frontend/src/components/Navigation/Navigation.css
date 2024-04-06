@@ -1,7 +1,7 @@
 .profile-dropdown {
     position: absolute;
-    top: 40px;
-    right: 0;
+    top: 20px;
+    left: 100px;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -13,3 +13,9 @@
 .hidden {
     display: none;
   }
+
+  .dropdown {
+    border: 1px solid #000;
+    padding: 4px;
+
+}
