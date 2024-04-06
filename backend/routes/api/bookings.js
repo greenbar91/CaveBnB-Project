@@ -48,8 +48,6 @@ router.get("/current", requireAuth, async (req, res) => {
 
     if (imagePreview) {
       booking.Spot.previewImage = imagePreview.url;
-    } else {
-      delete booking.Spot.dataValues.previewImage;
     }
   }
 
@@ -57,7 +55,7 @@ router.get("/current", requireAuth, async (req, res) => {
   //!Format lat/lng not needed since we're including Spot lat/lng attributes in our query
   formatLatLng(currentUserBookings);
 
-  return res.status(200).json({ Bookings: currentUserBookings });
+  return res.status(200).json({ Bookings: formattedBookings });
 });
 
 //--------------------------------------------------------------------------------------//
