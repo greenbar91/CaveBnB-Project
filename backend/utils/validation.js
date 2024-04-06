@@ -272,7 +272,7 @@ const validateNewBooking = [
         ],
       },
     });
-    console.log(conflictBookings);
+    // console.log(conflictBookings);
     if (conflictBookings) {
       throw new Error("Start date conflicts with an existing booking");
     }
