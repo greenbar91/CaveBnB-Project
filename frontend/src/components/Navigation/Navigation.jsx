@@ -9,9 +9,9 @@ function Navigation({ isLoaded }) {
 
   return (
     <ul>
-      <><Logo/></>
+      <></>
       <>
-        <NavLink to="/" className='home-link'>Home</NavLink>
+        <NavLink to="/" className='home-link'><Logo/></NavLink>
       </>
       {isLoaded && (
         <>
