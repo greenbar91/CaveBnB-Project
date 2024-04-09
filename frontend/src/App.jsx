@@ -28,7 +28,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <h1>CaveBnB</h1>
+        element: <h1></h1>
       },
     ]
   }
