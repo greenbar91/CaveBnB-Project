@@ -36,26 +36,33 @@ function LoginFormModal() {
     }
   },[credential,password])
 
-  // const handleDemoUserOnClick = () => {
-
-  // }
+  const handleDemoUserOnClick = () => {
+    return dispatch(sessionActions.loginThunk({ credential:'Demo-lition', password:'password' }))
+    .then(() => {
+      closeModal();
+    })
+  }
 
   return (
-    <>
-      <h1 className='login'>Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username or Email
+    <div >
+      <h1 className='login-header'>Log In</h1>
+      <form onSubmit={handleSubmit} className='login-form'>
+        <label className='login'>
+
           <input
+          className='login-input'
+          placeholder='Username or Email'
             type="text"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             required
           />
         </label>
-        <label>
-          Password
+        <label className='login'>
+
           <input
+          className='login-input'
+          placeholder='Password'
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -65,10 +72,10 @@ function LoginFormModal() {
         {errors.credential && (
           <p className='login-error'>{errors.credential}</p>
         )}
-        <button type="submit" disabled={disableSubmit}>Log In</button>
+        <button type="submit" disabled={disableSubmit} className='login-button'>Log In</button>
+      <button className='demo-user-button' onClick={handleDemoUserOnClick}>Demo user</button>
       </form>
-      <button className='demo-user-button' onClick={'a'}>Log in as Demo user</button>
-    </>
+    </div>
   );
 }
 
