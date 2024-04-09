@@ -8,8 +8,8 @@
   padding: 10px;
   list-style-type: none;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   font-size: 18px;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
@@ -64,4 +64,36 @@
   display:flex;
   justify-content:center;
   right: 20px;
+}
+
+
+.logout-button {
+  display: flex;
+  padding: 10px;
+  border-radius: 18px;
+  background-color:aliceblue;
+  font-size: 16px;
+  margin-top: 20px;
+  height: 40px;
+  width: 100px;
+  flex-direction: column;
+  align-items: center;
+  font-weight:bold;
+  cursor: pointer;
+}
+
+
+.usermenu {
+  display: flex;
+  flex-direction: column;
+  align-items: right;
+  font-size: 20px;
+  cursor: default;
+}
+
+.manage-spots{
+  margin-top: 20px;
+  border-top:1px solid black;
+  border-bottom: 1px solid black;
+  padding: 8px;
 }
