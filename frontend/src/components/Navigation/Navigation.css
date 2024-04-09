@@ -26,12 +26,14 @@
   border-width: 1px;
   border-color: #ccc;
   transition: box-shadow 0.3s;
+  cursor: pointer;
 }
 
 .home-link{
   position: relative;
   display: flex;
   justify-content: left;
+  cursor: pointer;
 }
 
 .profile-button:hover {
