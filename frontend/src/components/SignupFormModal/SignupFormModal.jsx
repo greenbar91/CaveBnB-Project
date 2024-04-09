@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useModal } from '../../context/Modal';
-import * as sessionActions from '../../store/session';
-import './SignupForm.css';
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useModal } from "../../context/Modal";
+import * as sessionActions from "../../store/session";
+import "./SignupForm.css";
 
 function SignupFormModal() {
   const dispatch = useDispatch();
@@ -13,6 +13,7 @@ function SignupFormModal() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [disableSignupButton, setDisableSignupButton] = useState(false);
   const { closeModal } = useModal();
 
   const handleSubmit = (e) => {
@@ -25,21 +26,56 @@ function SignupFormModal() {
           username,
           firstName,
           lastName,
-          password
+          password,
         })
       )
         .then(closeModal)
         .catch(async (res) => {
           const data = await res.json();
-          if (data?.errors) {
+
+          if(data.errors.email === 'Invalid email'){
+            setErrors({email: 'Invalid email'})
+          }
+          if(data.errors.email === "User with that email already exists"){
+            setErrors({email:"User with that email already exists"})
+          }
+          else if (data?.errors) {
             setErrors(data.errors);
           }
         });
     }
     return setErrors({
-      confirmPassword: "Confirm Password field must be the same as the Password field"
+      confirmPassword:
+        "Confirm Password field must be the same as the Password field",
     });
   };
+
+  useEffect(() => {
+    if (
+      !email.length ||
+      !username.length ||
+      !firstName.length ||
+      !lastName.length ||
+      !password.length ||
+      !confirmPassword.length ||
+      username.length < 4 ||
+      password.length < 6
+    ) {
+      setDisableSignupButton(true);
+    }
+
+
+    else {
+      setDisableSignupButton(false);
+    }
+  }, [
+    confirmPassword.length,
+    email.length,
+    firstName.length,
+    lastName.length,
+    password.length,
+    username.length,
+  ]);
 
   return (
     <>
@@ -104,10 +140,10 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.confirmPassword && (
-          <p>{errors.confirmPassword}</p>
-        )}
-        <button type="submit">Sign Up</button>
+        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+        <button type="submit" disabled={disableSignupButton}>
+          Sign Up
+        </button>
       </form>
     </>
   );
