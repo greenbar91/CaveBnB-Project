@@ -38,6 +38,7 @@
 
 .profile-button:hover {
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+
 }
 
 .hidden {
@@ -50,7 +51,8 @@
 }
 
 .dropdown:hover{
-  background-color:#F7F7F7
+  background-color:#F7F7F7;
+  cursor: pointer;
 }
 
 
