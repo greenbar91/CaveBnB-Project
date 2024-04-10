@@ -64,6 +64,7 @@
   display:flex;
   justify-content:center;
   right: 20px;
+  cursor: default;
 }
 
 
