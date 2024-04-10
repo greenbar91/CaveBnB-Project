@@ -1,0 +1,8 @@
+.spots-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.spot {
+    border: 1px solid black;
+}
