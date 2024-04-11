@@ -37,9 +37,9 @@ export default function HomePage() {
                     <li title={spot.name}>
                       {spot.city}, {spot.state}
                     </li>
-                    <li>
+                    <li className="price">
                       ${spot.price}
-                      {"/"}night
+                      {' '}<span className="night">night</span>
                     </li>
                   </div>
                   <div className="spot-info-right">

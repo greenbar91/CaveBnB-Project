@@ -48,12 +48,15 @@
 
 .demo-user-button{
     display: flex;
-    align-items: right;
+    align-items: center;
+    flex-direction: column;
     padding: 10px;
     border-radius: 18px;
     background-color:aliceblue;
     font-size: 16px;
     margin: 10px;
+    height: 40px;
+    width: 120px;
     font-weight: bold;
     cursor: pointer;
 }

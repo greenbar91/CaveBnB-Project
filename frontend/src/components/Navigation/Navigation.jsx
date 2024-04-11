@@ -9,11 +9,11 @@ function Navigation({ isLoaded }) {
 
   return (
     <ul>
-      <>
+      
         <NavLink to="/" >
           <Logo />
         </NavLink>
-      </>
+
       <h1 className="app-header">CaveBnB</h1>
       {isLoaded && (
         <>

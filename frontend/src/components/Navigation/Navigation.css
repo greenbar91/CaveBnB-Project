@@ -1,6 +1,7 @@
+
 .profile-dropdown {
   position: absolute;
-  top: 70px;
+  top: 85px;
   right: 50px;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -17,7 +18,7 @@
 
 .profile-button {
   position: absolute;
-  top: 20px;
+  top: 0em;
   right: 50px;
   width: 80px;
   height: 40px;
@@ -67,6 +68,8 @@
   justify-content:center;
   right: 20px;
   cursor: default;
+  border-bottom: 1px solid black;
+  padding:10px
 }
 
 
