@@ -13,13 +13,13 @@ module.exports = {
     await SpotImage.bulkCreate(
       [
         {
-          url: "../images/cave1.png",
+          url: "https://i.imgur.com/DBgV2V5.png",
           preview: true,
           spotId: 1,
         },
         { url: "image url", preview: false, spotId: 1 },
-        { url: "../images/cave2.png", preview: true, spotId: 2 },
-        { url: "../images/cave3.png", preview: true, spotId: 3 },
+        { url: "https://i.imgur.com/qhAU4XD.png", preview: true, spotId: 2 },
+        { url: "https://i.imgur.com/522eiiS.png", preview: true, spotId: 3 },
       ],
       { validate: true }
     );

@@ -5,6 +5,7 @@ import Navigation from './components/Navigation';
 import HomePage from './components/HomePage';
 import * as sessionActions from './store/session';
 
+
 function Layout() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
