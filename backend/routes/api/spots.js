@@ -96,7 +96,7 @@ router.get("/", validateSpotQueryFilters, async (req, res) => {
       reviewCount++;
     });
 
-    spot.avgRating = reviewCount > 0 ? (totalStars / reviewCount).toFixed(1) : null;
+    spot.avgRating = reviewCount > 0 ? (totalStars / reviewCount) : null;
   }
 
   /* Finding previewImage for all Spots */
@@ -163,7 +163,7 @@ router.get("/current", requireAuth, async (req, res) => {
       reviewCount++;
     });
 
-    spot.avgRating = reviewCount > 0 ? totalStars / reviewCount.toFixed(1) : null;
+    spot.avgRating = reviewCount > 0 ? totalStars / reviewCount: null;
   }
 
   /* Finding previewImage for all Spots */
@@ -231,7 +231,7 @@ router.get("/:spotId", async (req, res) => {
     reviewCount++;
   });
 
-  specifiedSpot.avgRating = reviewCount > 0 ? totalStars / reviewCount.toFixed(1) : null;
+  specifiedSpot.avgRating = reviewCount > 0 ? totalStars / reviewCount: null;
 
   formatAllDates(specifiedSpot);
   formatLatLng(specifiedSpot);
