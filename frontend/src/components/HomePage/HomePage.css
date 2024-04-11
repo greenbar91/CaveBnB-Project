@@ -1,8 +1,16 @@
 .spots-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
 }
 
 .spot {
-    border: 1px solid black;
+  width: calc(25% - 20px);
+  margin: 10px;
+  border: 1px solid #ccc;
+}
+
+.spot img {
+  width: 100%;
+  height: auto;
 }

@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import * as spotsActions from '../../store/spots';
-
+import './HomePage.css'
 
 export default  function HomePage(){
     const dispatch = useDispatch()
-    const spots = useSelector(state => state.spots.spots.Spots);
+    const spots = useSelector(state => state.spots.Spots);
 
     useEffect(()=> {
         dispatch(spotsActions.getAllSpotsThunk())
@@ -17,17 +17,18 @@ export default  function HomePage(){
 
 
     return (
-        <div className="spots-container">
+        <ul className="spots-container" >
           {Object.keys(spots).map(spotId => {
             const spot = spots[spotId];
             return (
               <div key={spotId} className="spot">
-                <h2>{spot.name}</h2>
-                <p>State: {spot.state}, City: {spot.city}</p>
-
+                <img src={spot.previewImage}></img>
+                <li title={spot.name}>{spot.city}, {spot.state}</li>
+                <li>${spot.price}{'/'}night</li>
+                <li>{spot.avgRating ? 'Average star rating: ' + spot.avgRating : 'New'}</li>
               </div>
             );
           })}
-        </div>
+        </ul>
       );
     }

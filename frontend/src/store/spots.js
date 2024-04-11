@@ -22,12 +22,12 @@ export const getAllSpotsThunk = () => async (dispatch) => {
     }
 }
 
-const initialState = { spots:[]}
+const initialState = {}
 
 const spotsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_SPOTS:
-        return {...state, spots:action.payload}
+        return {...state, ...action.payload}
         default:
         return state
     }
