@@ -1,4 +1,5 @@
 "use strict";
+// import image from '../images/cave1.png'
 
 const { SpotImage } = require("../models");
 
@@ -12,13 +13,13 @@ module.exports = {
     await SpotImage.bulkCreate(
       [
         {
-          url: "image url spot1",
+          url: "../images/cave1.png",
           preview: true,
           spotId: 1,
         },
         { url: "image url", preview: false, spotId: 1 },
-        { url: "image url spot2", preview: true, spotId: 2 },
-        { url: "image url spot3", preview: true, spotId: 3 },
+        { url: "../images/cave2.png", preview: true, spotId: 2 },
+        { url: "../images/cave3.png", preview: true, spotId: 3 },
       ],
       { validate: true }
     );
