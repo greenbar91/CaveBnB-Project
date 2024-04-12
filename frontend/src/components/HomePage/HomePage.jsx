@@ -28,7 +28,7 @@ export default function HomePage() {
         return (
           <>
             <div key={spotId} className="spot">
-              <Link to={`/${spot.id}`}>
+              <Link to={`spots/${spot.id}`}>
                 <div className="image-container">
                   <img src={spot.previewImage}></img>
                 </div>
