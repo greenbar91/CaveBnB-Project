@@ -9,7 +9,7 @@ function Navigation({ isLoaded }) {
 
   return (
     <ul>
-      
+
         <NavLink to="/" >
           <Logo />
         </NavLink>

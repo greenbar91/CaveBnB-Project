@@ -5,7 +5,7 @@ export default function Logo(){
 
     return (
         <>
-        <img src={logoImage} alt='cave-logo'/>
+        <img className='logo' src={logoImage} alt='cave-logo'/>
         </>
     )
 }

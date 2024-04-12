@@ -83,14 +83,14 @@ module.exports = {
           createdAt: "2023-11-19 20:39:36",
           updatedAt: "2023-11-19 20:39:36",
         },
-        {
-          userId: 2,
-          spotId: 10,
-          review: "This was an awesome spot!",
-          stars: 4.2,
-          createdAt: "2023-11-19 20:39:36",
-          updatedAt: "2023-11-19 20:39:36",
-        },
+        // {
+        //   userId: 2,
+        //   spotId: 10,
+        //   review: "This was an awesome spot!",
+        //   stars: 4.2,
+        //   createdAt: "2023-11-19 20:39:36",
+        //   updatedAt: "2023-11-19 20:39:36",
+        // },
       ],
       { validate: true }
     );
