@@ -1,15 +1,14 @@
 import * as spotsActions from "../../store/spots";
-import * as reviewActions from '../../store/reviews'
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import "./SpotDetails.css";
 import { useParams } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
+import SpotReviews from "../SpotReviews";
+import "./SpotDetails.css";
 
 export default function SpotDetails() {
   const { spotId } = useParams();
   const spot = useSelector((state) => state.spots[Number(spotId)]);
-  const reviews = useSelector((state) => state.reviews.Reviews)
   const currentUser = useSelector((state) => state.session.user);
 
   const dispatch = useDispatch();
@@ -20,12 +19,6 @@ export default function SpotDetails() {
     }
   }, [dispatch, spotId]);
 
-  useEffect(()=> {
-    if(spotId){
-      dispatch(reviewActions.getReviewsBySpotIdThunk(Number(spotId)))
-    }
-  },[dispatch, spotId])
-
   if (!spot) {
     return <div>Loading...</div>;
   }
@@ -34,9 +27,7 @@ export default function SpotDetails() {
     return window.alert("Feature coming soon");
   };
 
-  const previewImage = spot.SpotImages.find((image) => image.preview);
-
-  const handleReviewCheck = (spot) => {
+  const handleReviewCheck = () => {
     if (spot.numReviews === 1) {
       return "Review";
     }
@@ -48,7 +39,7 @@ export default function SpotDetails() {
     }
   };
 
-  const handleStarCheck = (spot) => {
+  const handleStarCheck = () => {
     if (spot.avgStarRating) {
       return spot.avgStarRating.toFixed(1);
     } else {
@@ -56,7 +47,7 @@ export default function SpotDetails() {
     }
   };
 
-  const handleNumReviewCheck = (spot) => {
+  const handleNumReviewCheck = () => {
     if (spot.numReviews) {
       return " · " + spot.numReviews;
     } else {
@@ -64,35 +55,20 @@ export default function SpotDetails() {
     }
   };
 
-  //change the return to the review list, not the review headers
   const handleBeTheFirstToPost = () => {
     if (!spot.numReviews) {
-      if (currentUser && currentUser?.id === spot.ownerId) {
-        return (
-          <>
-            Review placeholder
-          </>
-        );
-      }
-      if (!currentUser) {
-        return (
-          <>
-            Review placeholder
-          </>
-        );
+      if ((currentUser && currentUser?.id === spot.ownerId) || !currentUser) {
+        return <SpotReviews />;
       } else if (currentUser) {
         return <>Be the first to post a review!</>;
       }
     }
-    if (spot.numReviews) {
-      return (
-        <>
-          Review placeholder
-        </>
-      );
+    else {
+      return <SpotReviews/>
     }
   };
 
+  const previewImage = spot.SpotImages.find((image) => image.preview);
   return (
     <>
       <div className="spot-details-page">
@@ -124,20 +100,22 @@ export default function SpotDetails() {
           <p className="spot-reserve">
             ${spot.price} night{" · "}
             <FaStar />
-            {handleStarCheck(spot)}
+            {handleStarCheck()}
             {"  "}
-            {handleNumReviewCheck(spot)} {handleReviewCheck(spot)}
+            {handleNumReviewCheck()} {handleReviewCheck()}
           </p>
           <button onClick={handleClickReserve} className="spot-reserve-button">
             Reserve
           </button>
         </div>
         <div className="spot-review-container">
-          <div className="spot-review-header"><FaStar />
-            {handleStarCheck(spot)}
+          <div className="spot-review-header">
+            <FaStar />
+            {handleStarCheck()}
             {"   "}
-            {handleNumReviewCheck(spot)} {handleReviewCheck(spot)}</div>
-          <div className="spot-reviews">{handleBeTheFirstToPost()}</div>
+            {handleNumReviewCheck()} {handleReviewCheck()}
+          </div>
+          {handleBeTheFirstToPost()}
         </div>
       </div>
     </>

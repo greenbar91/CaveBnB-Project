@@ -13,7 +13,7 @@ module.exports = {
       [
         {
           userId: 1,
-          spotId: 1,
+          spotId: 3,
           review: "This was an awesome spot!",
           stars: 5.0,
           createdAt: "2023-11-19 20:39:36",
@@ -21,7 +21,7 @@ module.exports = {
         },
         {
           userId: 2,
-          spotId: 2,
+          spotId: 1,
           review: "Meh",
           stars: 3.0,
           createdAt: "2023-11-20 20:39:36",
@@ -29,7 +29,7 @@ module.exports = {
         },
         {
           userId: 3,
-          spotId: 3,
+          spotId: 2,
           review: "Nice Spot!",
           stars: 4.0,
           createdAt: "2023-11-21 20:39:36",
@@ -83,7 +83,7 @@ module.exports = {
           createdAt: "2023-11-19 20:39:36",
           updatedAt: "2023-11-19 20:39:36",
         },
-  
+
       ],
       { validate: true }
     );
