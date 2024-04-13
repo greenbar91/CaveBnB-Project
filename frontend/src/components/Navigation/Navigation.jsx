@@ -4,6 +4,7 @@ import ProfileButton from "./ProfileButton";
 import Logo from "../Logo";
 import "./Navigation.css";
 
+
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
 
@@ -14,7 +15,7 @@ function Navigation({ isLoaded }) {
           <Logo />
         </NavLink>
 
-      <h1 className="app-header">CaveBnB</h1>
+      <h1 className="app-header"></h1>
       {isLoaded && (
         <>
           <ProfileButton user={sessionUser} />

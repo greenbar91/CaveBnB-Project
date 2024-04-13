@@ -15,13 +15,23 @@ input:hover{
 }
 
 button{
-    border-radius: 18px;
-  background-color:aliceblue;
   font-size: 16px;
   margin-top: 40px;
   height: 40px;
   width: 100px;
 }
+
+button:disabled{
+   background-color: #ac8282;
+   box-shadow: none;
+}
+
+button:disabled:hover{
+  background-color: #ac8282;
+  box-shadow: none;
+  cursor: default;
+}
+
 
 .input-container {
     position: relative;

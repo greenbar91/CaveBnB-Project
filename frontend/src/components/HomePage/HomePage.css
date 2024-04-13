@@ -2,21 +2,18 @@
   display: flex;
   flex-wrap: wrap;
   list-style: none;
-
 }
 
 .spot {
   width: calc(25% - 50px);
   margin: 10px;
   padding: 10px;
-  /* border: 1px solid #ccc; */
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   font-size: 18px;
-  /* background-color: white */
   border-radius: 12px;
 }
 
-.spot:hover{
+.spot:hover {
   cursor: default;
   box-shadow: 0 2px 12px rgba(33, 33, 33, 0.2);
 }
@@ -40,29 +37,25 @@
   margin-top: 10px;
 }
 
-.spot-info-left{
-
+.spot-info-left {
   font-weight: bold;
 }
 
-.spot-info-right{
+.spot-info-right {
   text-align: right;
 }
 
-.spot a{
+.spot a {
   text-decoration: none;
   color: black;
 }
 
-.gold-star {
-  color: gold;
-}
 
 .night {
   font-weight: normal;
   font-size: 17px;
 }
 
-.price{
+.price {
   margin-top: 10px;
 }

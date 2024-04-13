@@ -1,3 +1,18 @@
 *{
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   }
+
+  button {
+    background-color: rgb(241, 67, 67);
+    cursor: pointer;
+    box-shadow: 3px 3px black;
+    border-radius: 0%;
+    color: white;
+    font-weight: bold;
+  }
+
+  button:hover{
+    transition: .3 sec;
+    box-shadow: 4px 4px 1px black;
+    background-color: rgb(236, 26, 26);
+  }

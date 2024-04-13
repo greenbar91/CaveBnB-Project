@@ -42,7 +42,7 @@ export default function HomePage() {
                     <li>
                       {spot.avgRating ? (
                         <>
-                          <FaStar className="gold-star" />{" "}
+                          <FaStar />{" "}
                           {spot.avgRating.toFixed(1)}
                         </>
                       ) : (
