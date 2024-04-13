@@ -21,17 +21,38 @@ export default function SpotDetails() {
   }
 
   const handleClickReserve = () => {
-    return (window.alert('Feature coming soon'))
-  }
+    return window.alert("Feature coming soon");
+  };
 
   const previewImage = spot.SpotImages.find((image) => image.preview);
 
-  let reviewCheck;
-  if(spot.numReviews <= 1){
-    reviewCheck = 'review'
-  } else{
-    reviewCheck = 'reviews'
-  }
+  const handleReviewCheck = (spot) => {
+    if (spot.numReviews === 1) {
+      return "Review";
+    }
+    if (spot.numReviews > 1) {
+      return "Reviews";
+    }
+    if (!spot.numReviews) {
+      return "";
+    }
+  };
+
+  const handleStarCheck = (spot) => {
+    if (spot.avgStarRating) {
+      return spot.avgStarRating.toFixed(1);
+    } else {
+      return "";
+    }
+  };
+
+  const handleNumReviewCheck = (spot) => {
+    if (spot.numReviews) {
+      return ' · ' + spot.numReviews ;
+    } else {
+      return "New";
+    }
+  };
 
   return (
     <>
@@ -61,8 +82,16 @@ export default function SpotDetails() {
             Hosted by {spot.Owner.firstName} {spot.Owner.lastName}
           </h2>
           <p className="spot-description">{spot.description}</p>
-          <p className="spot-reserve">${spot.price} night{' • '}<FaStar/>{spot.avgStarRating.toFixed(1)}{' • '}{spot.numReviews}{' '}{reviewCheck}</p>
-          <button onClick={handleClickReserve} className="spot-reserve-button">Reserve</button>
+          <p className="spot-reserve">
+            ${spot.price} night{" · "}
+            <FaStar />
+            {handleStarCheck(spot)}
+            {"  "}
+            {handleNumReviewCheck(spot)} {handleReviewCheck(spot)}
+          </p>
+          <button onClick={handleClickReserve} className="spot-reserve-button">
+            Reserve
+          </button>
         </div>
       </div>
     </>

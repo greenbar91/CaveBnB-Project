@@ -44,7 +44,8 @@ module.exports = {
           lat: 35.8163,
           lng: 78.6205,
           name: "Fingal's Cave",
-          description: "Well known for its hexagonal basalt columns Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean libero leo, ultrices quis pharetra ut, posuere eget risus. Sed a vestibulum nibh. Maecenas ultricies augue sit amet enim pretium, non consectetur libero laoreet. Curabitur at ullamcorper elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse cursus porttitor lorem eu feugiat. Donec suscipit quam eget ipsum consequat tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas mollis fringilla sollicitudin. Nunc sed dolor sit amet quam iaculis mollis eget ut ipsum. Sed tempus nibh vel ipsum ultricies tristique.",
+          description:
+            "Well known for its hexagonal basalt columns Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean libero leo, ultrices quis pharetra ut, posuere eget risus. Sed a vestibulum nibh. Maecenas ultricies augue sit amet enim pretium, non consectetur libero laoreet. Curabitur at ullamcorper elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse cursus porttitor lorem eu feugiat. Donec suscipit quam eget ipsum consequat tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas mollis fringilla sollicitudin. Nunc sed dolor sit amet quam iaculis mollis eget ut ipsum. Sed tempus nibh vel ipsum ultricies tristique.",
           price: 500,
         },
         {
@@ -58,7 +59,8 @@ module.exports = {
           name: "Lechuguilla cave",
           description: "Check out Big Room Trail!",
           price: 576,
-        },{
+        },
+        {
           ownerId: 1,
           address: "123 Waitomo ",
           city: "Waitomo",
@@ -69,7 +71,8 @@ module.exports = {
           name: "Waitomo",
           description: "See the starry night inside!",
           price: 274,
-        },{
+        },
+        {
           ownerId: 1,
           address: "123 Skocjan Caves",
           city: "Skocjan",
@@ -80,7 +83,8 @@ module.exports = {
           name: "Skocjan Caves",
           description: "Awe-inspiring stalactites",
           price: 954,
-        },{
+        },
+        {
           ownerId: 1,
           address: "123 Reed Flute Cave",
           city: "Guillan",
@@ -91,7 +95,8 @@ module.exports = {
           name: "Reed Flute Cave",
           description: "Also known as the Palace of Natural Arts",
           price: 184,
-        },{
+        },
+        {
           ownerId: 1,
           address: "123 Cave of the Crystals",
           city: "Mexico City",
@@ -102,18 +107,20 @@ module.exports = {
           name: "Cave of the Crystals",
           description: "Giant selenite crystals",
           price: 464,
-        },{
+        },
+        {
           ownerId: 1,
           address: "123 Eisriesenwelt Cave",
           city: "Salzach",
           state: "Salzburg",
           country: "Austria",
-          lat: 19.0760,
+          lat: 19.076,
           lng: -122.4730327,
           name: "Eisriesenwelt Cave",
           description: "Largest ice cave in the world",
           price: 467,
-        },{
+        },
+        {
           ownerId: 1,
           address: "123 Hang Son Doong Cave",
           city: "Hanoi",

@@ -5,9 +5,6 @@ import "./HomePage.css";
 import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 
-
-
-
 export default function HomePage() {
   const dispatch = useDispatch();
   const spots = useSelector((state) => state.spots.Spots);
@@ -38,16 +35,15 @@ export default function HomePage() {
                       {spot.city}, {spot.state}
                     </li>
                     <li className="price">
-                      ${spot.price}
-                      {' '}<span className="night">night</span>
+                      ${spot.price} <span className="night">night</span>
                     </li>
                   </div>
                   <div className="spot-info-right">
                     <li>
                       {spot.avgRating ? (
                         <>
-                          <FaStar className="gold-star" />
-                          {' '}{spot.avgRating.toFixed(1)}
+                          <FaStar className="gold-star" />{" "}
+                          {spot.avgRating.toFixed(1)}
                         </>
                       ) : (
                         "New"
