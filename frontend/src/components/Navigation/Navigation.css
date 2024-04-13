@@ -1,8 +1,15 @@
+.nav-container{
+  display: grid;
+   grid-template-columns:1fr 5fr 2fr 1fr ;
+   cursor: default;
+   border-bottom: 1px solid rgb(234, 228, 228);
+}
+
 
 .profile-dropdown {
   position: absolute;
-  top: 85px;
-  right: 50px;
+  top: 100px;
+  right: 5px;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -14,22 +21,16 @@
   font-size: 18px;
 }
 
-
 .profile-button {
-  position: absolute;
-  top: -20px;
-  right: 50px;
+  grid-column: 7/8;
   width: 80px;
   height: 40px;
-
-
+  justify-self: center;
+  align-self: center;
 }
 
-.home-link{
-  position: relative;
-  display: flex;
-  justify-content: left;
-  cursor: pointer;
+.logo-link{
+  grid-column: 1/1;
 }
 
 
@@ -49,19 +50,9 @@
 
 
 .home-link:hover{
-  /* background-color: #F7F7F7; */
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
 }
 
-.app-header{
-  position: relative;
-  display:flex;
-  justify-content:center;
-  right: 20px;
-  cursor: default;
-  border-bottom: 1px solid rgb(234, 228, 228);
-  padding:10px
-}
 
 
 .logout-button {
@@ -77,11 +68,13 @@
 
 
 .usermenu {
+
   display: flex;
   flex-direction: column;
-  align-items: right;
+  align-items: center;
   font-size: 20px;
   cursor: default;
+
 }
 
 .manage-spots{
@@ -96,4 +89,10 @@
   height:175px;
   background-color: white;
 
+}
+
+.create-spot-link{
+  grid-column: 6/7;
+  align-self: flex-end;
+  padding: 15px;
 }
