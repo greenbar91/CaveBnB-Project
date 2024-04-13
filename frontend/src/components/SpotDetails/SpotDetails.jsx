@@ -8,6 +8,8 @@ import { FaStar } from "react-icons/fa";
 export default function SpotDetails() {
   const { spotId } = useParams();
   const spot = useSelector((state) => state.spots[Number(spotId)]);
+  const currentUser = useSelector((state) => state.session.user);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -48,9 +50,38 @@ export default function SpotDetails() {
 
   const handleNumReviewCheck = (spot) => {
     if (spot.numReviews) {
-      return ' · ' + spot.numReviews ;
+      return " · " + spot.numReviews;
     } else {
       return "New";
+    }
+  };
+
+  //change the return to the review list, not the review headers
+  const handleBeTheFirstToPost = () => {
+    if (!spot.numReviews) {
+      if (currentUser && currentUser?.id === spot.ownerId) {
+        return (
+          <>
+            Review placeholder
+          </>
+        );
+      }
+      if (!currentUser) {
+        return (
+          <>
+            Review placeholder
+          </>
+        );
+      } else if (currentUser) {
+        return <>Be the first to post a review!</>;
+      }
+    }
+    if (spot.numReviews) {
+      return (
+        <>
+          Review placeholder
+        </>
+      );
     }
   };
 
@@ -92,6 +123,13 @@ export default function SpotDetails() {
           <button onClick={handleClickReserve} className="spot-reserve-button">
             Reserve
           </button>
+        </div>
+        <div className="spot-review-container">
+          <div className="spot-review-header"><FaStar />
+            {handleStarCheck(spot)}
+            {"   "}
+            {handleNumReviewCheck(spot)} {handleReviewCheck(spot)}</div>
+          <div className="spot-reviews">{handleBeTheFirstToPost()}</div>
         </div>
       </div>
     </>

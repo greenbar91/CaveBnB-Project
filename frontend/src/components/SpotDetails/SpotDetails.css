@@ -14,10 +14,13 @@
   grid-column: span 2;
   display: flex;
   align-items: flex-start;
+  padding: 5px;
+  box-shadow: 0 2px 12px rgba(33, 33, 33, 0.2);
 }
 
 .spot-details-info {
   flex-grow: 1;
+
 }
 
 .spot-preview img {
@@ -49,10 +52,15 @@
 
 .spot-owner {
   grid-column: 1/2;
+
 }
 
 .spot-description {
   grid-column: 1/2;
+  border: 1px solid rgb(233, 220, 220);
+  padding: 5px;
+  box-shadow: 0 2px 12px rgba(33, 33, 33, 0.2);
+
 }
 
 .spot-reserve-button {
@@ -68,8 +76,24 @@
   grid-row: 1/1;
   justify-self: center;
   font-weight: bold;
+
 }
 
 img {
   border-radius: 5px;
+}
+
+.spot-review-container{
+  border-top: 1px solid black;
+
+}
+
+.spot-review-header{
+  margin-top: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.spot-review-header-hidden{
+  display: none;
 }
