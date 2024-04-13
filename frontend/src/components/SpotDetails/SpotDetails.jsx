@@ -76,7 +76,7 @@ export default function SpotDetails() {
           <div className="spot-details-top">
             <div className="spot-details-info">
               <h1>{spot.name}</h1>
-              <p>
+              <p className="spot-location">
                 {spot.city}, {spot.state}, {spot.country}
               </p>
             </div>

@@ -1,11 +1,11 @@
 import "./CreateSpotPage.css";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import * as sessionActions from "../../store/session";
-import * as spotActions from "../../store/spots";
+// import { useEffect, useState } from "react";
+// import { useDispatch } from "react-redux";
+// import * as sessionActions from "../../store/session";
+// import * as spotActions from "../../store/spots";
 
 export default function CreateSpotPage() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   let error = true;
   return (
     <div className="create-spot-container">
@@ -52,11 +52,68 @@ export default function CreateSpotPage() {
             Mention the best features of your space, any special amentities like
             fast wif or parking, and what you love about the neighborhood.
           </p>
-          <label>
-            {error && <span className="error-msg">* error msg</span>}
-            <textarea placeholder="Description" className="description-input" />
-          </label>
+          <div className="input-wrapper">
+            <label>
+              <textarea
+                placeholder="Description"
+                className="description-input"
+              />
+              {error && <span className="error-msg">* error msg</span>}
+            </label>
+          </div>
         </section>
+        <section className="create-spot-form-container">
+          <h1>Create a title for your spot</h1>
+          <p>
+            Catch guests&apos; attention with a spot title that highlights what
+            makes your place special.
+          </p>
+          <div className="input-wrapper">
+            <label></label>
+            <input placeholder="Name of your spot" />
+            {error && <span className="error-msg">* error msg</span>}
+          </div>
+        </section>
+        <section className="create-spot-form-container">
+          <h1>Set a base price for your spot</h1>
+          <p>
+            Competitive pricing can help your listing stand out and rank higher
+            in search results.
+          </p>
+          <div className="input-wrapper">
+            <label>
+              $ <input placeholder="Price per Night (USD)" />
+            </label>
+            {error && <span className="error-msg">* error msg</span>}
+          </div>
+        </section>
+        <section className="create-spot-form-container">
+          <h1>Liven up your spot with photos</h1>
+          <p>Submit a link to at least one photo to publish your spot.</p>
+          <div className="input-wrapper">
+            <label>
+              <input placeholder="Preview Image URL" />
+            </label>
+            {error && <span className="error-msg">* error msg</span>}
+            <label>
+              <input placeholder="Image URL" />
+            </label>
+            {error && <span className="error-msg">* error msg</span>}
+            <label>
+              <input placeholder="Image URL" />
+            </label>
+            {error && <span className="error-msg">* error msg</span>}
+            <label>
+              <input placeholder="Image URL" />
+            </label>
+            {error && <span className="error-msg">* error msg</span>}
+            <label>
+              <input placeholder="Image URL" />
+            </label>
+            {error && <span className="error-msg">* error msg</span>}
+          </div>
+        </section>
+        <button className="create-spot-submit-button">Create Spot</button>
       </form>
     </div>
   );
