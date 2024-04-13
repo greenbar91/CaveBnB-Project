@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import "./SpotDetails.css";
 import { useParams } from "react-router-dom";
+import { FaStar } from "react-icons/fa";
 
 export default function SpotDetails() {
   const { spotId } = useParams();
@@ -19,7 +20,18 @@ export default function SpotDetails() {
     return <div>Loading...</div>;
   }
 
+  const handleClickReserve = () => {
+    return (window.alert('Feature coming soon'))
+  }
+
   const previewImage = spot.SpotImages.find((image) => image.preview);
+
+  let reviewCheck;
+  if(spot.numReviews <= 1){
+    reviewCheck = 'review'
+  } else{
+    reviewCheck = 'reviews'
+  }
 
   return (
     <>
@@ -44,11 +56,13 @@ export default function SpotDetails() {
           </div>
         </div>
 
-        <div className="spot-description">
-          <h2>
+        <div className="spot-description-container">
+          <h2 className="spot-owner">
             Hosted by {spot.Owner.firstName} {spot.Owner.lastName}
           </h2>
-          <p>{spot.description}</p>
+          <p className="spot-description">{spot.description}</p>
+          <p className="spot-reserve">${spot.price} night{' • '}<FaStar/>{spot.avgStarRating.toFixed(1)}{' • '}{spot.numReviews}{' '}{reviewCheck}</p>
+          <button onClick={handleClickReserve} className="spot-reserve-button">Reserve</button>
         </div>
       </div>
     </>

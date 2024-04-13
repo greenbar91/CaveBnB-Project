@@ -44,7 +44,7 @@ module.exports = {
           lat: 35.8163,
           lng: 78.6205,
           name: "Fingal's Cave",
-          description: "Well known for its hexagonal basalt columns",
+          description: "Well known for its hexagonal basalt columns Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean libero leo, ultrices quis pharetra ut, posuere eget risus. Sed a vestibulum nibh. Maecenas ultricies augue sit amet enim pretium, non consectetur libero laoreet. Curabitur at ullamcorper elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse cursus porttitor lorem eu feugiat. Donec suscipit quam eget ipsum consequat tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas mollis fringilla sollicitudin. Nunc sed dolor sit amet quam iaculis mollis eget ut ipsum. Sed tempus nibh vel ipsum ultricies tristique.",
           price: 500,
         },
         {
