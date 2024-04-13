@@ -1,4 +1,5 @@
 import * as spotsActions from "../../store/spots";
+import * as reviewActions from '../../store/reviews'
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import "./SpotDetails.css";
@@ -8,6 +9,7 @@ import { FaStar } from "react-icons/fa";
 export default function SpotDetails() {
   const { spotId } = useParams();
   const spot = useSelector((state) => state.spots[Number(spotId)]);
+  const reviews = useSelector((state) => state.reviews.Reviews)
   const currentUser = useSelector((state) => state.session.user);
 
   const dispatch = useDispatch();
@@ -17,6 +19,12 @@ export default function SpotDetails() {
       dispatch(spotsActions.getSpotDetailsThunk(Number(spotId)));
     }
   }, [dispatch, spotId]);
+
+  useEffect(()=> {
+    if(spotId){
+      dispatch(reviewActions.getReviewsBySpotIdThunk(Number(spotId)))
+    }
+  },[dispatch, spotId])
 
   if (!spot) {
     return <div>Loading...</div>;
