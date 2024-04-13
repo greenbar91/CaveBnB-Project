@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
-import Navigation from './components/Navigation';
-import HomePage from './components/HomePage';
-import SpotDetails from './components/SpotDetails';
-import * as sessionActions from './store/session';
-
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import Navigation from "./components/Navigation";
+import HomePage from "./components/HomePage";
+import SpotDetails from "./components/SpotDetails";
+import * as sessionActions from "./store/session";
+import CreateSpotPage from "./components/CreateSpotsPage";
 
 function Layout() {
   const dispatch = useDispatch();
@@ -13,13 +13,13 @@ function Layout() {
 
   useEffect(() => {
     dispatch(sessionActions.restoreUserThunk()).then(() => {
-      setIsLoaded(true)
+      setIsLoaded(true);
     });
   }, [dispatch]);
 
   return (
     <>
-     <Navigation isLoaded={isLoaded} />
+      <Navigation isLoaded={isLoaded} />
       {isLoaded && <Outlet />}
     </>
   );
@@ -30,15 +30,16 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: '/',
-        element: <HomePage/>
+        path: "/",
+        element: <HomePage />,
       },
       {
-        path: '/spots/:spotId',
-        element: <SpotDetails/>
-      }
-    ]
-  }
+        path: "/spots/:spotId",
+        element: <SpotDetails />,
+      },
+      { path: "/spots/new", element: <CreateSpotPage /> },
+    ],
+  },
 ]);
 
 function App() {
