@@ -23,11 +23,13 @@ export default function SpotReviews() {
     return date.toLocaleDateString("en-US", options);
   };
 
+  const sortedReviews = reviews ? [...reviews].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) : [];
+
   return (
     <>
        <header className="review-container">
-        {reviews ? (
-          reviews.map((review) => (
+        {sortedReviews ? (
+          sortedReviews.map((review) => (
             <div className="review-info" key={review.id}>
               <div className="review-firstName">{review.User.firstName}</div>
               <div className="review-date">{formatDate(review.createdAt)}</div>

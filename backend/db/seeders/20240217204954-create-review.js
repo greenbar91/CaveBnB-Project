@@ -21,6 +21,14 @@ module.exports = {
         },
         {
           userId: 2,
+          spotId: 3,
+          review: "This was an awesome spot!",
+          stars: 5.0,
+          createdAt: "2023-10-12 20:39:36",
+          updatedAt: "2023-10-12 20:39:36",
+        },
+        {
+          userId: 2,
           spotId: 1,
           review: "Meh",
           stars: 3.0,
