@@ -62,13 +62,12 @@ export default function SpotDetails() {
       } else if (currentUser) {
         return <>Be the first to post a review!</>;
       }
-    }
-    else {
-      return <SpotReviews/>
+    } else {
+      return <SpotReviews />;
     }
   };
 
-  const previewImage = spot.SpotImages.find((image) => image.preview);
+  const previewImage = spot.SpotImages?.find((image) => image.preview);
   return (
     <>
       <div className="spot-details-page">
@@ -82,23 +81,25 @@ export default function SpotDetails() {
             </div>
           </div>
           <div className="spot-preview">
-            <img src={previewImage.url} alt="Spot Preview" />
+            <img src={previewImage?.url} alt="Spot Preview" />
           </div>
-          <div className="spot-images">
-            <img src={previewImage.url} alt="Spot Preview" />
-            <img src={previewImage.url} alt="Spot Preview" />
-            <img src={previewImage.url} alt="Spot Preview" />
-            <img src={previewImage.url} alt="Spot Preview" />
-          </div>
+          {spot.SpotImages?.some((image) => !image.preview) && (
+            <div className="spot-images">
+              {spot.SpotImages.filter((image) => !image.preview) 
+                .map((image) => (
+                  <img key={image.id} src={image.url} alt="Spot Image" />
+                ))}
+            </div>
+          )}
         </div>
 
         <div className="spot-description-container">
           <h2 className="spot-owner">
-            Hosted by {spot.Owner.firstName} {spot.Owner.lastName}
+            Hosted by {spot.Owner?.firstName} {spot.Owner?.lastName}
           </h2>
-          <p className="spot-description">{spot.description}</p>
+          <p className="spot-description">{spot?.description}</p>
           <p className="spot-reserve">
-            ${spot.price} night{" · "}
+            ${spot?.price} night{" · "}
             <FaStar />
             {handleStarCheck()}
             {"  "}

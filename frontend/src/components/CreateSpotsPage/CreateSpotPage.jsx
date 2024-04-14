@@ -1,11 +1,12 @@
 import "./CreateSpotPage.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import * as sessionActions from "../../store/session";
 import * as spotActions from "../../store/spots";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateSpotPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const ownerId = useSelector((state) => state.session.user.id);
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -30,35 +31,35 @@ export default function CreateSpotPage() {
     const checkErrors = {};
 
     if (!address.length) {
-      checkErrors.address = "Address is required";
+      checkErrors.address = "* Address is required";
     }
     if (!city.length) {
-      checkErrors.city = "City is required";
+      checkErrors.city = "* City is required";
     }
     if (!state.length) {
-      checkErrors.state = "State is required";
+      checkErrors.state = "* State is required";
     }
     if (!country.length) {
-      checkErrors.country = "Country is required";
+      checkErrors.country = "* Country is required";
     }
     if (!lat) {
-      checkErrors.lat = "Latitude is required";
+      checkErrors.lat = "* Latitude is required";
     }
     if (!lng) {
-      checkErrors.lng = "Longitude is required";
+      checkErrors.lng = "* Longitude is required";
     }
     if (!name.length) {
-      checkErrors.name = "Name is required";
+      checkErrors.name = "* Name is required";
     }
     if (!price) {
-      checkErrors.price = "Price is required";
+      checkErrors.price = "* Price is required";
     }
     if (!previewUrl.length) {
-      checkErrors.previewUrl = "Preview image is required";
+      checkErrors.previewUrl = "* Preview image is required";
     }
 
     if (description.length < 30) {
-      checkErrors.description = "Description needs a minimum of 30 characters";
+      checkErrors.description = "* Description needs a minimum of 30 characters";
     }
 
     const validateImageUrl = (url) => {
@@ -68,19 +69,19 @@ export default function CreateSpotPage() {
 
     if (!validateImageUrl(url1) && url1.length) {
       checkErrors.url1 =
-        "Please enter a valid image URL ending with .png, .jpg, or .jpeg";
+        "* Please enter a valid image URL ending with .png, .jpg, or .jpeg";
     }
     if (!validateImageUrl(url2)&& url2.length) {
       checkErrors.url2 =
-        "Please enter a valid image URL ending with .png, .jpg, or .jpeg";
+        "* Please enter a valid image URL ending with .png, .jpg, or .jpeg";
     }
     if (!validateImageUrl(url3)&& url3.length) {
       checkErrors.url3 =
-        "Please enter a valid image URL ending with .png, .jpg, or .jpeg";
+        "* Please enter a valid image URL ending with .png, .jpg, or .jpeg";
     }
     if (!validateImageUrl(url4) && url4.length) {
       checkErrors.url4 =
-        "Please enter a valid image URL ending with .png, .jpg, or .jpeg";
+        "* Please enter a valid image URL ending with .png, .jpg, or .jpeg";
     }
 
     if (!Object.values(checkErrors).length) {
@@ -99,6 +100,8 @@ export default function CreateSpotPage() {
 
       const createdSpot = await dispatch(spotActions.createSpotThunk(newSpot));
       const createdSpotId = createdSpot.id;
+
+      console.log(createdSpot)
 
       const newSpotPreviewImage = {
         url: previewUrl,
@@ -132,6 +135,20 @@ export default function CreateSpotPage() {
 
       dispatch(spotActions.createSpotImageThunk(newSpotPreviewImage))
 
+      if(url1.length){
+        dispatch(spotActions.createSpotImageThunk(newSpotImage1))
+      }
+      if(url2.length){
+        dispatch(spotActions.createSpotImageThunk(newSpotImage2))
+      }
+      if(url3.length){
+        dispatch(spotActions.createSpotImageThunk(newSpotImage3))
+      }
+      if(url4.length){
+        dispatch(spotActions.createSpotImageThunk(newSpotImage4))
+      }
+
+      navigate(`/spots/${createdSpotId}`)
 
     }
 

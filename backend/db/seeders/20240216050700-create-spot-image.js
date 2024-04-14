@@ -17,7 +17,7 @@ module.exports = {
           preview: true,
           spotId: 1,
         },
-        { url: "image url", preview: false, spotId: 1 },
+        { url: "https://i.imgur.com/DBgV2V5.png", preview: false, spotId: 1 },
         { url: "https://i.imgur.com/qhAU4XD.png", preview: true, spotId: 2 },
         { url: "https://i.imgur.com/522eiiS.png", preview: true, spotId: 3 },
         { url: "https://i.imgur.com/L6nH0Ne.png", preview: true, spotId: 4 },
