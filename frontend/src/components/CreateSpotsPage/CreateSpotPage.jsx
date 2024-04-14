@@ -1,11 +1,32 @@
 import "./CreateSpotPage.css";
-// import { useEffect, useState } from "react";
-// import { useDispatch } from "react-redux";
-// import * as sessionActions from "../../store/session";
-// import * as spotActions from "../../store/spots";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import * as sessionActions from "../../store/session";
+import * as spotActions from "../../store/spots";
 
 export default function CreateSpotPage() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [country, setCountry] = useState("");
+  const [lat, setLat] = useState(0);
+  const [lng, setLng] = useState(0);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState(0);
+  const [errors,setErrors] = useState({})
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setErrors({})
+
+    const checkErrors = {}
+
+    if()
+
+  }
+
   let error = true;
   return (
     <div className="create-spot-container">
@@ -18,10 +39,10 @@ export default function CreateSpotPage() {
             reservation.
           </p>
           <div className="input-wrapper">
-            <label htmlFor="" className="country">
+            <label htmlFor="" className="country" >
               Country {error && <span className="error-msg">* error msg</span>}
             </label>
-            <input placeholder="Country" />
+            <input placeholder="Country" value={country} onChange={(e)=> setCountry(e.target.value)} />
             <label>
               Street Address{" "}
               {error && <span className="error-msg">* error msg</span>}
