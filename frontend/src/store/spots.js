@@ -26,6 +26,7 @@ export const getAllSpotsThunk = () => async (dispatch) => {
 
   if (res.ok) {
     const data = await res.json();
+
     dispatch(getSpots(data));
   }
   if (!res.ok) {
@@ -94,6 +95,7 @@ const initialState = {};
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_SPOTS:
+
       return { ...state, ...action.payload };
     case GET_SPOT_DETAILS:
       return { ...state, [action.payload.id]: action.payload };
