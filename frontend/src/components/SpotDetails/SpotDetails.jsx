@@ -123,8 +123,6 @@ export default function SpotDetails() {
           </div>
           {handleBeTheFirstToPost()}
           {!(currentUser && currentUser?.id === spot.ownerId) &&
-            !currentSpotReviews && <div>Be the first to post a review!</div>}
-          {!(currentUser && currentUser?.id === spot.ownerId) &&
             !currentSpotReviews?.some(
               (review) => review.userId === currentUser.id
             ) && (
