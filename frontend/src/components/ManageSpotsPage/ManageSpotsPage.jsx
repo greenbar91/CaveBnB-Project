@@ -4,7 +4,7 @@ import "./ManageSpotsPage.css";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function ManageSpotsPage() {
-  const currentUser = useSelector((state) => state.session.user);
+//   const currentUser = useSelector((state) => state.session.user);
   const currentSpots = useSelector((state) => state.spots);
   console.log(currentSpots);
 
@@ -13,4 +13,5 @@ export default function ManageSpotsPage() {
   useEffect(() => {
     dispatch(spotsActions.getCurrentUserSpotsThunk());
   }, [dispatch]);
+  
 }

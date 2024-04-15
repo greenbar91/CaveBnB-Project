@@ -2,9 +2,9 @@ import { csrfFetch } from "./csrf";
 
 const GET_SPOTS = "spots/getSpots";
 const GET_SPOT_DETAILS = "spots/getSpotDetails";
+const GET_CURRENT_USER_SPOTS = "spots/getCurrentUserSpots";
 const CREATE_SPOT = "spots/createSpot";
 const CREATE_SPOT_IMAGE = "spots/createSpotImage";
-const GET_CURRENT_USER_SPOTS = "spots/getCurrentUserSpots";
 
 export const getSpots = (payload) => {
   return { type: GET_SPOTS, payload };
@@ -14,16 +14,16 @@ export const getSpotDetails = (payload) => {
   return { type: GET_SPOT_DETAILS, payload };
 };
 
+export const getCurrentUserSpots = (payload) => {
+  return { type: GET_CURRENT_USER_SPOTS, payload };
+};
+
 export const createSpot = (payload) => {
   return { type: CREATE_SPOT, payload };
 };
 
 export const createSpotImage = (payload) => {
   return { type: CREATE_SPOT_IMAGE, payload };
-};
-
-export const getCurrentUserSpots = (payload) => {
-  return { type: GET_CURRENT_USER_SPOTS, payload };
 };
 
 export const getAllSpotsThunk = () => async (dispatch) => {
@@ -97,9 +97,11 @@ export const createSpotImageThunk = (image) => async (dispatch) => {
 
 export const getCurrentUserSpotsThunk = () => async (dispatch) => {
   const res = await csrfFetch("/api/spots/current");
+  console.log(res)
 
   if (res.ok) {
     const data = await res.json();
+    console.log(data);
     dispatch(getCurrentUserSpots(data));
     return data;
   }
@@ -135,7 +137,7 @@ const spotsReducer = (state = initialState, action) => {
         },
       };
     case GET_CURRENT_USER_SPOTS:
-      return { ...state, ...action.payload};
+      return { ...state, ...action.payload };
     default:
       return state;
   }
