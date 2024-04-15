@@ -1,0 +1,52 @@
+.modal-container {
+  display: flex;
+  align-items: center;
+  height: 40vh;
+  width: 20vw;
+  justify-content: center;
+}
+
+.post-review-container {
+  cursor: default;
+  text-align: center;
+}
+.post-review-header {
+  margin-top: 10px;
+}
+
+textarea {
+  resize: none;
+}
+
+.review-textarea {
+  height: 15vh;
+  width: 15vw;
+}
+
+.star-rating-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+}
+
+.star-rating button {
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  height: 20px;
+  width: 30px;
+  font-size: 20px;
+}
+.on {
+  color: #000;
+}
+.off {
+  color: #ccc;
+}
+
+.submit-review {
+  width: 300px;
+}

@@ -100,3 +100,8 @@ img {
 .spot-review-header-hidden{
   display: none;
 }
+
+.review-modal button{
+  width: 200px;
+  margin-bottom: 10px;
+}
