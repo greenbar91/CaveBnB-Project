@@ -60,7 +60,7 @@ export default function SpotDetails() {
 
   const handleBeTheFirstToPost = () => {
     if (!spot.numReviews) {
-      if ((currentUser && currentUser?.id === spot.ownerId) || !currentUser) {
+      if ((currentUser && currentUser?.id === spot?.ownerId) || !currentUser) {
         return <SpotReviews />;
       } else if (currentUser) {
         return <>Be the first to post a review!</>;
@@ -91,7 +91,7 @@ export default function SpotDetails() {
             <div className="spot-images">
               {spot.SpotImages.filter((image) => !image.preview).map(
                 (image) => (
-                  <img key={image.id} src={image.url} alt="Spot Image" />
+                  <img key={image?.id} src={image.url} alt="Spot Image" />
                 )
               )}
             </div>
@@ -122,9 +122,9 @@ export default function SpotDetails() {
             {handleNumReviewCheck()} {handleReviewCheck()}
           </div>
           {handleBeTheFirstToPost()}
-          {!(currentUser && currentUser?.id === spot.ownerId) &&
+          {!(currentUser && currentUser?.id === spot?.ownerId) &&
             !currentSpotReviews?.some(
-              (review) => review.userId === currentUser.id
+              (review) => review.userId === currentUser?.id
             ) && (
               <div className="review-modal">
                 {spot && <OpenModalButton
