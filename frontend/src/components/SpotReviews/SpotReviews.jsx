@@ -14,6 +14,7 @@ export default function SpotReviews() {
   useEffect(() => {
 
       dispatch(reviewActions.getReviewsBySpotIdThunk(Number(spotId)));
+      
 
   }, [dispatch, spotId]);
 

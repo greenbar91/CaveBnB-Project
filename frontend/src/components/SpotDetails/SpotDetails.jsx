@@ -62,8 +62,6 @@ export default function SpotDetails() {
     if (!spot.numReviews) {
       if ((currentUser && currentUser?.id === spot.ownerId) || !currentUser) {
         return <SpotReviews />;
-      } else if (currentUser) {
-        return <>Be the first to post a review!</>;
       }
     } else {
       return <SpotReviews />;
@@ -120,18 +118,22 @@ export default function SpotDetails() {
             {"   "}
             {handleNumReviewCheck()} {handleReviewCheck()}
           </div>
+          {handleBeTheFirstToPost()}
+          {!(currentUser && currentUser?.id === spot.ownerId) &&
+            !currentSpotReviews && <div>Be the first to post a review!</div>}
           {!(currentUser && currentUser?.id === spot.ownerId) &&
             !currentSpotReviews?.some(
               (review) => review.userId === currentUser.id
             ) && (
               <div className="review-modal">
-                <OpenModalButton
-                  modalComponent={<PostReviewModal />}
-                  buttonText={"Post Your Review"}
-                />
+                {spot && (
+                  <OpenModalButton
+                    modalComponent={<PostReviewModal spotId={spotId} />}
+                    buttonText={"Post Your Review"}
+                  />
+                )}
               </div>
             )}
-          {handleBeTheFirstToPost()}
         </div>
       </div>
     </>
