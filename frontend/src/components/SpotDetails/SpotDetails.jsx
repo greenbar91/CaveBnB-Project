@@ -66,9 +66,9 @@ export default function SpotDetails() {
             ${spot?.price} night{" · "}
             <FaStar />
             {spot.avgStarRating && <>{" "}{spot.avgStarRating.toFixed(1)}</>}
-            {spot.numReviews ? <> · {spot.numReviews}</> : <>{" "}New</>}
-            {spot.numReviews === 1 && <> Review</>}
-            {spot.numReviews > 1 && <> Reviews</>}
+            {spot.numReviews ? <>{" "}·{" "}{spot.numReviews}</> : <>{" "}New</>}
+            {spot.numReviews === 1 && <>{" "}Review</>}
+            {spot.numReviews > 1 && <>{" "}Reviews</>}
           </p>
           <button onClick={handleClickReserve} className="spot-reserve-button">
             Reserve
@@ -78,9 +78,9 @@ export default function SpotDetails() {
           <div className="spot-review-header">
             <FaStar />
             {spot.avgStarRating && <>{" "}{spot.avgStarRating.toFixed(1)}</>}
-            {spot.numReviews ? <> · {spot.numReviews}</> : <>{" "}New</>}
-            {spot.numReviews === 1 && <> Review</>}
-            {spot.numReviews > 1 && <> Reviews</>}
+            {spot.numReviews ? <>{" "}·{" "}{spot.numReviews}</> : <>{" "}New</>}
+            {spot.numReviews === 1 && <>{" "}Review</>}
+            {spot.numReviews > 1 && <>{" "}Reviews</>}
           </div>
           {!spot.numReviews ? (
             (currentUser && currentUser?.id === spot?.ownerId) ||

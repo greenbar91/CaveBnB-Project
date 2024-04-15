@@ -149,6 +149,7 @@ export default function CreateSpotPage() {
       }
 
       navigate(`/spots/${createdSpotId}`)
+      dispatch(spotActions.getSpotDetailsThunk(createdSpotId))
 
     }
 
