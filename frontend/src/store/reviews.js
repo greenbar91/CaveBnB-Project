@@ -1,6 +1,7 @@
 import { csrfFetch } from "./csrf";
 
 const GET_REVIEWS_BY_SPOTID = "reviews/getReviewsBySpotId";
+// const POST_REVIEW = 'reviews/postReview'
 
 export const getReviewsBySpotId = (payload) => {
   return {

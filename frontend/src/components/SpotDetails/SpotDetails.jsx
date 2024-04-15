@@ -3,13 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import SpotReviews from "../SpotReviews";
 import "./SpotDetails.css";
+import PostReviewModal from "../PostReviewModal";
 
 export default function SpotDetails() {
   const { spotId } = useParams();
   const spot = useSelector((state) => state.spots[Number(spotId)]);
   const currentUser = useSelector((state) => state.session.user);
+  const currentSpotReviews = useSelector((state) => state.reviews.Reviews);
 
   const dispatch = useDispatch();
 
@@ -85,10 +88,11 @@ export default function SpotDetails() {
           </div>
           {spot.SpotImages?.some((image) => !image.preview) && (
             <div className="spot-images">
-              {spot.SpotImages.filter((image) => !image.preview) 
-                .map((image) => (
+              {spot.SpotImages.filter((image) => !image.preview).map(
+                (image) => (
                   <img key={image.id} src={image.url} alt="Spot Image" />
-                ))}
+                )
+              )}
             </div>
           )}
         </div>
@@ -116,6 +120,17 @@ export default function SpotDetails() {
             {"   "}
             {handleNumReviewCheck()} {handleReviewCheck()}
           </div>
+          {!(currentUser && currentUser?.id === spot.ownerId) &&
+            !currentSpotReviews?.some(
+              (review) => review.userId === currentUser.id
+            ) && (
+              <div className="review-modal">
+                <OpenModalButton
+                  modalComponent={<PostReviewModal />}
+                  buttonText={"Post Your Review"}
+                />
+              </div>
+            )}
           {handleBeTheFirstToPost()}
         </div>
       </div>
