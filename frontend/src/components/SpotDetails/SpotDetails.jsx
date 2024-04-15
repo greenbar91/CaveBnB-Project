@@ -30,47 +30,6 @@ export default function SpotDetails() {
     return window.alert("Feature coming soon");
   };
 
-  const handleReviewCheck = () => {
-    if (spot.numReviews === 1) {
-      return "Review";
-    }
-    if (spot.numReviews > 1) {
-      return "Reviews";
-    }
-    if (!spot.numReviews) {
-      return "";
-    }
-  };
-
-  const handleStarCheck = () => {
-    if (spot.avgStarRating) {
-      return spot.avgStarRating.toFixed(1);
-    } else {
-      return "";
-    }
-  };
-
-  const handleNumReviewCheck = () => {
-    if (spot.numReviews) {
-      return " · " + spot.numReviews;
-    } else {
-      return "New";
-    }
-  };
-
-  const handleBeTheFirstToPost = () => {
-    if (!spot.numReviews) {
-      if ((currentUser && currentUser?.id === spot?.ownerId) || !currentUser) {
-        return <SpotReviews />;
-      } else if (currentUser) {
-        return <>Be the first to post a review!</>;
-
-      }
-    } else {
-      return <SpotReviews />;
-    }
-  };
-
   const previewImage = spot.SpotImages?.find((image) => image.preview);
   return (
     <>
@@ -106,9 +65,10 @@ export default function SpotDetails() {
           <p className="spot-reserve">
             ${spot?.price} night{" · "}
             <FaStar />
-            {handleStarCheck()}
-            {"  "}
-            {handleNumReviewCheck()} {handleReviewCheck()}
+            {spot.avgStarRating && <>{" "}{spot.avgStarRating.toFixed(1)}</>}
+            {spot.numReviews ? <> · {spot.numReviews}</> : <>{" "}New</>}
+            {spot.numReviews === 1 && <> Review</>}
+            {spot.numReviews > 1 && <> Reviews</>}
           </p>
           <button onClick={handleClickReserve} className="spot-reserve-button">
             Reserve
@@ -117,20 +77,32 @@ export default function SpotDetails() {
         <div className="spot-review-container">
           <div className="spot-review-header">
             <FaStar />
-            {handleStarCheck()}
-            {"   "}
-            {handleNumReviewCheck()} {handleReviewCheck()}
+            {spot.avgStarRating && <>{" "}{spot.avgStarRating.toFixed(1)}</>}
+            {spot.numReviews ? <> · {spot.numReviews}</> : <>{" "}New</>}
+            {spot.numReviews === 1 && <> Review</>}
+            {spot.numReviews > 1 && <> Reviews</>}
           </div>
-          {handleBeTheFirstToPost()}
+          {!spot.numReviews ? (
+            (currentUser && currentUser?.id === spot?.ownerId) ||
+            !currentUser ? (
+              <SpotReviews />
+            ) : currentUser ? (
+              <>Be the first to post a review!</>
+            ) : null
+          ) : (
+            <SpotReviews />
+          )}
           {!(currentUser && currentUser?.id === spot?.ownerId) &&
             !currentSpotReviews?.some(
               (review) => review.userId === currentUser?.id
             ) && (
               <div className="review-modal">
-                {spot && <OpenModalButton
-                  modalComponent={<PostReviewModal spotId={spotId}/>}
-                  buttonText={"Post Your Review"}
-                />}
+                {spot && (
+                  <OpenModalButton
+                    modalComponent={<PostReviewModal spotId={spotId} />}
+                    buttonText={"Post Your Review"}
+                  />
+                )}
               </div>
             )}
         </div>
