@@ -78,7 +78,7 @@ export default function SpotDetails() {
           <p className="spot-reserve">
             ${spot?.price} night{" · "}
             <FaStar />
-            {spot.avgRating && <> {spot.avgStarRating.toFixed(1)}</>}
+            {spot.avgStarRating && <> {spot.avgStarRating.toFixed(1)}</>}
             {spot.numReviews ? <> · {spot.numReviews}</> : <> New</>}
             {spot.numReviews === 1 && <> Review</>}
             {spot.numReviews > 1 && <> Reviews</>}
@@ -90,7 +90,7 @@ export default function SpotDetails() {
         <div className="spot-review-container">
           <div className="spot-review-header">
             <FaStar />
-            {spot.avgRating && <> {spot.avgStarRating.toFixed(1)}</>}
+            {spot.avgStarRating && <> {spot.avgStarRating.toFixed(1)}</>}
             {spot.numReviews ? <> · {spot.numReviews}</> : <> New</>}
             {spot.numReviews === 1 && <> Review</>}
             {spot.numReviews > 1 && <> Reviews</>}
