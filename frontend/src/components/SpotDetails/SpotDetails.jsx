@@ -13,7 +13,6 @@ export default function SpotDetails() {
   const spot = useSelector((state) => state.spots[Number(spotId)]);
   const currentUser = useSelector((state) => state.session.user);
   const currentSpotReviews = useSelector((state) => state.reviews.Reviews);
-  console.log(spot.avgStarRating)
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -24,6 +23,10 @@ export default function SpotDetails() {
 
   if (!spot) {
     return <div>Loading...</div>;
+  }
+  if(spot && spot.avgStarRating){
+
+    console.log(spot?.avgStarRating)
   }
 
   const handleClickReserve = () => {
