@@ -53,11 +53,11 @@ module.exports = (sequelize, DataTypes) => {
           min: 1,
         },
       },
-      avgRating: {
-        type: DataTypes.FLOAT,
+      // avgRating: {
+      //   type: DataTypes.INTEGER,
 
-        allowNull: true,
-      },
+      //   allowNull: true,
+      // },
       previewImage: {
         type: DataTypes.STRING,
 
