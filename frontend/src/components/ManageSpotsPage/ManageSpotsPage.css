@@ -1,0 +1,29 @@
+.manage-spots-header{
+    margin-left: 60px;
+}
+
+
+.button-container{
+    flex-direction: row;
+    display: flex;
+
+}
+
+.button-container button{
+    justify-content: space-between;
+    margin-right: 25px;
+    height: 30px;
+}
+
+.create-spot-modal-button {
+    display: flex;
+
+}
+
+.create-spot-modal-button button{
+    width: 200px;
+    margin-left: 60px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}

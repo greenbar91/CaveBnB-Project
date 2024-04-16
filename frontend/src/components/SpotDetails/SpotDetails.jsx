@@ -82,16 +82,6 @@ export default function SpotDetails() {
             {spot.numReviews === 1 && <>{" "}Review</>}
             {spot.numReviews > 1 && <>{" "}Reviews</>}
           </div>
-          {!spot.numReviews ? (
-            (currentUser && currentUser?.id === spot?.ownerId) ||
-            !currentUser ? (
-              <SpotReviews />
-            ) : currentUser ? (
-              <>Be the first to post a review!</>
-            ) : null
-          ) : (
-            <SpotReviews />
-          )}
           {!(currentUser && currentUser?.id === spot?.ownerId) &&
             !currentSpotReviews?.some(
               (review) => review.userId === currentUser?.id
@@ -105,6 +95,16 @@ export default function SpotDetails() {
                 )}
               </div>
             )}
+          {!spot.numReviews ? (
+            (currentUser && currentUser?.id === spot?.ownerId) ||
+            !currentUser ? (
+              <SpotReviews />
+            ) : currentUser ? (
+              <h3>Be the first to post a review!</h3>
+            ) : null
+          ) : (
+            <SpotReviews />
+          )}
         </div>
       </div>
     </>

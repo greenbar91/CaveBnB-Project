@@ -61,7 +61,7 @@ const restoreUser = (req, res, next) => {
 };
 
 // If there is no current user, return an error
-//!Ask if title is required or not (not in README)
+
 const requireAuth = function (req, _res, next) {
   if (req.user) return next();
 

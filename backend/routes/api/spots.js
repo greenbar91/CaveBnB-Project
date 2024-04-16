@@ -80,7 +80,7 @@ router.get("/", validateSpotQueryFilters, async (req, res) => {
   });
 
   /* Finding avgRating for all Spots */
-  //!Refactor to make output x.0 if the avgRating is a whole number
+
   for (const spot of filteredSpots) {
     let totalStars = 0;
     let reviewCount = 0;
@@ -147,7 +147,7 @@ router.get("/current", requireAuth, async (req, res) => {
   }
 
   /* Finding avgRating for all Spots */
-  //!Refactor to make output x.0 if the avgRating is a whole number
+
   for (const spot of currentUserSpots) {
     let totalStars = 0;
     let reviewCount = 0;
@@ -216,7 +216,7 @@ router.get("/:spotId", async (req, res) => {
   }
 
   /* Finding avgRating for Spot */
-  //!Refactor to make output x.0 if the avgRating is a whole number
+
   let totalStars = 0;
   let reviewCount = 0;
 

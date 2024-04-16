@@ -52,7 +52,6 @@ router.get("/current", requireAuth, async (req, res) => {
   }
 
   formatAllDates(currentUserBookings);
-  //!Format lat/lng not needed since we're including Spot lat/lng attributes in our query
   formatLatLng(currentUserBookings);
 
   return res.status(200).json({ Bookings: formattedBookings });
