@@ -91,7 +91,7 @@ export default function SpotDetails() {
               (review) => review.userId === currentUser.id
             ) && (
               <div className="review-modal">
-                {spot && (
+                {spot && (currentUser !== null) &&(
                   <OpenModalButton
                     modalComponent={<PostReviewModal spotId={spotId} />}
                     buttonText={"Post Your Review"}
