@@ -48,5 +48,10 @@ textarea {
 }
 
 .submit-review {
-  width: 300px;
+  width: 15vw;
+}
+
+.stars-text {
+  margin-bottom: -25px;
+  margin-left: 10px;
 }

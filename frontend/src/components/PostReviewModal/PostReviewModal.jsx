@@ -36,7 +36,7 @@ export default function PostReviewModal({ spotId }) {
     if (data?.message) {
       setErrors(data);
     }
-    
+
   };
 
   return (
@@ -66,10 +66,12 @@ export default function PostReviewModal({ spotId }) {
                     onMouseLeave={() => setHover(rating)}
                   >
                     <span className="star">&#9733;</span>
+
                   </button>
                 );
               })}
             </div>
+              <h4 className="stars-text">Stars</h4>
           </div>
           <button
             className="submit-review"
