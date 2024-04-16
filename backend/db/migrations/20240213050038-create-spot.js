@@ -60,7 +60,7 @@ module.exports = {
           allowNull: false,
         },
         avgRating: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.FLOAT,
         },
         previewImage: {
           type: Sequelize.STRING,

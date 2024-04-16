@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       avgRating: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
 
         allowNull: true,
       },
