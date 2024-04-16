@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaStar } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
+
 export default function ManageSpotsPage() {
   const currentSpots = useSelector((state) => state.spots.Spots);
   const [sortedSpots, setSortedSpots] = useState(null);
@@ -32,9 +33,9 @@ export default function ManageSpotsPage() {
     navigate("/spots/new");
   };
 
-  const handleOnClickToUpdateSpot = () => {
+  // const handleOnClickToUpdateSpot = () => {
 
-  }
+  // }
 
   const handleOnClickToDeleteSpot = () => {
 
@@ -81,7 +82,7 @@ export default function ManageSpotsPage() {
                 </div>
                 </Link>
                     <div className="button-container">
-                      <button className="spot-update-button" onClick={handleOnClickToUpdateSpot}>Update</button>
+                      <button className="spot-update-button" onClick={()=> navigate(`/spots/${spot.id}/edit`)}>Update</button>
                       <button className="spot-delete-button" onClick={handleOnClickToDeleteSpot}>Delete</button>
                     </div>
               </div>

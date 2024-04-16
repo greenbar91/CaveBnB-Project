@@ -5,6 +5,7 @@ const GET_SPOT_DETAILS = "spots/getSpotDetails";
 const GET_CURRENT_USER_SPOTS = "spots/getCurrentUserSpots";
 const CREATE_SPOT = "spots/createSpot";
 const CREATE_SPOT_IMAGE = "spots/createSpotImage";
+const UPDATE_SPOT = 'spots/updateSpot'
 
 export const getSpots = (payload) => {
   return { type: GET_SPOTS, payload };
@@ -25,6 +26,10 @@ export const createSpot = (payload) => {
 export const createSpotImage = (payload) => {
   return { type: CREATE_SPOT_IMAGE, payload };
 };
+
+export const updateSpot = (payload) => {
+  return {type: UPDATE_SPOT,payload}
+}
 
 export const getAllSpotsThunk = () => async (dispatch) => {
   const res = await csrfFetch("/api/spots");
@@ -111,6 +116,28 @@ export const getCurrentUserSpotsThunk = () => async (dispatch) => {
   }
 };
 
+export const updateSpotThunk = (spot) => async(dispatch) => {
+  console.log(spot)
+  const res = await csrfFetch(`/api/spots/${spot.ownerId}`, {
+    method:'PUT',
+    headers: {
+      'Content-Type':'application/json'
+    },
+    body: JSON.stringify(spot)
+  })
+
+  if(res.ok){
+    const data = await res.json()
+    console.log(data)
+    dispatch(updateSpot(data))
+    return data
+  }
+  if (!res.ok) {
+    const data = await res.json();
+    return data;
+  }
+}
+
 const initialState = {};
 
 const spotsReducer = (state = initialState, action) => {
@@ -138,6 +165,8 @@ const spotsReducer = (state = initialState, action) => {
       };
     case GET_CURRENT_USER_SPOTS:
       return { ...state, ...action.payload };
+    case UPDATE_SPOT:
+      return {...state, [action.payload.id]: action.payload}
     default:
       return state;
   }
