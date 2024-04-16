@@ -42,7 +42,7 @@ export default function SpotDetails() {
   const handleClickReserve = () => {
     return window.alert("Feature coming soon");
   };
-  console.log(spot.avgStarRating)
+  console.log(spot)
 
   const previewImage = spot.SpotImages?.find((image) => image.preview);
   return (
