@@ -92,7 +92,7 @@ router.get("/", validateSpotQueryFilters, async (req, res) => {
     });
 
     reviews.forEach((review) => {
-      totalStars += review.stars;
+      totalStars += Number(review.stars);
       reviewCount++;
     });
 
@@ -159,7 +159,7 @@ router.get("/current", requireAuth, async (req, res) => {
     });
 
     reviews.forEach((review) => {
-      totalStars += review.stars;
+      totalStars += Number(review.stars);
       reviewCount++;
     });
 
@@ -227,7 +227,7 @@ router.get("/:spotId", async (req, res) => {
   });
 
   reviews.forEach((review) => {
-    totalStars += review.stars;
+    totalStars += Number(review.stars);
     reviewCount++;
   });
 

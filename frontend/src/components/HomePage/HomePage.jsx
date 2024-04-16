@@ -21,6 +21,8 @@ export default function HomePage() {
     }
   }, [spots]);
 
+
+
   if (!sortedSpots) {
     return null;
   }

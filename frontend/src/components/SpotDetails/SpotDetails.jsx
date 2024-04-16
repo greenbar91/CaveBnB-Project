@@ -13,6 +13,7 @@ export default function SpotDetails() {
   const spot = useSelector((state) => state.spots[Number(spotId)]);
   const currentUser = useSelector((state) => state.session.user);
   const currentSpotReviews = useSelector((state) => state.reviews.Reviews);
+  // const [avgRating, setAvgRating] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -21,12 +22,21 @@ export default function SpotDetails() {
     }
   }, [dispatch, spotId]);
 
+  // useEffect(() => {
+  //   if (currentSpotReviews && currentSpotReviews.length > 0) {
+  //     const totalStars = currentSpotReviews.reduce(
+  //       (acc, review) => acc + review.stars,
+  //       0
+  //     );
+  //     const rating = (totalStars / currentSpotReviews.length).toFixed(1);
+  //     setAvgRating(rating);
+  //   } else {
+  //     setAvgRating(null);
+  //   }
+  // }, [currentSpotReviews]);
+
   if (!spot) {
     return <div>Loading...</div>;
-  }
-
-  if (spot && spot?.avgStarRating) {
-    console.log(spot.avgStarRating);
   }
 
   const handleClickReserve = () => {
@@ -68,7 +78,7 @@ export default function SpotDetails() {
           <p className="spot-reserve">
             ${spot?.price} night{" · "}
             <FaStar />
-            {spot.avgStarRating && <> {spot.avgStarRating.toFixed(1)}</>}
+            {spot.avgRating && <> {spot.avgStarRating.toFixed(1)}</>}
             {spot.numReviews ? <> · {spot.numReviews}</> : <> New</>}
             {spot.numReviews === 1 && <> Review</>}
             {spot.numReviews > 1 && <> Reviews</>}
@@ -80,7 +90,7 @@ export default function SpotDetails() {
         <div className="spot-review-container">
           <div className="spot-review-header">
             <FaStar />
-            {spot.avgStarRating && <> {spot.avgStarRating.toFixed(1)}</>}
+            {spot.avgRating && <> {spot.avgStarRating.toFixed(1)}</>}
             {spot.numReviews ? <> · {spot.numReviews}</> : <> New</>}
             {spot.numReviews === 1 && <> Review</>}
             {spot.numReviews > 1 && <> Reviews</>}
@@ -91,7 +101,7 @@ export default function SpotDetails() {
               (review) => review.userId === currentUser.id
             ) && (
               <div className="review-modal">
-                {spot && (currentUser !== null) &&(
+                {spot && currentUser !== null && (
                   <OpenModalButton
                     modalComponent={<PostReviewModal spotId={spotId} />}
                     buttonText={"Post Your Review"}
