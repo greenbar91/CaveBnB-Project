@@ -25,8 +25,8 @@ export default function SpotDetails() {
     return <div>Loading...</div>;
   }
 
-  if (spot && spot?.avgStarRating) {
-    console.log(spot.avgStarRating);
+  if(spot && spot?.avgStarRating){
+    console.log(spot.avgStarRating)
   }
 
   const handleClickReserve = () => {
@@ -68,10 +68,10 @@ export default function SpotDetails() {
           <p className="spot-reserve">
             ${spot?.price} night{" · "}
             <FaStar />
-            {spot.avgStarRating && <> {spot.avgStarRating.toFixed(1)}</>}
-            {spot.numReviews ? <> · {spot.numReviews}</> : <> New</>}
-            {spot.numReviews === 1 && <> Review</>}
-            {spot.numReviews > 1 && <> Reviews</>}
+            {spot.avgStarRating && <>{" "}{spot.avgStarRating.toFixed(1)}</>}
+            {spot.numReviews ? <>{" "}·{" "}{spot.numReviews}</> : <>{" "}New</>}
+            {spot.numReviews === 1 && <>{" "}Review</>}
+            {spot.numReviews > 1 && <>{" "}Reviews</>}
           </p>
           <button onClick={handleClickReserve} className="spot-reserve-button">
             Reserve
@@ -80,17 +80,17 @@ export default function SpotDetails() {
         <div className="spot-review-container">
           <div className="spot-review-header">
             <FaStar />
-            {spot.avgStarRating && <> {spot.avgStarRating.toFixed(1)}</>}
-            {spot.numReviews ? <> · {spot.numReviews}</> : <> New</>}
-            {spot.numReviews === 1 && <> Review</>}
-            {spot.numReviews > 1 && <> Reviews</>}
+            {spot.avgStarRating && <>{" "}{spot.avgStarRating.toFixed(1)}</>}
+            {spot.numReviews ? <>{" "}·{" "}{spot.numReviews}</> : <>{" "}New</>}
+            {spot.numReviews === 1 && <>{" "}Review</>}
+            {spot.numReviews > 1 && <>{" "}Reviews</>}
           </div>
           {!(currentUser && currentUser?.id === spot?.ownerId) &&
             !currentSpotReviews?.some(
               (review) => review.userId === currentUser?.id
             ) && (
               <div className="review-modal">
-                {spot && (
+                {spot && currentUser && (
                   <OpenModalButton
                     modalComponent={<PostReviewModal spotId={spotId} />}
                     buttonText={"Post Your Review"}
