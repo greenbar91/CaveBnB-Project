@@ -4,6 +4,8 @@ import "./ManageSpotsPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { FaStar } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import DeleteSpotsModal from "../DeleteSpotsModal";
 
 
 export default function ManageSpotsPage() {
@@ -37,9 +39,7 @@ export default function ManageSpotsPage() {
 
   // }
 
-  const handleOnClickToDeleteSpot = () => {
 
-  }
 
   return (
     <>
@@ -83,7 +83,7 @@ export default function ManageSpotsPage() {
                 </Link>
                     <div className="button-container">
                       <button className="spot-update-button" onClick={()=> navigate(`/spots/${spot.id}/edit`)}>Update</button>
-                      <button className="spot-delete-button" onClick={handleOnClickToDeleteSpot}>Delete</button>
+                      <OpenModalButton buttonText='Delete' modalComponent={<DeleteSpotsModal spotId={spot.id}/>}/>
                     </div>
               </div>
             </>
