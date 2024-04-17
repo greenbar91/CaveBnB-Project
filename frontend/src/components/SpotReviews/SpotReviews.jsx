@@ -2,19 +2,21 @@ import * as reviewActions from "../../store/reviews";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import "./SpotReviews.css";
+import DeleteReviewModal from "../DeleteReviewModal";
 
 export default function SpotReviews() {
   const { spotId } = useParams();
 //   const spot = useSelector((state) => state.spots[Number(spotId)]);
   const reviews = useSelector((state) => state.reviews.Reviews);
+  const currentUser = useSelector((state) => state.session.user)
 
   const dispatch = useDispatch();
 
   useEffect(() => {
 
       dispatch(reviewActions.getReviewsBySpotIdThunk(Number(spotId)));
-      
 
   }, [dispatch, spotId]);
 
@@ -35,6 +37,7 @@ export default function SpotReviews() {
               <div className="review-firstName">{review.User.firstName}</div>
               <div className="review-date">{formatDate(review.createdAt)}</div>
               <div className="review-description">{review.review}</div>
+              {(review.userId === currentUser.id) && <OpenModalButton buttonText={'Delete'} modalComponent={<DeleteReviewModal reviewId={review.id} spotId={spotId}/>}/>}
             </div>
           ))
         ) : (
