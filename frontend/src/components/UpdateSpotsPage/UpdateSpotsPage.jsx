@@ -93,7 +93,7 @@ export default function UpdateSpotsPage() {
         price,
       };
 
-      dispatch(spotActions.updateSpotThunk(updatedSpot))
+      dispatch(spotActions.updateSpotThunk(updatedSpot, spotId))
       navigate(`/spots/${spotId}`)
       dispatch(spotActions.getSpotDetailsThunk(spotId))
 
