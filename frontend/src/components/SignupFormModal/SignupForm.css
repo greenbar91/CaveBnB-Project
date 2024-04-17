@@ -34,21 +34,16 @@ button:disabled:hover{
 
 
 .input-container {
-    position: relative;
-    margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
   }
 
   .input-container input {
-    width: 250px;
-    height: 40px;
-    border-radius: 10px;
-    margin-top: 50px;
+
+    margin-top: 40px;
   }
 
   .input-container p {
-    position: absolute;
-    right: 50px;
-    bottom: -70px;
     color: red;
-    font-size: 16px;
+
   }

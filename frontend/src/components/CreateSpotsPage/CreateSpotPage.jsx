@@ -185,6 +185,8 @@ export default function CreateSpotPage() {
               value={address}
               onChange={(e) => setAddress(e.target.value)}
             />
+            <div className="city-state-grid">
+              <div className="city">
             <label>
               City {errors && <span className="error-msg"> {errors.city}</span>}
             </label>
@@ -193,6 +195,8 @@ export default function CreateSpotPage() {
               value={city}
               onChange={(e) => setCity(e.target.value)}
             />
+            </div>
+            <div className="state">
             <label>
               State {errors && <span className="error-msg"> {errors.state}</span>}
             </label>
@@ -201,7 +205,11 @@ export default function CreateSpotPage() {
               value={state}
               onChange={(e) => setState(e.target.value)}
             />
-            <label>
+            </div>
+            </div>
+            <div className="lat-lng-grid">
+              <div>
+            <label className="lat">
               Latitude {errors && <span className="error-msg"> {errors.lat}</span>}
             </label>
             <input
@@ -209,6 +217,8 @@ export default function CreateSpotPage() {
               value={lat}
               onChange={(e) => setLat(e.target.value)}
             />
+            </div>
+            <div className="lng">
             <label>
               Longitude{" "}
               {errors && <span className="error-msg"> {errors.lng}</span>}
@@ -218,6 +228,8 @@ export default function CreateSpotPage() {
               value={lng}
               onChange={(e) => setLng(e.target.value)}
             />
+            </div>
+            </div>
           </div>
         </section>
         <section className="create-spot-form-container">

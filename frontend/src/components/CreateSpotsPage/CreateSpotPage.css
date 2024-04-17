@@ -1,12 +1,12 @@
 .create-spot-container{
     display: flex;
     justify-content: center;
-    height: 175vh;
+    height: 160vh;
     cursor: default;
 }
 
 .create-spot-form-container{
-    width:30vw;
+    width:20vw;
     justify-content: center;
     padding: 20px;
     border-bottom: 1px solid black;
@@ -28,16 +28,42 @@
  input {
     margin-top: 10px;
     margin-bottom: 10px;
-    width: 240px;
+    width: 9vw !important;
     height: 30px;
   }
 
+  .city-state-grid{
+    display: grid;
+    grid-template-columns:  1fr 1fr;
+  }
+
+  .city{
+    grid-column: 1;
+  }
+
+  .state {
+    grid-column: 2;
+  }
+
+  .lat-lng-grid {
+    display: grid;
+    grid-template-columns:  1fr 1fr;
+  }
+
+  .lat{
+    grid-column: 1;
+  }
+
+  .lng{
+    grid-column: 2;
+  }
+
   .error-msg {
-    color: red; 
+    color: red;
   }
 
   .description-input{
-    width: 29vw;
+    width: 20vw !important;
     height: 20vh;
     display: block;
     margin-top: 10px;

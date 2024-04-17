@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import * as sessionActions from '../../store/session';
-import { useDispatch } from 'react-redux';
-import { useModal } from '../../context/Modal';
-import './LoginForm.css';
+import { useEffect, useState } from "react";
+import * as sessionActions from "../../store/session";
+import { useDispatch } from "react-redux";
+import { useModal } from "../../context/Modal";
+import "./LoginForm.css";
 
 function LoginFormModal() {
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const [disableSubmit,setDisableSubmit] = useState(false)
+  const [disableSubmit, setDisableSubmit] = useState(false);
   const { closeModal } = useModal();
 
   const handleSubmit = (e) => {
@@ -28,52 +28,64 @@ function LoginFormModal() {
       });
   };
 
-  useEffect(()=> {
-    if(credential.length < 4 || password.length < 6){
-      setDisableSubmit(true)
+  useEffect(() => {
+    if (credential.length < 4 || password.length < 6) {
+      setDisableSubmit(true);
     } else {
-      setDisableSubmit(false)
+      setDisableSubmit(false);
     }
-  },[credential,password])
+  }, [credential, password]);
 
   const handleDemoUserOnClick = () => {
-    return dispatch(sessionActions.loginThunk({ credential:'Demo-lition', password:'password' }))
-    .then(() => {
+    return dispatch(
+      sessionActions.loginThunk({
+        credential: "Demo-lition",
+        password: "password",
+      })
+    ).then(() => {
       closeModal();
-    })
-  }
+    });
+  };
 
   return (
-    <div >
-      <h1 className='login-header'>Log In</h1>
-      <form onSubmit={handleSubmit} className='login-form'>
-        <label className='login'>
-
+    <div className="modal">
+      <form onSubmit={handleSubmit} className="login-form">
+      <h1 className="login-header">Log In</h1>
+      <div className="input-wrapper">
+        <label className="login">
           <input
-          className='login-input'
-          placeholder='Username or Email'
+            className="login-input"
+            placeholder="Username or Email"
             type="text"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             required
           />
         </label>
-        <label className='login'>
-
+        </div>
+        <div className="input-wrapper">
+        <label className="login">
           <input
-          className='login-input'
-          placeholder='Password'
+            className="login-input2"
+            placeholder="Password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
         {errors.credential && (
-          <p className='login-error'>{errors.credential}</p>
+          <p className="login-error">{errors.credential}</p>
         )}
-        <button type="submit" disabled={disableSubmit} className='login-button'>Log In</button>
-      <button className='demo-user-button' onClick={handleDemoUserOnClick}>Demo user</button>
+        </label>
+        </div>
+        <div className="button-container"> <button type="submit" disabled={disableSubmit} className="login-button">
+          Log In
+        </button></div>
+
+        <div className="button-container"><button className="demo-user-button" onClick={handleDemoUserOnClick}>
+          Demo user
+        </button></div>
+
       </form>
     </div>
   );
