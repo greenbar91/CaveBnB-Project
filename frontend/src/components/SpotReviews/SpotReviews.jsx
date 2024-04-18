@@ -37,7 +37,7 @@ export default function SpotReviews() {
               <div className="review-firstName">{review.User.firstName}</div>
               <div className="review-date">{formatDate(review.createdAt)}</div>
               <div className="review-description">{review.review}</div>
-              {(review.userId === currentUser.id) && <OpenModalButton buttonText={'Delete'} modalComponent={<DeleteReviewModal reviewId={review.id} spotId={spotId}/>}/>}
+              {(review.userId === currentUser?.id) && <OpenModalButton buttonText={'Delete'} modalComponent={<DeleteReviewModal reviewId={review.id} spotId={spotId}/>}/>}
             </div>
           ))
         ) : (
