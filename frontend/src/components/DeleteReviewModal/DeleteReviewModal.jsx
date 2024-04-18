@@ -20,6 +20,8 @@ export default function DeleteReviewModal({reviewId, spotId}) {
 
     const handleDelete = () => {
         dispatch(reviewActions.deleteReviewThunk(reviewId))
+        dispatch(reviewActions.getReviewsBySpotIdThunk(Number(spotId)));
+        dispatch(spotsActions.getSpotDetailsThunk(Number(spotId)));
         closeModal()
     }
 
