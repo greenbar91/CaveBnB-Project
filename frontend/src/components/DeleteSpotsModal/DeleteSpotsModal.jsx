@@ -1,5 +1,5 @@
 import "./DeleteSpotsModal.css";
-import { useDispatch} from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as spotsActions from "../../store/spots";
 import { useEffect } from "react";
@@ -7,10 +7,11 @@ import { useEffect } from "react";
 export default function DeleteSpotsModal({spotId}) {
     const { closeModal } = useModal();
     const dispatch = useDispatch()
+    const spots = useSelector((state)=> state.spots)
 
     useEffect(() => {
         dispatch(spotsActions.getCurrentUserSpotsThunk());
-      }, [dispatch]);
+      }, [dispatch, spots]);
 
     const handleDelete = () => {
         dispatch(spotsActions.deleteSpotsThunk(spotId))

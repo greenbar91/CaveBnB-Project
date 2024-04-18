@@ -1,20 +1,25 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import "./DeleteReviewModal.css";
 
 import * as reviewActions from '../../store/reviews'
 import * as spotsActions from "../../store/spots";
+import { useEffect } from "react";
 
 export default function DeleteReviewModal({reviewId, spotId}) {
 
     const { closeModal } = useModal();
     const dispatch = useDispatch()
+    const reviews = useSelector((state)=> state.reviews)
+
+    useEffect(()=> {
+      dispatch(reviewActions.getReviewsBySpotIdThunk(Number(spotId)));
+      dispatch(spotsActions.getSpotDetailsThunk(Number(spotId)));
+    },[dispatch, reviews, spotId])
 
 
     const handleDelete = () => {
         dispatch(reviewActions.deleteReviewThunk(reviewId))
-        dispatch(spotsActions.getSpotDetailsThunk(Number(spotId)));
-        dispatch(reviewActions.getReviewsBySpotIdThunk(Number(spotId)));
         closeModal()
     }
 
