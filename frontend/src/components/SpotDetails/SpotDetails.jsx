@@ -97,7 +97,7 @@ export default function SpotDetails() {
             {spot.numReviews > 1 && <> Reviews</>}
           </div>
           {currentUser &&
-            currentUser.id !== spot?.ownerId &&
+            currentUser?.id !== spot?.ownerId &&
             !currentSpotReviews?.some(
               (review) => review.userId === currentUser.id
             ) && (
@@ -111,7 +111,7 @@ export default function SpotDetails() {
               </div>
             )}
           {!spot.numReviews ? (
-            (currentUser && currentUser.id === spot?.ownerId) ||
+            (currentUser && currentUser?.id === spot?.ownerId) ||
             !currentUser ? (
               <SpotReviews />
             ) : (
