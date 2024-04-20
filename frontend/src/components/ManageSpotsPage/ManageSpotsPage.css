@@ -6,13 +6,15 @@
 .button-container{
     flex-direction: row;
     display: flex;
+    justify-content: flex-start;
+    gap: 30px;
 
 }
 
 .button-container button{
-    justify-content: space-between;
-    margin-right: 25px;
+
     height: 30px;
+    width: 150px;
 }
 
 .create-spot-modal-button {

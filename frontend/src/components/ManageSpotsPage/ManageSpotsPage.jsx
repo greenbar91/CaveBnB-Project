@@ -3,10 +3,9 @@ import * as spotsActions from "../../store/spots";
 import "./ManageSpotsPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { FaStar } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import {  NavLink, useNavigate } from "react-router-dom";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import DeleteSpotsModal from "../DeleteSpotsModal";
-
 
 export default function ManageSpotsPage() {
   const currentSpots = useSelector((state) => state.spots.Spots);
@@ -35,17 +34,15 @@ export default function ManageSpotsPage() {
     navigate("/spots/new");
   };
 
-  // const handleOnClickToUpdateSpot = () => {
-
-  // }
-
-
-
   return (
     <>
       <h1 className="manage-spots-header">Manage your spots</h1>
       <div className="create-spot-modal-button">
-        {!currentSpots.length && <button onClick={handleOnClickToCreateSpots}>Create a new Spot</button>}
+        {!currentSpots.length && (
+          <button onClick={handleOnClickToCreateSpots}>
+            Create a new Spot
+          </button>
+        )}
       </div>
 
       <ul className="spots-container">
@@ -55,36 +52,48 @@ export default function ManageSpotsPage() {
           return (
             <>
               <div key={spotId} className="spot">
-              <Link to={`/spots/${spot?.id}`}>
-                <div className="image-container">
-                  <img src={spot?.previewImage}></img>
-                </div>
-                <div className="spot-info-container">
-                  <div className="spot-info-left">
-                    <li title={spot?.name}>
-                      {spot?.city}, {spot?.state}
-                    </li>
-                    <li className="price">
-                      ${spot?.price} <span className="night">night</span>
-                    </li>
+                <NavLink to={`/spots/${spot?.id}`}>
+                  <div className="image-container">
+                    <img src={spot?.previewImage}></img>
                   </div>
-                  <div className="spot-info-right">
-                    <li>
-                      {spot?.avgRating ? (
-                        <>
-                          <FaStar /> {spot?.avgRating.toFixed(1)}
-                        </>
-                      ) : (
-                        "New"
-                      )}
-                    </li>
-                  </div>
-                </div>
-                </Link>
-                    <div className="button-container">
-                      <button className="spot-update-button" onClick={()=> navigate(`/spots/${spot.id}/edit`)}>Update</button>
-                      <OpenModalButton buttonText='Delete' modalComponent={<DeleteSpotsModal spotId={spot.id}/>}/>
+                  <div className="spot-info-container">
+                    <div className="spot-info-left">
+                      <li title={spot?.name}>
+                        {spot?.city}, {spot?.state}
+                      </li>
+                      <li className="price">
+                        ${spot?.price} <span className="night">night</span>
+                      </li>
                     </div>
+                    <div className="spot-info-right">
+                      <li>
+                        {spot?.avgRating ? (
+                          <>
+                            <FaStar /> {spot?.avgRating.toFixed(1)}
+                          </>
+                        ) : (
+                          "New"
+                        )}
+                      </li>
+                    </div>
+                  </div>
+                    </NavLink>
+                  <div className="button-container">
+                    <button
+                      className="spot-update-button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/spots/${spot.id}/edit`);
+                      }}
+                    >
+                      Update
+                    </button>
+                    <OpenModalButton
+                      onButtonClick={(e) => e.stopPropagation()}
+                      buttonText="Delete"
+                      modalComponent={<DeleteSpotsModal spotId={spot.id} />}
+                    />
+                  </div>
               </div>
             </>
           );

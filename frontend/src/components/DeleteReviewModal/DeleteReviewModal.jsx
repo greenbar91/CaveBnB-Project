@@ -13,7 +13,7 @@ export default function DeleteReviewModal({reviewId, spotId}) {
     const reviews = useSelector((state)=> state.reviews)
 
     useEffect(()=> {
-      dispatch(reviewActions.getReviewsBySpotIdThunk(Number(spotId)));
+      // dispatch(reviewActions.getReviewsBySpotIdThunk(Number(spotId)));
       dispatch(spotsActions.getSpotDetailsThunk(Number(spotId)));
     },[dispatch, reviews, spotId])
 
