@@ -12,7 +12,6 @@ export default function DeleteSpotsModal({spotId, groupId}) {
 
     useEffect(() => {
         dispatch(spotsActions.getCurrentUserSpotsThunk());
-        console.log('dispatch')
       }, [ dispatch,spot ]);
 
     const handleDelete = () => {
