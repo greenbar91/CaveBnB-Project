@@ -62,6 +62,10 @@ export default function CreateSpotPage() {
       checkErrors.description = "* Description needs a minimum of 30 characters";
     }
 
+    if(description.length > 255){
+      checkErrors.description = "* Description needs to be a maximum of 255 characters";
+    }
+
     const validateImageUrl = (url) => {
       const pattern = /\.(png|jpe?g)$/i;
       return pattern.test(url);
@@ -169,7 +173,7 @@ export default function CreateSpotPage() {
           </p>
           <div className="input-wrapper">
             <label htmlFor="" className="country">
-              Country {errors && <span className="error-msg"> {errors.country}</span>}
+              Country {errors && <span className="error-msg2"> {errors.country}</span>}
             </label>
             <input
               placeholder="Country"
@@ -178,7 +182,7 @@ export default function CreateSpotPage() {
             />
             <label>
               Street Address{" "}
-              {errors && <span className="error-msg"> {errors.address}</span>}
+              {errors && <span className="error-msg2"> {errors.address}</span>}
             </label>
             <input
               placeholder="Street Address"
@@ -188,7 +192,7 @@ export default function CreateSpotPage() {
             <div className="city-state-grid">
               <div className="city">
             <label>
-              City {errors && <span className="error-msg"> {errors.city}</span>}
+              City {errors && <span className="error-msg2"> {errors.city}</span>}
             </label>
             <input
               placeholder="City"
@@ -198,7 +202,7 @@ export default function CreateSpotPage() {
             </div>
             <div className="state">
             <label>
-              State {errors && <span className="error-msg"> {errors.state}</span>}
+              State {errors && <span className="error-msg2"> {errors.state}</span>}
             </label>
             <input
               placeholder="STATE"
@@ -210,7 +214,7 @@ export default function CreateSpotPage() {
             <div className="lat-lng-grid">
               <div>
             <label className="lat">
-              Latitude {errors && <span className="error-msg"> {errors.lat}</span>}
+              Latitude {errors && <span className="error-msg2"> {errors.lat}</span>}
             </label>
             <input
               placeholder="Latitude"
@@ -221,7 +225,7 @@ export default function CreateSpotPage() {
             <div className="lng">
             <label>
               Longitude{" "}
-              {errors && <span className="error-msg"> {errors.lng}</span>}
+              {errors && <span className="error-msg2"> {errors.lng}</span>}
             </label>
             <input
               placeholder="Longitude"
@@ -236,12 +240,12 @@ export default function CreateSpotPage() {
           <h1>Describe your place to guests</h1>
           <p>
             Mention the best features of your space, any special amenities like
-            fast wif or parking, and what you love about the neighborhood.
+            fast wifi or parking, and what you love about the neighborhood.
           </p>
           <div className="input-wrapper">
             <label>
               <textarea
-                placeholder="Description"
+                placeholder="Please write at least 30 characters"
                 className="description-input"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -288,46 +292,46 @@ export default function CreateSpotPage() {
           <h1>Liven up your spot with photos</h1>
           <p>Submit a link to at least one photo to publish your spot.</p>
           <div className="input-wrapper">
-            <label>
+            <label className="image-wrapper1">
               <input
                 placeholder="Preview Image URL"
                 value={previewUrl}
                 onChange={(e) => setPreviewUrl(e.target.value)}
               />
             </label>
-            {errors && <span className="error-msg"> {errors.previewUrl}</span>}
-            <label>
+            {errors && <span className="error-msg3"> {errors.previewUrl}</span>}
+            <label className="image-wrapper">
               <input
                 placeholder="Image URL"
                 value={url1}
                 onChange={(e) => setUrl1(e.target.value)}
               />
-            </label>
-            {errors && <span className="error-msg"> {errors.url1}</span>}
-            <label>
+            </label >
+            {errors && <span className="error-msg4"> {errors.url1}</span>}
+            <label className="image-wrapper">
               <input
                 placeholder="Image URL"
                 value={url2}
                 onChange={(e) => setUrl2(e.target.value)}
               />
             </label>
-            {errors && <span className="error-msg"> {errors.url2}</span>}
-            <label>
+            {errors && <span className="error-msg5"> {errors.url2}</span>}
+            <label className="image-wrapper">
               <input
                 placeholder="Image URL"
                 value={url3}
                 onChange={(e) => setUrl3(e.target.value)}
               />
             </label>
-            {errors && <span className="error-msg"> {errors.url3}</span>}
-            <label>
+            {errors && <span className="error-msg6"> {errors.url3}</span>}
+            <label className="image-wrapper">
               <input
                 placeholder="Image URL"
                 value={url4}
                 onChange={(e) => setUrl4(e.target.value)}
               />
             </label>
-            {errors && <span className="error-msg">{errors.url4}</span>}
+            {errors && <span className="error-msg7">{errors.url4}</span>}
           </div>
         </section>
         <button className="create-spot-submit-button" type="submit">Create Spot</button>

@@ -16,12 +16,12 @@ export default function HomePage() {
 
   useEffect(() => {
     if (spots) {
-      const sorted = [...spots].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      const sorted = [...spots].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
       setSortedSpots(sorted);
     }
   }, [spots]);
-
-
 
   if (!sortedSpots) {
     return null;
@@ -35,7 +35,7 @@ export default function HomePage() {
         return (
           <>
             <div key={spotId} className="spot">
-              <Link to={`/spots/${spot?.id}`}>
+              <Link to={`/spots/${spot?.id}`} title={spot.name}>
                 <div className="image-container">
                   <img src={spot?.previewImage}></img>
                 </div>
@@ -52,11 +52,13 @@ export default function HomePage() {
                     <li>
                       {spot?.avgRating ? (
                         <>
-                          <FaStar />{" "}
-                          {spot?.avgRating.toFixed(1)}
+                          <FaStar /> {spot?.avgRating.toFixed(1)}
                         </>
                       ) : (
-                        "New"
+                        <>
+                          <FaStar /> {' '}
+                          New
+                        </>
                       )}
                     </li>
                   </div>

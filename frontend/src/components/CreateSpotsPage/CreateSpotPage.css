@@ -1,7 +1,8 @@
 .create-spot-container{
     display: flex;
     justify-content: center;
-    height: 160vh;
+
+    height: 100%;
     cursor: default;
 }
 
@@ -17,12 +18,14 @@
 .create-spot-form {
     box-shadow: 0 2px 12px rgba(33, 33, 33, 0.2);
     margin: 10px;
-
+    /* align-content: start */
   }
 
   .input-wrapper {
     display: flex;
     flex-direction: column;
+    align-items: start;
+    margin-bottom:20px
   }
 
  input {
@@ -60,15 +63,23 @@
 
   .error-msg {
     color: red;
+    position: absolute;
+    top: 100%;
+    left:0
   }
 
-  .description-input{
+  .error-msg2 {
+    color: red;
+  }
+
+  .description-input {
     width: 20vw !important;
     height: 20vh;
     display: block;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    /* margin-top: 30px;
+    margin-bottom: 30px; */
   }
+
 
   .description-input::placeholder{
     position: absolute;
@@ -83,4 +94,45 @@
     display: block;
     margin: 0 auto;
     margin-top: 50px;
+    margin-bottom: 50px;
+  }
+
+  .image-wrapper{
+    margin-top: 20px;
+    position: relative;
+  }
+
+  .image-wrapper1{
+    /* margin-top: 20px; */
+    position: relative;
+  }
+
+
+  .error-msg3 {
+    color: red;
+    position: absolute;
+    top: 15%;
+  }
+
+  .error-msg4 {
+    color: red;
+    position: absolute;
+    top: 37%;
+  }
+  .error-msg5 {
+    color: red;
+    position: absolute;
+    top: 57%;
+  }
+
+  .error-msg6 {
+    color: red;
+    position: absolute;
+    top: 77%;
+  }
+
+  .error-msg7 {
+    color: red;
+    position: absolute;
+    top: 100%;
   }
