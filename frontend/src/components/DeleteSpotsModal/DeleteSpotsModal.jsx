@@ -7,11 +7,11 @@ import { useEffect } from "react";
 export default function DeleteSpotsModal({spotId}) {
     const { closeModal } = useModal();
     const dispatch = useDispatch()
-    const spots = useSelector((state)=> state.spots[Number(spotId)])
+    const spot = useSelector((state)=> state.spots.Spots[Number(spotId)])
 
     useEffect(() => {
         dispatch(spotsActions.getCurrentUserSpotsThunk());
-      }, [dispatch,spots]);
+      }, [dispatch,spot]);
 
     const handleDelete = () => {
         dispatch(spotsActions.deleteSpotsThunk(spotId))

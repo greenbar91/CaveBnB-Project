@@ -3,7 +3,7 @@ import * as spotsActions from "../../store/spots";
 import "./ManageSpotsPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { FaStar } from "react-icons/fa";
-import {  NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import DeleteSpotsModal from "../DeleteSpotsModal";
 
@@ -77,23 +77,19 @@ export default function ManageSpotsPage() {
                       </li>
                     </div>
                   </div>
-                    </NavLink>
-                  <div className="button-container">
-                    <button
-                      className="spot-update-button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/spots/${spot.id}/edit`);
-                      }}
-                    >
-                      Update
-                    </button>
-                    <OpenModalButton
-                      onButtonClick={(e) => e.stopPropagation()}
-                      buttonText="Delete"
-                      modalComponent={<DeleteSpotsModal spotId={spot.id} />}
-                    />
-                  </div>
+                </NavLink>
+                <div className="button-container">
+                  <button
+                    className="spot-update-button"
+                    onClick={()=>navigate(`/spots/${spot.id}/edit`)}
+                  >
+                    Update
+                  </button>
+                  <OpenModalButton
+                    buttonText="Delete"
+                    modalComponent={<DeleteSpotsModal spotId={spot.id} />}
+                  />
+                </div>
               </div>
             </>
           );
