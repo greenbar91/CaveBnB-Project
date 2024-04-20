@@ -76,7 +76,7 @@ export default function PostReviewModal({ spotId }) {
           <button
             className="submit-review"
             type="submit"
-            disabled={!(rating > 0) || !(reviewText.length > 10)}
+            disabled={!(rating > 0) || !(reviewText.length >= 10)}
           >
             Submit Your Review
           </button>

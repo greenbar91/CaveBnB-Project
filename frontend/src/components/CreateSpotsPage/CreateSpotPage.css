@@ -25,7 +25,8 @@
     display: flex;
     flex-direction: column;
     align-items: start;
-    margin-bottom:20px
+    margin-bottom:20px;
+    position: relative;
   }
 
  input {
@@ -99,16 +100,16 @@
 
   .image-wrapper{
     margin-top: 20px;
-    position: relative;
+    /* position: relative; */
   }
 
   .image-wrapper1{
     /* margin-top: 20px; */
-    position: relative;
+    /* position: relative; */
   }
 
 
-  .error-msg3 {
+ .error-msg3 {
     color: red;
     position: absolute;
     top: 15%;
@@ -135,4 +136,4 @@
     color: red;
     position: absolute;
     top: 100%;
-  }
+  } 

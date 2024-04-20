@@ -103,9 +103,9 @@ export default function UpdateSpotsPage() {
   };
 
   return (
-    <div className="update-spot-container">
-      <form className="update-spot-form" onSubmit={HandleSubmit}>
-        <section className="update-spot-form-container">
+    <div className="create-spot-container">
+      <form className="create-spot-form" onSubmit={HandleSubmit}>
+        <section className="create-spot-form-container">
           <h1>Update your Spot</h1>
           <h3>Where&apos;s your place located?</h3>
           <p>
@@ -114,7 +114,7 @@ export default function UpdateSpotsPage() {
           </p>
           <div className="input-wrapper">
             <label htmlFor="" className="country">
-              Country {errors && <span className="error-msg"> {errors.country}</span>}
+              Country {errors && <span className="error-msg2"> {errors.country}</span>}
             </label>
             <input
               placeholder="Country"
@@ -123,58 +123,70 @@ export default function UpdateSpotsPage() {
             />
             <label>
               Street Address{" "}
-              {errors && <span className="error-msg"> {errors.address}</span>}
+              {errors && <span className="error-msg2"> {errors.address}</span>}
             </label>
             <input
               placeholder="Street Address"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
             />
+            <div className="city-state-grid">
+              <div className="city">
             <label>
-              City {errors && <span className="error-msg"> {errors.city}</span>}
+              City {errors && <span className="error-msg2"> {errors.city}</span>}
             </label>
             <input
               placeholder="City"
               value={city}
               onChange={(e) => setCity(e.target.value)}
             />
+            </div>
+            <div className="state">
             <label>
-              State {errors && <span className="error-msg"> {errors.state}</span>}
+              State {errors && <span className="error-msg2"> {errors.state}</span>}
             </label>
             <input
               placeholder="STATE"
               value={state}
               onChange={(e) => setState(e.target.value)}
             />
-            <label>
-              Latitude {errors && <span className="error-msg"> {errors.lat}</span>}
+            </div>
+            </div>
+            <div className="lat-lng-grid">
+              <div>
+            <label className="lat">
+              Latitude {errors && <span className="error-msg2"> {errors.lat}</span>}
             </label>
             <input
               placeholder="Latitude"
               value={lat}
               onChange={(e) => setLat(e.target.value)}
             />
+            </div>
+            <div className="lng">
             <label>
               Longitude{" "}
-              {errors && <span className="error-msg"> {errors.lng}</span>}
+              {errors && <span className="error-msg2"> {errors.lng}</span>}
             </label>
             <input
               placeholder="Longitude"
               value={lng}
               onChange={(e) => setLng(e.target.value)}
             />
+            </div>
+            </div>
           </div>
         </section>
-        <section className="update-spot-form-container">
+        <section className="create-spot-form-container">
           <h1>Describe your place to guests</h1>
           <p>
             Mention the best features of your space, any special amenities like
-            fast wif or parking, and what you love about the neighborhood.
+            fast wifi or parking, and what you love about the neighborhood.
           </p>
           <div className="input-wrapper">
             <label>
               <textarea
-                placeholder="Description"
+                placeholder="Please write at least 30 characters"
                 className="description-input"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -183,7 +195,7 @@ export default function UpdateSpotsPage() {
             </label>
           </div>
         </section>
-        <section className="update-spot-form-container">
+        <section className="create-spot-form-container">
           <h1>Create a title for your spot</h1>
           <p>
             Catch guests&apos; attention with a spot title that highlights what
@@ -217,9 +229,9 @@ export default function UpdateSpotsPage() {
             {errors && <span className="error-msg"> {errors.price}</span>}
           </div>
         </section>
-        <button className="update-spot-submit-button"  type="submit">Update your Spot</button>
+
+        <button className="create-spot-submit-button" type="submit">Update your Spot</button>
       </form>
     </div>
   );
-
 }

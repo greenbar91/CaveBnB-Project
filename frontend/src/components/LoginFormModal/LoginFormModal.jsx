@@ -51,10 +51,12 @@ function LoginFormModal() {
     <div className="modal">
       <form onSubmit={handleSubmit} className="login-form">
         <h1 className="login-header">Log In</h1>
-        <div className="input-wrapper">
+        
           {errors.credential && (
             <p className="login-error">{errors.credential}</p>
           )}
+
+        <div className="input-wrapper">
         </div>
         <div className="input-wrapper">
           <input
@@ -64,7 +66,7 @@ function LoginFormModal() {
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             required
-          />
+            />
         </div>
         <div className="input-wrapper">
           <input
