@@ -78,19 +78,19 @@ export default function ManageSpotsPage() {
                     </div>
                   </div>
                 </NavLink>
+                <div className="button-container">
+                  <button
+                    className="spot-update-button"
+                    onClick={() => navigate(`/spots/${spot.id}/edit`)}
+                  >
+                    Update
+                  </button>
+                  <OpenModalButton
+                    buttonText="Delete"
+                    modalComponent={<DeleteSpotsModal spotId={spot.id} groupId={spotId} />}
+                  />
+                </div>
               </div>
-              <span className="button-container">
-                <button
-                  className="spot-update-button"
-                  onClick={() => navigate(`/spots/${spot.id}/edit`)}
-                >
-                  Update
-                </button>
-                <OpenModalButton
-                  buttonText="Delete"
-                  modalComponent={<DeleteSpotsModal spotId={spot.id} />}
-                />
-              </span>
             </>
           );
         })}

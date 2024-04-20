@@ -4,14 +4,16 @@ import { useModal } from "../../context/Modal";
 import * as spotsActions from "../../store/spots";
 import { useEffect } from "react";
 
-export default function DeleteSpotsModal({spotId}) {
+export default function DeleteSpotsModal({spotId, groupId}) {
     const { closeModal } = useModal();
     const dispatch = useDispatch()
-    const spot = useSelector((state)=> state.spots.Spots[Number(spotId)])
+    const spot = useSelector((state)=> state.spots.Spots[groupId].id)
+
 
     useEffect(() => {
         dispatch(spotsActions.getCurrentUserSpotsThunk());
-      }, [dispatch,spot]);
+        console.log('dispatch')
+      }, [ dispatch,spot ]);
 
     const handleDelete = () => {
         dispatch(spotsActions.deleteSpotsThunk(spotId))

@@ -1,42 +1,30 @@
-.manage-spots-header {
-  margin-left: 60px;
-}
-
-.button-container {
-  flex-direction: row;
-  display: flex;
-  gap: 30px;
-  height: 0;
-  width: 0;
-  position: absolute;
-  top: 45%;
-}
-
-.button-container button {
-  height: 30px;
-  width: 70px;
-  margin:auto 0;
-
-}
-
-/* .spot{
-    height: 500px !important;
-} */
-
-.spot-info-container{
-    position: relative;
-    padding-bottom: 50px;
+.manage-spots-header{
+    margin-left: 60px;
 }
 
 
+.button-container{
+    flex-direction: row;
+    display: flex;
 
-/* .create-spot-modal-button {
-  display: flex;
+    gap: 20px;
+
 }
 
-.create-spot-modal-button button {
-  width: 200px;
-  margin-left: 60px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-} */
+.button-container button{
+    justify-content: space-between;
+    height: 30px;
+}
+
+.create-spot-modal-button {
+    display: flex;
+
+}
+
+.create-spot-modal-button button{
+    width: 200px;
+    margin-left: 60px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
