@@ -87,7 +87,7 @@ function SignupFormModal() {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-          {errors.email && <p>{errors.email}</p>}
+            {errors.email && <p className="errors">{errors.email}</p>}
           </label>
         </div>
         <div className="input-container">
@@ -99,7 +99,7 @@ function SignupFormModal() {
               onChange={(e) => setUsername(e.target.value)}
               required
             />
-          {errors.username && <p>{errors.username}</p>}
+            {errors.username && <p className="errors">{errors.username}</p>}
           </label>
         </div>
         <div className="input-container">
@@ -111,7 +111,7 @@ function SignupFormModal() {
               onChange={(e) => setFirstName(e.target.value)}
               required
             />
-          {errors.firstName && <p>{errors.firstName}</p>}
+            {errors.firstName && <p className="errors">{errors.firstName}</p>}
           </label>
         </div>
         <div className="input-container">
@@ -123,7 +123,7 @@ function SignupFormModal() {
               onChange={(e) => setLastName(e.target.value)}
               required
             />
-          {errors.lastName && <p>{errors.lastName}</p>}
+            {errors.lastName && <p className="errors">{errors.lastName}</p>}
           </label>
         </div>
         <div className="input-container">
@@ -135,7 +135,7 @@ function SignupFormModal() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-          {errors.password && <p>{errors.password}</p>}
+            {errors.password && <p className="errors">{errors.password}</p>}
           </label>
         </div>
         <div className="input-container">
@@ -147,13 +147,16 @@ function SignupFormModal() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
-          {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+            {errors.confirmPassword && (
+              <p className="errors">{errors.confirmPassword}</p>
+            )}
           </label>
         </div>
-
-        <button type="submit" disabled={disableSignupButton}>
-          Sign Up
-        </button>
+        <div className="signup-button" >
+          <button type="submit" disabled={disableSignupButton}>
+            Sign Up
+          </button>
+        </div>
       </form>
     </>
   );

@@ -50,9 +50,13 @@ function LoginFormModal() {
   return (
     <div className="modal">
       <form onSubmit={handleSubmit} className="login-form">
-      <h1 className="login-header">Log In</h1>
-      <div className="input-wrapper">
-        <label className="login">
+        <h1 className="login-header">Log In</h1>
+        <div className="input-wrapper">
+          {errors.credential && (
+            <p className="login-error">{errors.credential}</p>
+          )}
+        </div>
+        <div className="input-wrapper">
           <input
             className="login-input"
             placeholder="Username or Email"
@@ -61,31 +65,33 @@ function LoginFormModal() {
             onChange={(e) => setCredential(e.target.value)}
             required
           />
-        </label>
         </div>
         <div className="input-wrapper">
-        <label className="login">
           <input
-            className="login-input2"
+            className="login-input"
             placeholder="Password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        {errors.credential && (
-          <p className="login-error">{errors.credential}</p>
-        )}
-        </label>
         </div>
-        <div className="button-container"> <button type="submit" disabled={disableSubmit} className="login-button">
-          Log In
-        </button></div>
+        <div className="button-container">
+          {" "}
+          <button
+            type="submit"
+            disabled={disableSubmit}
+            className="login-button"
+          >
+            Log In
+          </button>
+        </div>
 
-        <div className="button-container"><button className="demo-user-button" onClick={handleDemoUserOnClick}>
-          Demo user
-        </button></div>
-
+        <div className="button-container">
+          <button className="demo-user-button" onClick={handleDemoUserOnClick}>
+            Demo user
+          </button>
+        </div>
       </form>
     </div>
   );

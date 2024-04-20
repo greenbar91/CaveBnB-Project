@@ -96,3 +96,7 @@
   align-self: flex-end;
   padding: 15px;
 }
+
+.profile-dropdown.small{
+  height: 80px;
+}

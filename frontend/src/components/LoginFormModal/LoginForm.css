@@ -1,53 +1,66 @@
+.modal {
+  height: 400px;
+  width: 300px;
+  padding: 30px;
+}
 
-.modal{
-    display: flex;
-    align-items: center;
-    height: 25vh;
-    width: 10vw;
-    justify-content: center;
-    padding:40px;
+.login-form {
+  display: grid;
+  grid-template-rows: repeat(5, auto); /* Each element takes up one row */
+  gap: 10px; /* Gap between grid items */
+}
+
+.login-header  {
+  grid-row: auto;
+  justify-self: center;
+}
+
+.login-input {
+    width: 200px !important;
+  grid-row: auto;
 
 }
 
-form{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+.input-wrapper {
+  justify-content: center;
+  align-items: center;
+  grid-row: auto;
+  position: relative;
 }
 
-.input-wrapper{
-    position: relative;
-    width: 100%;
+.login-input:hover {
+  background-color: #f7f7f7;
 }
 
-.login-input:hover{
-   background-color: #F7F7F7;
+.login-error {
+  color: red;
+
+  grid-row: auto;
+  position: absolute;
+  top: 100%;
+  left: 0;
+
 }
 
-.login-error{
-    color: red;
-    position: absolute;
-
+button:disabled {
+  background-color: #ac8282;
+  box-shadow: none;
 }
 
+button:disabled:hover {
+  background-color: #ac8282;
+  box-shadow: none;
+  cursor: default;
+}
 
-button:disabled{
-    background-color: #ac8282;
-    box-shadow: none;
- }
+.button-container button {
+  grid-row: auto;
+  height: 50px;
+  width: 208px;
+}
 
- button:disabled:hover{
-   background-color: #ac8282;
-   box-shadow: none;
-   cursor: default;
- }
-
- .button-container button {
-
-
-    height: 40x;
-    width: 150px;
-    justify-content: center;
-
- }
+.button-container{
+    justify-self: center;
+    align-self: center;
+    padding-left: 20px;
+}

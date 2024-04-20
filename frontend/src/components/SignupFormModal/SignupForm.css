@@ -36,6 +36,7 @@ button:disabled:hover{
 .input-container {
   display: flex;
   flex-direction: column;
+  position: relative;
   }
 
   .input-container input {
@@ -46,4 +47,14 @@ button:disabled:hover{
   .input-container p {
     color: red;
 
+  }
+
+  .errors {
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
+
+  .signup-button  {
+    padding-top: 70px;
   }
