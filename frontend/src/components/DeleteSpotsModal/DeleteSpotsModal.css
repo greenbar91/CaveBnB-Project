@@ -26,7 +26,6 @@
     background-color: rgb(136, 136, 136)
 }
 
-p {
-    margin-top: -10px;
-    padding: 10px;
+.delete-spots-modal-description  {
+   padding-left: 20px;
 }
