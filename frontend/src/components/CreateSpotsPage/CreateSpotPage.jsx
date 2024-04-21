@@ -165,7 +165,7 @@ export default function CreateSpotPage() {
     <div className="create-spot-container">
       <form className="create-spot-form" onSubmit={HandleSubmit}>
         <section className="create-spot-form-container">
-          <h1>Create a new Spot</h1>
+          <h1>Create a New Spot</h1>
           <h3>Where&apos;s your place located?</h3>
           <p>
             Guests will only get your exact address once they booked a

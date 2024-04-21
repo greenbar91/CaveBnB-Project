@@ -7,7 +7,7 @@ import { useEffect } from "react";
 export default function DeleteSpotsModal({spotId, groupId}) {
     const { closeModal } = useModal();
     const dispatch = useDispatch()
-    const spot = useSelector((state)=> state.spots.Spots[groupId].id)
+    const spot = useSelector((state)=> state.spots.Spots[groupId])
 
 
     useEffect(() => {
@@ -30,9 +30,9 @@ export default function DeleteSpotsModal({spotId, groupId}) {
       <h2>Confirm Delete</h2>
       <div className="delete-spots-modal-container">
         <p>Are you sure you want to remove this spot from the listings?</p>
-        <button className="modal-button-delete-yes" onClick={handleDelete}>Yes (Delete Spot)</button>
+        <button className="modal-button-delete-spots-yes" onClick={handleDelete}>Yes (Delete Spot)</button>
         <div>
-          <button className="modal-button-delete-no" onClick={handleKeepSpot}>No (Keep Spot)</button>
+          <button className="modal-button-delete-spots-no" onClick={handleKeepSpot}>No (Keep Spot)</button>
         </div>
       </div>
     </div>

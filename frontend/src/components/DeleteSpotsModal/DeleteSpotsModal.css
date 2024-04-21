@@ -1,6 +1,6 @@
 .delete-spots-modal-container{
-    height: 26vh;
-    width: 16vw;
+    height: 350px;
+    width: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,16 +8,16 @@
 
 }
 
-.modal-button-delete-yes{
-    width: 14vw;
-    height: 4vh;
+.modal-button-delete-spots-yes{
+    width: 300px;
+    height: 60px
 
 
 }
 
-.modal-button-delete-no{
-    width: 14vw;
-    height: 4vh;
+.modal-button-delete-spots-no{
+    width: 300px;
+    height: 60px;
     margin-top: 20px;
     background-color: darkgrey
 }

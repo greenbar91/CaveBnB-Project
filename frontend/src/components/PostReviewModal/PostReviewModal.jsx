@@ -40,7 +40,7 @@ export default function PostReviewModal({ spotId }) {
   };
 
   return (
-    <div className="modal-container">
+    <div className="review-modal-container">
       <div className="post-review-container">
         <form className="post-review-form" onSubmit={handleSubmit}>
           <h2 className="post-review-header">How was your stay?</h2>

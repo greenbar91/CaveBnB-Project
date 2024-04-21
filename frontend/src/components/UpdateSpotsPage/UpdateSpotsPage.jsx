@@ -230,7 +230,7 @@ export default function UpdateSpotsPage() {
           </div>
         </section>
 
-        <button className="create-spot-submit-button" type="submit">Update your Spot</button>
+        <button className="update-spot-submit-button" type="submit">Update your Spot</button>
       </form>
     </div>
   );
