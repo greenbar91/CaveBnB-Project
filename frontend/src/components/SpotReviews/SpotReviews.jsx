@@ -8,16 +8,14 @@ import DeleteReviewModal from "../DeleteReviewModal";
 
 export default function SpotReviews() {
   const { spotId } = useParams();
-//   const spot = useSelector((state) => state.spots[Number(spotId)]);
+  //   const spot = useSelector((state) => state.spots[Number(spotId)]);
   const reviews = useSelector((state) => state.reviews.Reviews);
-  const currentUser = useSelector((state) => state.session.user)
+  const currentUser = useSelector((state) => state.session.user);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-
-      dispatch(reviewActions.getReviewsBySpotIdThunk(Number(spotId)));
-
+    dispatch(reviewActions.getReviewsBySpotIdThunk(Number(spotId)));
   }, [dispatch, spotId]);
 
   const formatDate = (dateString) => {
@@ -26,18 +24,29 @@ export default function SpotReviews() {
     return date.toLocaleDateString("en-US", options);
   };
 
-  const sortedReviews = reviews ? [...reviews].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) : [];
+  const sortedReviews = reviews
+    ? [...reviews].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    : [];
 
   return (
     <>
-       <header className="review-container">
+      <header className="review-container">
         {sortedReviews ? (
           sortedReviews.map((review) => (
             <div className="review-info" key={review.id}>
               <div className="review-firstName">{review.User.firstName}</div>
               <div className="review-date">{formatDate(review.createdAt)}</div>
               <div className="review-description">{review.review}</div>
-              {(review.userId === currentUser?.id) && <OpenModalButton buttonText={'Delete'} modalComponent={<DeleteReviewModal reviewId={review.id} spotId={spotId}/>}/>}
+              <div className="delete-review-button">
+                {review.userId === currentUser?.id && (
+                  <OpenModalButton
+                    buttonText={"Delete"}
+                    modalComponent={
+                      <DeleteReviewModal reviewId={review.id} spotId={spotId} />
+                    }
+                  />
+                )}
+              </div>
             </div>
           ))
         ) : (

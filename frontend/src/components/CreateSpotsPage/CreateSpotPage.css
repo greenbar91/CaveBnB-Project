@@ -1,24 +1,21 @@
 .create-spot-container{
     display: flex;
     justify-content: center;
-
     height: 100%;
     cursor: default;
 }
 
 .create-spot-form-container{
-    width:20vw;
+    width:500px;
     justify-content: center;
     padding: 20px;
     border-bottom: 1px solid black;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .create-spot-form {
     box-shadow: 0 2px 12px rgba(33, 33, 33, 0.2);
-    margin: 10px;
-    /* align-content: start */
   }
 
   .input-wrapper {
@@ -32,7 +29,7 @@
  input {
     margin-top: 10px;
     margin-bottom: 10px;
-    width: 9vw !important;
+    width: 220px !important;
     height: 30px;
   }
 
@@ -74,11 +71,9 @@
   }
 
   .description-input {
-    width: 20vw !important;
-    height: 20vh;
+    width: 500px !important;
+    height: 250px !important;
     display: block;
-    /* margin-top: 30px;
-    margin-bottom: 30px; */
   }
 
 
@@ -100,12 +95,6 @@
 
   .image-wrapper{
     margin-top: 20px;
-    /* position: relative; */
-  }
-
-  .image-wrapper1{
-    /* margin-top: 20px; */
-    /* position: relative; */
   }
 
 
@@ -123,17 +112,17 @@
   .error-msg5 {
     color: red;
     position: absolute;
-    top: 57%;
+    top: 58%;
   }
 
   .error-msg6 {
     color: red;
     position: absolute;
-    top: 77%;
+    top: 80%;
   }
 
   .error-msg7 {
     color: red;
     position: absolute;
     top: 100%;
-  } 
+  }

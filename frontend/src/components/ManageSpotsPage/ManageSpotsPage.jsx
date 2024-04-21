@@ -72,7 +72,10 @@ export default function ManageSpotsPage() {
                             <FaStar /> {spot?.avgRating.toFixed(1)}
                           </>
                         ) : (
-                          "New"
+                          <>
+                          <FaStar />
+                          {' '}New
+                          </>
                         )}
                       </li>
                     </div>
